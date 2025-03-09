@@ -9,6 +9,7 @@ category_priority:
   - biolink:CellularComponent
   - biolink:ChemicalEntity
   - biolink:Drug
+  - biolink:SequenceVariant
 node_property_priority:
   - id
   - pcategory

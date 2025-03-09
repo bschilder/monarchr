@@ -66,6 +66,9 @@ kg_edge_weights <- function(graph,
 		if(is.null(val)){
 			next
 		}
+		if (!key %in% colnames(edges(graph))){
+			next
+		}
 		if(is.numeric(val)){
 			# message(key,": numeric")
 			encoded_cols <- c(encoded_cols, nm_encoded)
