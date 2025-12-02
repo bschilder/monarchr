@@ -10,8 +10,8 @@ stitch_vectors <- function(x) {
 
 	# Check if the element is a list
 	if (is.list(x)) {
-		# Check if all elements of the list are single-character vectors
-		if (all(sapply(x, function(y) is.character(y) && length(y) == 1))) {
+		# Check if all elements of the list are length-1 character vectors
+		if (all(unlist(lapply(x, function(y) is.character(y) && length(y) == 1)))) {
 			# Concatenate all single-character vectors and put them in a list
 			return(list(unlist(x)))
 		} else {
@@ -86,9 +86,47 @@ neo2r_to_kgx <- function(res, engine) {
 	}))))
 	node_prop_names <- node_prop_names[!node_prop_names %in% c("id", "category")]
 
+	# res$nodes sample:
+	# List of 2
+	# $ 123793 :List of 3
+	# ..$ id        : chr "123793"
+	# ..$ labels    :List of 1
+	# .. ..$ : chr "biolink:PhenotypicFeature"
+	# ..$ properties:List of 9
+	# .. ..$ iri           : chr "http://purl.obolibrary.org/obo/UPHENO_0080059"
+	# .. ..$ synonym       :List of 1
+	# .. .. ..$ : chr "small cell"
+	# .. ..$ name          : chr "decreased size of the cell"
+	# .. ..$ namespace     : chr "UPHENO"
+	# .. ..$ description   : chr "A reduction in the size of the cell."
+	# .. ..$ provided_by   : chr "phenio_nodes"
+	# .. ..$ id            : chr "UPHENO:0080059"
+	# .. ..$ category      :List of 1
+	# .. .. ..$ : chr "biolink:PhenotypicFeature"
+	# .. ..$ exact_synonyms: chr "small cell"
+	# $ 1210966:List of 3
+	# ..$ id        : chr "1210966"
+	# ..$ labels    :List of 1
+	# .. ..$ : chr "biolink:Cell"
+	# ..$ properties:List of 9
+	# .. ..$ iri        : chr "http://purl.obolibrary.org/obo/CL_0000000"
+	# .. ..$ xref       :List of 1
+	# .. .. ..$ : chr [1:10] "CALOHA:TS-2035" "FBbt:00007002" "FMA:68646" "GO:0005623" ...
+	# .. ..$ name       : chr "cell"
+	# .. ..$ namespace  : chr "CL"
+	# .. ..$ description: chr "A material entity of anatomical origin (part of or deriving from an organism) that has as its parts a maximally"| __truncated__
+	# .. ..$ provided_by: chr "phenio_nodes"
+	# .. ..$ id         : chr "CL:0000000"
+	# .. ..$ category   :List of 1
+	# .. .. ..$ : chr "biolink:Cell"
+	# .. ..$ subsets    : chr "_upper_level|cellxgene_subset"
+	#
+
+	# this loop pulls together each property (which may be missing for some entries hence the NULL -> NA mapping)
+	# as a dataframe column. However, we don't know whether what comes out should be a vector or list column
+	# this previously used sapply, replaced with lapply and check for vector-able conversion
 	for(prop_name in node_prop_names) {
-		# sapply!
-		nodes_df[[prop_name]] <- sapply(res$nodes, function(node) {
+		temp <- lapply(res$nodes, function(node) {
 			prop_value <- node$properties[[prop_name]]
 			if(is.null(prop_value)) {
 				return(NA)
@@ -96,6 +134,17 @@ neo2r_to_kgx <- function(res, engine) {
 				return(prop_value)
 			}
 		})
+
+		# the resulting list can be represented as a vector if all elements are not lists and length 1
+		checks <- unlist(lapply(temp, function(el) {
+			!is.list(el) & length(el) == 1
+		}))
+
+		if(all(checks)) {
+			nodes_df[[prop_name]] <- unlist(temp)
+		} else {
+			nodes_df[[prop_name]] <- temp
+		}
 	}
 
 	nodes_df <- unname_cols(nodes_df)
