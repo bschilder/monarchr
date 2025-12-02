@@ -12,7 +12,7 @@
 #' @param quiet Logical, whether to suppress printing of the summary
 #' @return A list of dataframes and named lists
 #' @export
-#' @examplesIf monarch_engine_check()
+#' @examplesIf FALSE
 #' # prints a readable summary and returns a list of dataframes
 #' stats <- monarch_engine() |> summary()
 #' print(stats)

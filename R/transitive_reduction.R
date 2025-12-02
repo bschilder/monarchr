@@ -9,6 +9,8 @@
 #' @param predicate The edge predicate to reduce over.
 #'
 #' @examples
+#' library(dplyr)
+#' library(tidygraph)
 #' data(eds_marfan_kg)
 #'
 #' g <- eds_marfan_kg |> fetch_nodes(name == "Tall stature") |>
@@ -31,11 +33,26 @@
 #' plot(g_reduced, edge_color = primary_knowledge_source)
 #' @import tidygraph
 #' @import dplyr
-#' @importFrom sets as.set
-#' @importFrom relations endorelation
-#' @importFrom relations relation_incidence
 #' @export
 transitive_reduction <- function(g, predicate = "biolink:subclass_of") {
+	if (!requireNamespace("sets", quietly = TRUE)) {
+		stop(
+			"The 'sets' package is required to use transitive_reduction() ",
+			"but is not installed. Please install it with:\n",
+			"  install.packages('sets')",
+			call. = FALSE
+		)
+	}
+
+	if (!requireNamespace("relations", quietly = TRUE)) {
+		stop(
+			"The 'relations' package is required to use transitive_reduction() ",
+			"but is not installed. Please install it with:\n",
+			"  install.packages('relations')",
+			call. = FALSE
+		)
+	}
+
 	# first we make a copy
 	active_tbl <- active(g)
 	g2 <- g
@@ -46,11 +63,11 @@ transitive_reduction <- function(g, predicate = "biolink:subclass_of") {
 		filter(predicate != predicate)
 
 	df <- g2 |> activate(edges) |> as.data.frame()
-	r <- endorelation(
+	r <- relations::endorelation(
 		domain = lapply(unique(unlist(df[c("from", "to")])), sets::as.set),
 		graph = df[c("from", "to")]
 	)
-	mat <- relation_incidence(relations::transitive_reduction(r))
+	mat <- relations::relation_incidence(relations::transitive_reduction(r))
 
 	keep_edges <- which(mat == 1, arr.ind = TRUE) |>
 		as.data.frame() |>

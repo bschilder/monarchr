@@ -23,7 +23,6 @@
 #' @return A tbl_kgx graph with `"computed:best_matches"` edges between the nodes of the two input graphs and columns for `monarch_semsim_metric`, `monarch_semsim_score`, and `monarch_semsim_ancestor_id`.
 #' @export
 #'
-#' @importFrom httr POST content http_status
 #' @import tidygraph
 #' @import dplyr
 #' @examplesIf monarch_engine_check(service = "semsim")
@@ -39,11 +38,11 @@
 #' sim <- monarch_semsim(g1, g2)
 #' print(sim)
 #'
-#' # also inclue the unmatched targets
+#' # also include the unmatched targets
 #' sim <- monarch_semsim(g1, g2, keep_unmatched = TRUE)
 #' print(sim)
 #'
-#' # inclue reverse matches
+#' # include reverse matches
 #' sim <- monarch_semsim(g1, g2, include_reverse = TRUE)
 #' print(sim)
 #'
@@ -52,6 +51,16 @@ monarch_semsim <- function(query_graph,
                            metric = "ancestor_information_content",
                            include_reverse = FALSE,
                            keep_unmatched = FALSE) {
+
+	if (!requireNamespace("httr", quietly = TRUE)) {
+		stop(
+			"The 'httr' package is required to use monarch_semsim() ",
+			"but is not installed. Please install it with:\n",
+			"  install.packages('httr')",
+			call. = FALSE
+		)
+	}
+
     # check that the metric is valid
     assert_that(metric %in% c("ancestor_information_content", "jaccard_similarity", "phenodigm_score"), msg = "metric must be one of 'ancestor_information_content', 'jaccard_similarity', or 'phenodigm_score'")
 
@@ -71,13 +80,13 @@ monarch_semsim <- function(query_graph,
         "metric" = metric
     )
 
-    response <- POST(api_url, body = params, encode = "json")
+    response <- httr::POST(api_url, body = params, encode = "json")
 
     if(response$status_code != 200) {
-        stop(paste0("Error: ", response$status_code, " ", http_status(response$status_code)$message))
+        stop(paste0("Error: ", response$status_code, " ", httr::http_status(response$status_code)$message))
     }
 
-    response_content <- content(response, "parsed")
+    response_content <- httr::content(response, "parsed")
 
     # the result will have:
     # $subject_best_matches

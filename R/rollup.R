@@ -116,6 +116,8 @@ roll <- function(  column,
 #' @seealso [roll_down()], [descendants()], [ancestors(), [transfer()], [transitive_closure()]]
 #'
 #' @examples
+#' library(dplyr)
+#' library(tidygraph)
 #' data(eds_marfan_kg)
 #'
 #' eds_marfan_kg |>

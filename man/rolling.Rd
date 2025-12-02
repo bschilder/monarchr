@@ -54,6 +54,8 @@ replaced by NA. Practically, this results in a list when necessary and a vector
 otherwise.
 }
 \examples{
+library(dplyr)
+library(tidygraph)
 data(eds_marfan_kg)
 
 eds_marfan_kg |>

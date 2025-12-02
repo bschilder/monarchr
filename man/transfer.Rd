@@ -29,19 +29,24 @@ replaced by NA. Practically, this results in a list when necessary and a vector
 otherwise.
 }
 \examples{
+library(dplyr)
+library(tidygraph)
 data(eds_marfan_kg)
 
-engine |> eds_marfan_kg |>
+eds_marfan_kg |>
+ fetch_nodes("biolink:Gene" \%in_list\% category, limit = 5) |>
 	expand(categories = "biolink:Disease") |>
 	activate(nodes) |>
-	mutate(caused_by_genes =
-	         transfer(name, over = "biolink:causes", direction = "out")) |>
-	mutate(causes_diseases =
-	         transfer(name, over = "biolink:causes", direction = "in")) |>
-	plot.tbl_kgx(node_label = paste(name,
-																	" caused by: ", caused_by_genes,
-																	" causes: ", causes_diseases),
-							 label_size = 3)
+	mutate(caused_by_genes = transfer(name,
+	                                  over = "biolink:causes",
+	                                  direction = "out")) |>
+	mutate(causes_diseases = transfer(name,
+	                                  over = "biolink:causes",
+	                                  direction = "in")) |>
+	plot(node_label = paste(name,
+                         " caused by: ", caused_by_genes,
+                         " causes: ", causes_diseases),
+      label_size = 3)
 
 }
 \seealso{

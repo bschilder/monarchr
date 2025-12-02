@@ -5,7 +5,7 @@
 \title{Specialized \code{plot()} function for KGX graphs}
 \usage{
 \method{plot}{tbl_kgx}(
-  g,
+  x,
   ...,
   layout = "auto",
   node_color = pcategory,
@@ -21,7 +21,7 @@
 )
 }
 \arguments{
-\item{g}{A \link{tbl_kgx} graph.}
+\item{x}{A \link{tbl_kgx} graph.}
 
 \item{...}{
   Arguments passed on to \code{\link[ggraph:ggraph]{ggraph::ggraph}}

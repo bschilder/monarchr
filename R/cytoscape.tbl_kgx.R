@@ -6,6 +6,7 @@
 # if levels_only = TRUE, a named vector is returned mapping input
 # levels to RGB values
 color_cats <- function(input, num_colors = 16, levels_only = TRUE) {
+
 	# Ensure the input is treated as a factor
 	factors <- factor(input)
 
@@ -57,10 +58,18 @@ color_cats <- function(input, num_colors = 16, levels_only = TRUE) {
 #' # Cytoscape must be installed and running
 #' cytoscape(g)
 #'
-#' @import RCy3
 #' @import tidygraph
 #' @import dplyr
 cytoscape.tbl_kgx <- function(g, ...) {
+	if (!requireNamespace("RCy3", quietly = TRUE)) {
+		stop(
+			"The 'RCy3' package is required to use cytoscape() ",
+			"but is not installed. Please install it with:\n",
+			"  BiocManager::install('RCy3')",
+			call. = FALSE
+		)
+	}
+
 	message("Sending data to Cytoscape and formatting; please wait.")
 	tryCatch({
 		RCy3::cytoscapePing(...)

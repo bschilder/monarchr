@@ -10,6 +10,8 @@
 #' @param predicate The edge predicate to close over.
 #'
 #' @examples
+#' library(dplyr)
+#' library(tidygraph)
 #' data(eds_marfan_kg)
 #'
 #' eds_marfan_kg |> fetch_nodes(name == "Tall stature") |>
@@ -21,6 +23,7 @@
 #'   plot(edge_color = primary_knowledge_source)
 #'
 #' @import tidygraph
+#' @importFrom tidyr unnest
 #' @export
 transitive_closure <- function(g, predicate = "biolink:subclass_of") {
 	if(length(predicate) != 1) {

@@ -25,7 +25,6 @@
 #' # Cytoscape must be installed and running
 #' cytoscape(g)
 #'
-#' @import RCy3
 #' @import tidygraph
 #' @import dplyr
 cytoscape <- function(g, ...) {

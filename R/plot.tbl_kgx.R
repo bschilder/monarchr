@@ -1,7 +1,7 @@
 #' Specialized \code{plot()} function for KGX graphs
 #'
 #' @export
-#' @param g A \link{tbl_kgx} graph.
+#' @param x A \link{tbl_kgx} graph.
 #' @param layout The layout to use for the plot. Default is "auto" as used by `ggraph`.
 #' @param node_color The column to use for node color. Default is "pcategory".
 #' @param node_shape The column to use for node shape Default is "namespace".
@@ -28,7 +28,7 @@
 #'      expand(categories = "biolink:Gene")
 #' plot(g)
 #' @export
-plot.tbl_kgx <- function(g,
+plot.tbl_kgx <- function(x,
 									...,
 									layout = "auto",
 									node_color = pcategory,
@@ -43,41 +43,41 @@ plot.tbl_kgx <- function(g,
 									node_alpha = 0.9)
 {
 	edge_linetype_colname <- rlang::quo_name(rlang::enquo(edge_linetype))
-	if(is.null(edges(g)[[edge_linetype_colname]])) {
+	if(is.null(edges(x)[[edge_linetype_colname]])) {
 	 	edge_linetype <- NULL
 	 	warning(paste0("Edge attribute ", edge_linetype_colname, " not found for use in setting line type. Ignoring."))
 	}
 
 	node_shape_colname <- rlang::quo_name(rlang::enquo(node_shape))
-	if(is.null(nodes(g)[[node_shape_colname]])) {
+	if(is.null(nodes(x)[[node_shape_colname]])) {
 		node_shape = NULL
 		warning(paste0("Node attribute ", node_shape_colname, " not found for use in setting node shape. Ignoring."))
 	} else {
 		# although we don't expect any NA values, we don't want any that are NA to have no points (the default),
 		# so map them to character "NA" for plotting
-		g <- g |>
+		x <- x |>
 			activate(nodes) |>
 			mutate({{node_shape}} := ifelse(is.na({{node_shape}}), "NA", {{node_shape}}))
 	}
 
 
 	node_label_colname <- rlang::quo_name(rlang::enquo(node_label))
-	if(node_label_colname == "name" && !"name" %in% colnames(nodes(g))) {
+	if(node_label_colname == "name" && !"name" %in% colnames(nodes(x))) {
 		node_label = sym("id")
 	}
 
-	g <- g |>
+	x <- x |>
 		activate(nodes) |>
 		mutate(plot_name := stringr::str_wrap({{node_label}}, 20))
 
 	if(plot_ids == TRUE) {
-		g <- g |>
+		x <- x |>
 			activate(nodes) |>
 			mutate(plot_name = stringr::str_wrap(paste0(plot_name, " (", id, ")"), 20))
 	}
 
 
-	p <- ggraph(g, layout = layout, ...) +
+	p <- ggraph(x, layout = layout, ...) +
 		geom_edge_fan(mapping = aes(color = {{edge_color}},
 																edge_linetype = {{edge_linetype}}),
 									arrow = arrow(length = unit(2, 'mm'),

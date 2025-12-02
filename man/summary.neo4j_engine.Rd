@@ -25,7 +25,7 @@ are \code{cats}, \code{preds}, and \code{props} entries, containing lists of ava
 categories/predicates/properties for convenient auto-completion in RStudio.
 }
 \examples{
-\dontshow{if (monarch_engine_check()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # prints a readable summary and returns a list of dataframes
 stats <- monarch_engine() |> summary()
 print(stats)

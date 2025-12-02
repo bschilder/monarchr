@@ -14,7 +14,6 @@
 #' @import tidygraph
 #' @import dplyr
 #' @importFrom assertthat assert_that
-#' @importFrom httr GET content http_status
 #' @examplesIf monarch_engine_check()
 #' cf_hits <- monarch_search("Cystic fibrosis", category = "biolink:Disease", limit = 5)
 #' print(cf_hits)
@@ -23,6 +22,15 @@ monarch_search <- function(query,
                            category = NULL,
                            limit = 10,
                            ...) {
+
+	if (!requireNamespace("httr", quietly = TRUE)) {
+		stop(
+			"The 'httr' package is required to use monarch_search() ",
+			"but is not installed. Please install it with:\n",
+			"  install.packages('httr')",
+			call. = FALSE
+		)
+	}
 
 		engine <- monarch_engine(...)
     api_url <- paste0(engine$preferences$monarch_api_url, "/search")
@@ -41,14 +49,14 @@ monarch_search <- function(query,
     }
 
     # put the httr::GET call in a trycatch block to handle errors
-    response <- GET(api_url, query = flatten_body_for_httr(params))
+    response <- httr::GET(api_url, query = flatten_body_for_httr(params))
 
     # if the response is not 200, throw an error
     if(response$status_code != 200) {
-        stop(paste0("Error: ", response$status_code, " ", http_status(response$status_code)$message))
+        stop(paste0("Error: ", response$status_code, " ", httr::http_status(response$status_code)$message))
     }
 
-    response_content <- content(response, "parsed")
+    response_content <- httr::content(response, "parsed")
     total_available <- response_content$total
 
     ids <- unlist(lapply(response_content$items, function(item) {

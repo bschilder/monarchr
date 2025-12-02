@@ -19,6 +19,8 @@ Computes the transitive reduction of a graph, treating the specified
 predicate as transitive.
 }
 \examples{
+library(dplyr)
+library(tidygraph)
 data(eds_marfan_kg)
 
 g <- eds_marfan_kg |> fetch_nodes(name == "Tall stature") |>

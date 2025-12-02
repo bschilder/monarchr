@@ -1,3 +1,10 @@
+# monarchr 2.1.3
+
+## Bug Fixes
+
+* Improved examples and documentation for R CMD CHECK
+* Moved limited-use dependencies to Suggests
+
 # monarchr 2.1.2
 
 ## Bug Fixes

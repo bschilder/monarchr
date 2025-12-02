@@ -57,11 +57,11 @@ g2 <- monarch_engine() |>
 sim <- monarch_semsim(g1, g2)
 print(sim)
 
-# also inclue the unmatched targets
+# also include the unmatched targets
 sim <- monarch_semsim(g1, g2, keep_unmatched = TRUE)
 print(sim)
 
-# inclue reverse matches
+# include reverse matches
 sim <- monarch_semsim(g1, g2, include_reverse = TRUE)
 print(sim)
 \dontshow{\}) # examplesIf}

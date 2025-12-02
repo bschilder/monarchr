@@ -32,6 +32,7 @@
 #' monarch_engine() |>
 #'   fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
 #'
+#' @examplesIf FALSE
 #' # a large query
 #' monarch_engine() |>
 #'   fetch_nodes("biolink:Disease" %in_list% category)
