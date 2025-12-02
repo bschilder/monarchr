@@ -53,7 +53,7 @@ monarch_search <- function(query,
 
     # if the response is not 200, throw an error
     if(response$status_code != 200) {
-        stop(paste0("Error: ", response$status_code, " ", httr::http_status(response$status_code)$message))
+        stop(response$status_code, " ", httr::http_status(response$status_code)$message)
     }
 
     response_content <- httr::content(response, "parsed")

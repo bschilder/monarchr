@@ -278,3 +278,15 @@ Other useful features are covered in dedicated Vignettes:
 - Engine Preferences - Determining the selection of node `pcategory` from available `category` values and other configurable engine properties.
 
 
+<br />
+<br />
+<br />
+
+### Session Info
+
+```{r}
+sessioninfo::session_info()
+```
+
+
+

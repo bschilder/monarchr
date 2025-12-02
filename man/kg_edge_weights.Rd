@@ -25,6 +25,9 @@ different edge attributes.}
 \item{fun}{Function to compute edge weights with across the
 numerically encoded attributes. Default is \link{rowSums}.}
 }
+\value{
+The input graph with a new \code{weight} column on edges.
+}
 \description{
 Compute edge weights for the given \link{tbl_kgx} graph using
 several pieces of categorical, ordinal, and continuous metadata.

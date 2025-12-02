@@ -23,6 +23,7 @@ clean_df <- function(df) {
 #' @param x A `tbl_kgx` graph to display.
 #' @param ... Other arguments (unused).
 #' @param show The maximum number of nodes and edges to display.
+#' @return `knitr::as_is` output for display.
 #' @export
 #' @import knitr
 #' @importFrom kableExtra kable

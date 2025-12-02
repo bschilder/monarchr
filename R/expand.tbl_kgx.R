@@ -14,10 +14,10 @@ expand.tbl_kgx <- function(graph, ...) {
         	res <- expand_file_engine(engine, graph, ...) |> activate(!!rlang::sym(active_tbl))
         	return(res)
         } else {
-        	stop("Error: unknown or incompatible engine.")
+        	stop("Unknown or incompatible engine.")
         }
         # return(expand(engine, graph, ...)) # this shouldn't be reachable
     } else {
-        stop("Error: tbl_kgx object does not have a most recent engine.")
+        stop("tbl_kgx object does not have a most recent engine.")
     }
 }

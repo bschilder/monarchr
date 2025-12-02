@@ -15,7 +15,7 @@ color_cats <- function(input, num_colors = 16, levels_only = TRUE) {
 
 	# Hash function to convert factor levels to numeric values consistently
 	hashes <- lapply(levels(factors), function(x) digest::digest(paste0(x, "salt"), algo = "crc32", serialize = FALSE))
-	hash_integers <- sapply(hashes, function(x) strtoi(substr(x, 1, 5), base=16))
+	hash_integers <- unlist(lapply(hashes, function(x) strtoi(substr(x, 1, 5), base=16)))
 
 	# Map hashes to indices in the color palette
 	# Use modulo to wrap around if there are more factors than colors
@@ -74,7 +74,7 @@ cytoscape.tbl_kgx <- function(g, ...) {
 	tryCatch({
 		RCy3::cytoscapePing(...)
 	}, error = function(e) {
-		message(paste0("Unable to connect to Cytoscape. Is it installed and running?", "\nRCy3 Error:\n", e$message))
+		message("Unable to connect to Cytoscape. Is it installed and running?", "\nRCy3 Issue:\n", e$message)
 	})
 
 	nodes_df <- nodes(g)

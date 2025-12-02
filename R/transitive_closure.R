@@ -27,7 +27,7 @@
 #' @export
 transitive_closure <- function(g, predicate = "biolink:subclass_of") {
 	if(length(predicate) != 1) {
-		stop("Error: predicate parameter of transitive_closure() must be length 1.")
+		stop("Predicate parameter of transitive_closure() must be length 1.")
 	}
 	# if there are no edges to close, return the input
 	p <- predicate

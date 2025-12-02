@@ -98,7 +98,7 @@ file_engine <- function(filename, preferences = NULL, ...) {
 
     # let's also look for any other columns that are list columns, by seeing if they contain | characters
     # we'll split these columns into list columns
-    list_cols <- names(nodes)[sapply(nodes, function(x) any(grepl("\\|", x)))]
+    list_cols <- names(nodes)[unlist(lapply(nodes, function(x) any(grepl("\\|", x))))]
     # drop the 'description', 'name', and 'id' columns though, those should never be lists
     list_cols <- list_cols[!list_cols %in% c("description", "name", "id")]
 

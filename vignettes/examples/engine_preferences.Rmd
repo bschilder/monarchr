@@ -100,3 +100,17 @@ In the above example, because caching is disabled, the fetch and expansion are r
 
 
 
+<br />
+<br />
+<br />
+
+### Session Info
+
+```{r, eval=TRUE}
+sessioninfo::session_info()
+```
+
+
+
+
+

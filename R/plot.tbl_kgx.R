@@ -13,6 +13,7 @@
 #' @param fan_strength Fan strength in ggraph's geom_edge_fan, Default is 2.
 #' @param node_alpha Alpha value for nodes, default 0.9.
 #' @param edge_alpha Alpha value for edges, default 0.9.
+#' @return A `ggraph` object.
 #' @inheritDotParams ggraph::ggraph
 #' @importFrom stringr str_wrap
 #' @import ggplot2
@@ -45,13 +46,13 @@ plot.tbl_kgx <- function(x,
 	edge_linetype_colname <- rlang::quo_name(rlang::enquo(edge_linetype))
 	if(is.null(edges(x)[[edge_linetype_colname]])) {
 	 	edge_linetype <- NULL
-	 	warning(paste0("Edge attribute ", edge_linetype_colname, " not found for use in setting line type. Ignoring."))
+	 	warning("Edge attribute ", edge_linetype_colname, " not found for use in setting line type. Ignoring.")
 	}
 
 	node_shape_colname <- rlang::quo_name(rlang::enquo(node_shape))
 	if(is.null(nodes(x)[[node_shape_colname]])) {
-		node_shape = NULL
-		warning(paste0("Node attribute ", node_shape_colname, " not found for use in setting node shape. Ignoring."))
+		node_shape <- NULL
+		warning("Node attribute ", node_shape_colname, " not found for use in setting node shape. Ignoring.")
 	} else {
 		# although we don't expect any NA values, we don't want any that are NA to have no points (the default),
 		# so map them to character "NA" for plotting
@@ -63,7 +64,7 @@ plot.tbl_kgx <- function(x,
 
 	node_label_colname <- rlang::quo_name(rlang::enquo(node_label))
 	if(node_label_colname == "name" && !"name" %in% colnames(nodes(x))) {
-		node_label = sym("id")
+		node_label <- sym("id")
 	}
 
 	x <- x |>

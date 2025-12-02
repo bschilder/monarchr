@@ -27,14 +27,14 @@ tbl_kgx <- function(nodes = NULL, edges = NULL, attach_engine = NULL, ...) {
 		edges <- data.frame(subject = character(0), predicate = character(0), object = character(0))
 	 }
 
-	if(is.null(nodes$id)) { stop("Error: tbl_kgx nodes must have an 'id' column.") }
-	if(is.null(nodes$id)) { stop("Error: tbl_kgx nodes must have an 'category' column.") }
+	if(is.null(nodes$id)) { stop("tbl_kgx nodes must have an 'id' column.") }
+	if(is.null(nodes$id)) { stop("tbl_kgx nodes must have an 'category' column.") }
 
 	# we do allow graphs with no edges
 	if(!is.null(edges)) {
-		if(is.null(edges$subject)) { stop("Error: tbl_kgx edges must have an 'subject' column.") }
-		if(is.null(edges$predicate)) { stop("Error: tbl_kgx edges must have an 'predicate' column.") }
-		if(is.null(edges$object)) { stop("Error: tbl_kgx edges must have an 'object' column.") }
+		if(is.null(edges$subject)) { stop("tbl_kgx edges must have an 'subject' column.") }
+		if(is.null(edges$predicate)) { stop("tbl_kgx edges must have an 'predicate' column.") }
+		if(is.null(edges$object)) { stop("tbl_kgx edges must have an 'object' column.") }
 
 		# set canonical to and from columns from subject and object if they don't already exist
 		if(!"from" %in% colnames(edges)) {

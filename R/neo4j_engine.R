@@ -47,7 +47,7 @@ neo4j_engine <- function(url,
 		success <- FALSE
 
 		for (i in seq_along(url)) {
-			message(paste0("Trying to connect to ", url[i]))
+			message("Trying to connect to ", url[i])
 			tryCatch({
 				# we create a test connection with a timeout to see if the URL is ok
 				# catch the error below if it times out
@@ -69,11 +69,11 @@ neo4j_engine <- function(url,
 					success <- TRUE
 				}
 			}, error = function(e) {
-				message(paste0("Failed to connect to ", url[i], ": ", e$message))
+				message("Failed to connect to ", url[i], ": ", e$message)
 			})
 
 			if (success) {
-				message(paste0("Connected to ", url[i]))
+				message("Connected to ", url[i])
 				break
 			}
 		}

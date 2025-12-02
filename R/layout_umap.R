@@ -34,6 +34,6 @@ layout_umap <- function(graph,
 	}
 	X <- fun(graph, res=matrix())
 	rownames(X) <- nodes(graph)$id
-	colnames(X) <- paste0(prefix, 1:ncol(X))
+	colnames(X) <- paste0(prefix, seq_len(ncol(X)))
 	return(X)
 }

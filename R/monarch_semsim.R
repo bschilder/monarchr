@@ -83,7 +83,7 @@ monarch_semsim <- function(query_graph,
     response <- httr::POST(api_url, body = params, encode = "json")
 
     if(response$status_code != 200) {
-        stop(paste0("Error: ", response$status_code, " ", httr::http_status(response$status_code)$message))
+        stop(response$status_code, " ", httr::http_status(response$status_code)$message)
     }
 
     response_content <- httr::content(response, "parsed")

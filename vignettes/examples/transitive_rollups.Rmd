@@ -233,6 +233,20 @@ plot(phenos_final,
 
 
 
+<br />
+<br />
+<br />
+
+### Session Info
+
+```{r, eval=TRUE}
+sessioninfo::session_info()
+```
+
+
+
+
+
 
 
 

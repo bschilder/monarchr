@@ -68,8 +68,8 @@ example_graph.file_engine <- function(engine, ...) {
 
 	# now sample nodes of those categories, and an arbitrary connection
 	# trouble is, nodes_df$category is a list column...
-	sample_cats_node_ids <- needed_categories |> lapply(function(cat) {
-		has_cat_rows <- which(cat %in_list% nodes_df$category)
+	sample_cats_node_ids <- needed_categories |> lapply(function(x) {
+		has_cat_rows <- which(x %in_list% nodes_df$category)
 		return(nodes_df$id[has_cat_rows[1]])
 		# unique because a single node may be selected to represent multiple needed categories
 	}) |> unlist() |> unique()

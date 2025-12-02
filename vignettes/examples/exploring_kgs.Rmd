@@ -120,6 +120,20 @@ with `fetch_nodes()` and `expand()`.
 
 
 
+<br />
+<br />
+<br />
+
+### Session Info
+
+```{r, eval=TRUE}
+sessioninfo::session_info()
+```
+
+
+
+
+
 
 
 

@@ -153,7 +153,7 @@ expand_neo4j_engine <- function(engine,
 				# update running pool of new fetched eddges
 				new_triples_fetched <- union(new_triples_fetched, new_result_edges_triples)
 
-				message(paste("Expanding; fetched", total_edges_fetched, "of", total_results, "edges."))
+				message("Expanding; fetched", total_edges_fetched, "of", total_results, "edges.")
 
 				# the number of new triples has likely increased - if there's a limit
 				# we should consider whether we are now over it; if so, trim the new result

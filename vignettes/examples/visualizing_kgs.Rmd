@@ -104,3 +104,19 @@ and many more properties can be customized in Cytoscape.
 
 <center>![A screenshot of Cytoscape with a graph visualized.](visualizing_kgs_assets/cytoscape.png){width=90%}</center>
 
+
+
+
+
+<br />
+<br />
+<br />
+
+### Session Info
+
+```{r, eval=TRUE}
+sessioninfo::session_info()
+```
+
+
+

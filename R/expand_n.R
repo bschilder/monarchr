@@ -39,7 +39,7 @@ expand_n <- function(graph,
 	check_len <- function(arg,n,i){
 		if(is.list(arg)){
 			if(length(arg) != n){
-				stop(paste("When provided a list, arguments must be equal to n."))
+				stop("When provided a list, arguments must be equal to n.")
 			}
 			return(arg[[i]])
 		}else{
@@ -51,13 +51,13 @@ expand_n <- function(graph,
 	}
 
 	## Expand graph
-	message(paste(
+	message(
 		"Initial graph size:",
 		nrow(nodes(graph)),"nodes ||",nrow(edges(graph)),"edges"
-	))
+	)
 	if(return_each) graph_list <- list(iteration0=graph)
 
-	for(i in 1:n){
+	for(i in seq_len(n)){
 		message("Expanding graph: iteration ",i,"/",n)
 		graph <- expand(graph = graph,
 										direction = check_len(direction,n,i),
@@ -66,10 +66,10 @@ expand_n <- function(graph,
 										transitive = FALSE,
 										...)
 		if(return_each) graph_list[[paste0("iteration",i)]] <- graph
-		message(paste(
+		message(
 			"Graph size:",
 			nrow(nodes(graph)),"nodes ||",nrow(edges(graph)),"edges"
-		))
+		)
 	}
 	if(return_each){
 		return(graph_list)

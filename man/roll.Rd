@@ -26,6 +26,9 @@ roll(
 
 \item{...}{Other parameters (unused)}
 }
+\value{
+Vector or list, with one entry per node.
+}
 \description{
 Internal function for rolling up and down
 }

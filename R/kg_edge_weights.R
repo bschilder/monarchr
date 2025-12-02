@@ -8,6 +8,7 @@
 #' maximum value. Default is \code{TRUE}.
 #' @param encodings A list of named lists of encoding values for
 #' different edge attributes.
+#' @return The input graph with a new `weight` column on edges.
 #' @inheritParams nodes
 #' @import tidygraph
 #' @import dplyr

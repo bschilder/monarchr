@@ -1,5 +1,6 @@
 #' Set edge/row data column order according to most recent engine preferences
 #' @param g A `tbl_kgx` graph.
+#' @return The input graph with ordered node/edge columns.
 #' @import dplyr
 #' @import tidygraph
 order_cols <- function(g) {

@@ -100,8 +100,8 @@ summarize_neighborhood.tbl_kgx <- function(graph, engine = NULL, direction = "bo
             return(summarize_neighborhood_nodes_neo4j_engine(graph, use_engine, direction))
         }
     } else if("file_engine" %in% class(use_engine)) {
-        stop("Error: summarize_neighborhood not yet implemented for file_engine.")
+        stop("summarize_neighborhood not yet implemented for file_engine.")
     } else {
-        stop("Error: unknown or incompatible engine.")
+        stop("unknown or incompatible engine.")
     }
 }

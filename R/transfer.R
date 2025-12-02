@@ -40,10 +40,10 @@
 #' @export
 transfer <- function(colname = NULL, over, direction = "out") {
 	if(direction != "in" & direction != "out") {
-		stop("Error, 'toward' must be one of 'in' or 'out'.")
+		stop("'toward' must be one of 'in' or 'out'.")
 	}
-	from = ifelse(direction == "out", "subject", "object")
-	toward = ifelse(from == "subject", "object", "subject")
+	from <- ifelse(direction == "out", "subject", "object")
+	toward <- ifelse(from == "subject", "object", "subject")
 	#print(paste("Pulling from", from, "to", toward, "data from", {{colname}}))
 
 	edge_data <- .E() |> filter(predicate %in% over)
@@ -61,7 +61,7 @@ transfer <- function(colname = NULL, over, direction = "out") {
 	# determines if the given list can be converted safely to a vector
 	vec_safe <- function(lst) {
 		lengths_ok <- all(lengths(lst) == 1 | lengths(lst) == 0)
-		types <- sapply(lst, typeof)
+		types <- lapply(lst, typeof)
 		types_ok <- length(unique(types)) == 1
 		lengths_ok && types_ok
 	}

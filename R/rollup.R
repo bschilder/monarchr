@@ -8,6 +8,7 @@
 #' @param predicates A vector of relationship predicates (nodes in g are subjects in the KG), indicating which edges to consider in the rollup/rolldown. Should be transitive; default `biolink:subclass_of`
 #' @param direction Whether to roll up or down.
 #' @param ... Other parameters (unused)
+#' @return Vector or list, with one entry per node.
 #'
 #' @importFrom igraph ego
 #' @importFrom igraph V
@@ -27,15 +28,15 @@ roll <- function(  column,
 		filter(predicate %in% predicates)
 
 	if(direction != "up" & direction != "down") {
-		stop("Error, 'direction' must be one of 'up' or 'down'.")
+		stop("'direction' must be one of 'up' or 'down'.")
 	}
 
 	# for some reason usin Inf or -1 to use an infinite neighborhood size
 	# works on my local machine, but not in the github build checks.
 	# using order = num_nodes + 1 to ensure the order is large enough
-	num_nodes = nrow(nodes(g_filt)) + 1
+	num_nodes <- nrow(nodes(g_filt)) + 1
 
-	mode = ifelse(direction == "up", "in", "out")
+	mode <- ifelse(direction == "up", "in", "out")
 
 	descendants_list <- ego(
 		graph = as.igraph(g_filt),
@@ -72,7 +73,7 @@ roll <- function(  column,
 	# determines if the given list can be converted safely to a vector
 	vec_safe <- function(lst) {
 		lengths_ok <- all(lengths(lst) == 1 | lengths(lst) == 0)
-		types <- sapply(lst, typeof)
+		types <- lapply(lst, typeof)
 		types_ok <- length(unique(types)) == 1
 		lengths_ok && types_ok
 	}

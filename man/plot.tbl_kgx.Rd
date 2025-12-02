@@ -53,6 +53,9 @@ of supported classes. Or a \code{layout_ggraph} object as returned from
 
 \item{node_alpha}{Alpha value for nodes, default 0.9.}
 }
+\value{
+A \code{ggraph} object.
+}
 \description{
 Specialized \code{plot()} function for KGX graphs
 }

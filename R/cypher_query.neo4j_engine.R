@@ -178,10 +178,8 @@ neo2r_to_kgx <- function(res, engine) {
 	edge_prop_names <- edge_prop_names[!edge_prop_names %in% c("subject", "predicate", "object")]
 
 	for(prop_name in edge_prop_names) {
-		# sapply!
-		# edges_df[[prop_name]] <- sapply(res$relationships, function(edge) {
-		edges_df[[prop_name]] <- sapply(res$relationships, function(edge) {
-			#				edge$properties[[prop_name]]
+		# see above RE lapply
+		temp <- lapply(res$relationships, function(edge) {
 			prop_value <- edge$properties[[prop_name]]
 			if(is.null(prop_value)) {
 				return(NA)
@@ -189,6 +187,17 @@ neo2r_to_kgx <- function(res, engine) {
 				return(prop_value)
 			}
 		})
+
+		# the resulting list can be represented as a vector if all elements are not lists and length 1
+		checks <- unlist(lapply(temp, function(el) {
+			!is.list(el) & length(el) == 1
+		}))
+
+		if(all(checks)) {
+			edges_df[[prop_name]] <- unlist(temp)
+		} else {
+			edges_df[[prop_name]] <- temp
+		}
 	}
 
 	# set from and to info for graph
