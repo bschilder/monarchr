@@ -15,13 +15,6 @@ test_that("paging works as expected 1", {
             page_size = 100
         )
 
-    g3 <- monarch_engine() |>
-        fetch_nodes(query_ids = "MONDO:0008678") |>
-        expand(
-            categories = "biolink:PhenotypicFeature",
-            page_size = 120
-        )
-
     expect_equal(nrow(nodes(g)), nrow(nodes(g2)))
     expect_equal(nrow(edges(g)), nrow(edges(g2)))
 
