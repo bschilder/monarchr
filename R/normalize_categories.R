@@ -11,19 +11,19 @@
 #' categories_prefs <- c("B", "E", "A", "D", "C", "F")
 #' normalize_categories(categories_list, categories_prefs)
 normalize_categories <- function(cats_list, cats_prefs) {
-	normed <- unlist(lapply(cats_list, function(categories) {
-		positions <- match(categories, cats_prefs)
+    normed <- unlist(lapply(cats_list, function(categories) {
+        positions <- match(categories, cats_prefs)
 
-		# If all matches are NO, there is no preference match, so use the first label;
-		# otherwise, use the label with the minimum position in the preferred list
-		most_preferred_label <- if (all(is.na(positions))) {
-			categories[1]
-		} else {
-			categories[which.min(positions)]
-		}
+        # If all matches are NO, there is no preference match, so use the first label;
+        # otherwise, use the label with the minimum position in the preferred list
+        most_preferred_label <- if (all(is.na(positions))) {
+            categories[1]
+        } else {
+            categories[which.min(positions)]
+        }
 
-		most_preferred_label
-	}))
+        most_preferred_label
+    }))
 
-	return(normed)
+    return(normed)
 }

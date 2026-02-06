@@ -3,7 +3,7 @@ library(assertthat)
 
 
 test_that("neo4j_engine_check works as expected", {
-    #testthat::skip("temporary skip")
+    # testthat::skip("temporary skip")
 
     # we can't test for TRUE here, because this check my be run without a connection
     # so we'll just test that it returns logical

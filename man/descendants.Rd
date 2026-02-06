@@ -22,7 +22,7 @@ expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE)
 \examples{
 data(eds_marfan_kg)
 g <- eds_marfan_kg |>
-	 fetch_nodes(query_ids = "MONDO:0020066") |>
-	 descendants()
+    fetch_nodes(query_ids = "MONDO:0020066") |>
+    descendants()
 
 }

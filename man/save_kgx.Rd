@@ -25,9 +25,11 @@ any engine is associated with the graph it is not saved.
 \examples{
 \dontshow{if (monarch_engine_check()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 phenos <- monarch_engine() |>
-          fetch_nodes(query_ids = "MONDO:0007525") |>
-          expand(predicates = "biolink:has_phenotype",
-                 categories = "biolink:PhenotypicFeature")
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    )
 
 save_kgx(phenos, "phenos.tar.gz")
 

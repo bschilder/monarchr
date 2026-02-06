@@ -19,33 +19,34 @@
 #' @examplesIf monarch_engine_check()
 #' ## Using Monarch (hosted)
 #' phenos <- monarch_engine() |>
-#'           fetch_nodes(query_ids = "MONDO:0007525") |>
-#'           expand(predicates = "biolink:has_phenotype",
-#'                  categories = "biolink:PhenotypicFeature")
+#'     fetch_nodes(query_ids = "MONDO:0007525") |>
+#'     expand(
+#'         predicates = "biolink:has_phenotype",
+#'         categories = "biolink:PhenotypicFeature"
+#'     )
 #'
 #' print(phenos)
-#'
-#'
 #'
 #' @examples
 #' ## Using example KGX file packaged with monarchr
 #' data(eds_marfan_kg)
 #' phenos <- eds_marfan_kg |>
-#'           fetch_nodes(query_ids = "MONDO:0007525") |>
-#'           expand(predicates = "biolink:has_phenotype",
-#'                  categories = "biolink:PhenotypicFeature")
+#'     fetch_nodes(query_ids = "MONDO:0007525") |>
+#'     expand(
+#'         predicates = "biolink:has_phenotype",
+#'         categories = "biolink:PhenotypicFeature"
+#'     )
 #'
 #' print(phenos)
 #' @import tidygraph
 #' @import dplyr
 #' @importFrom assertthat assert_that
 expand <- function(graph,
-  								 engine = NULL,
-									 direction = "both",
-									 predicates = NULL,
-									 categories = NULL,
-									 transitive = FALSE,
-
-									 					 ...) {
-	UseMethod("expand")
+    engine = NULL,
+    direction = "both",
+    predicates = NULL,
+    categories = NULL,
+    transitive = FALSE,
+    ...) {
+    UseMethod("expand")
 }

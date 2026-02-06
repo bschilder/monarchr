@@ -48,9 +48,9 @@ are sourced from MONDO as well as [OMIM](https://omim.org/) and
 data(eds_marfan_kg)
 
 g <- eds_marfan_kg |>
-  fetch_nodes(query_ids = c("MONDO:0017310")) |>
-  expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
-  expand(categories = "biolink:Gene")
+    fetch_nodes(query_ids = c("MONDO:0017310")) |>
+    expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
+    expand(categories = "biolink:Gene")
 
 plot(g)
 ```
@@ -63,24 +63,25 @@ and `node_color` parameters simply pass their unquoted arguments to `geom_node_p
 and `geom_edge_fan` `ggraph` layers.
 
 ```{r}
-mar_phenos <- eds_marfan_kg |> 
-  fetch_nodes(query_ids = c("MONDO:0017309")) |>
-  expand(categories = "biolink:PhenotypicFeature") 
+mar_phenos <- eds_marfan_kg |>
+    fetch_nodes(query_ids = c("MONDO:0017309")) |>
+    expand(categories = "biolink:PhenotypicFeature")
 
-bcs_phenos <- eds_marfan_kg |> 
-  fetch_nodes(query_ids = c("MONDO:0009242")) |>
-  expand(categories = "biolink:PhenotypicFeature")
+bcs_phenos <- eds_marfan_kg |>
+    fetch_nodes(query_ids = c("MONDO:0009242")) |>
+    expand(categories = "biolink:PhenotypicFeature")
 
-both <- kg_join(mar_phenos, bcs_phenos) 
+both <- kg_join(mar_phenos, bcs_phenos)
 
 shared <- both |>
-  activate(nodes) |>
-  mutate(degree = igraph::degree(both)) |>
-  filter(degree > 1) |>
-  activate(edges) |>
-  mutate(frequency_qualifier = factor(frequency_qualifier, 
-                                      levels = c("HP:0040281", "HP:0040282", "HP:0040283"),
-                                      labels = c("very_frequent", "frequent", "occasional")))
+    activate(nodes) |>
+    mutate(degree = igraph::degree(both)) |>
+    filter(degree > 1) |>
+    activate(edges) |>
+    mutate(frequency_qualifier = factor(frequency_qualifier,
+        levels = c("HP:0040281", "HP:0040282", "HP:0040283"),
+        labels = c("very_frequent", "frequent", "occasional")
+    ))
 
 plot(shared, edge_color = frequency_qualifier)
 ```

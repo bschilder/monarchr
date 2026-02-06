@@ -10,15 +10,15 @@
 #' data(eds_marfan_kg)
 #'
 #' g <- eds_marfan_kg |>
-#'   fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
+#'     fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
 #'
 #' print(get_engine(g))
 #'
 #' @export
 get_engine.tbl_kgx <- function(g, fail_if_missing = TRUE) {
-	engine <- attr(g, "last_engine")
-	if (is.null(engine) && fail_if_missing) {
-		stop("No engine associated with this graph. Unable to proceed.")
-	}
-	return(engine)
+    engine <- attr(g, "last_engine")
+    if (is.null(engine) && fail_if_missing) {
+        stop("No engine associated with this graph. Unable to proceed.")
+    }
+    return(engine)
 }

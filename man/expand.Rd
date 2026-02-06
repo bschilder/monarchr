@@ -42,20 +42,22 @@ engine is used; if the first parameter is a query graph, the most recent engine 
 \dontshow{if (monarch_engine_check()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 ## Using Monarch (hosted)
 phenos <- monarch_engine() |>
-          fetch_nodes(query_ids = "MONDO:0007525") |>
-          expand(predicates = "biolink:has_phenotype",
-                 categories = "biolink:PhenotypicFeature")
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    )
 
 print(phenos)
-
-
 \dontshow{\}) # examplesIf}
 ## Using example KGX file packaged with monarchr
 data(eds_marfan_kg)
 phenos <- eds_marfan_kg |>
-          fetch_nodes(query_ids = "MONDO:0007525") |>
-          expand(predicates = "biolink:has_phenotype",
-                 categories = "biolink:PhenotypicFeature")
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    )
 
 print(phenos)
 }

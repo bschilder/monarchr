@@ -47,12 +47,12 @@ The engine attached to the return graph is that of the query.
 \dontshow{if (monarch_engine_check(service = "semsim")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 g1 <- monarch_engine() |>
-  fetch_nodes(query_ids = "MONDO:0007947") |>
-  expand(categories = "biolink:PhenotypicFeature")
+    fetch_nodes(query_ids = "MONDO:0007947") |>
+    expand(categories = "biolink:PhenotypicFeature")
 
 g2 <- monarch_engine() |>
-  fetch_nodes(query_ids = "MONDO:0007522") |>
-  expand(categories = "biolink:PhenotypicFeature")
+    fetch_nodes(query_ids = "MONDO:0007522") |>
+    expand(categories = "biolink:PhenotypicFeature")
 
 sim <- monarch_semsim(g1, g2)
 print(sim)

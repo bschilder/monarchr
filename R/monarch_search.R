@@ -1,4 +1,3 @@
-
 #' Search for KG nodes using the Monarch Initiative search API
 #'
 #' This function is a wrapper around the Monarch-hosted
@@ -19,20 +18,19 @@
 #' print(cf_hits)
 #'
 monarch_search <- function(query,
-                           category = NULL,
-                           limit = 10,
-                           ...) {
+    category = NULL,
+    limit = 10,
+    ...) {
+    if (!requireNamespace("httr", quietly = TRUE)) {
+        stop(
+            "The 'httr' package is required to use monarch_search() ",
+            "but is not installed. Please install it with:\n",
+            "  install.packages('httr')",
+            call. = FALSE
+        )
+    }
 
-	if (!requireNamespace("httr", quietly = TRUE)) {
-		stop(
-			"The 'httr' package is required to use monarch_search() ",
-			"but is not installed. Please install it with:\n",
-			"  install.packages('httr')",
-			call. = FALSE
-		)
-	}
-
-		engine <- monarch_engine(...)
+    engine <- monarch_engine(...)
     api_url <- paste0(engine$preferences$monarch_api_url, "/search")
 
     # ensure that the limit is not null and is a length-1 integer <= 500
@@ -44,7 +42,7 @@ monarch_search <- function(query,
         "offset" = 0
     )
 
-    if(!is.null(category)) {
+    if (!is.null(category)) {
         params$category <- category
     }
 
@@ -52,7 +50,7 @@ monarch_search <- function(query,
     response <- httr::GET(api_url, query = flatten_body_for_httr(params))
 
     # if the response is not 200, throw an error
-    if(response$status_code != 200) {
+    if (response$status_code != 200) {
         stop(response$status_code, " ", httr::http_status(response$status_code)$message)
     }
 
@@ -63,17 +61,18 @@ monarch_search <- function(query,
         item$id
     }))
 
-    if(length(ids) == 0) {
+    if (length(ids) == 0) {
         # return an empty graph
-        return(tbl_kgx(nodes = data.frame(id = character(), category = list()))
-        )
+        return(tbl_kgx(nodes = data.frame(id = character(), category = list())))
     }
-    if(length(ids) == 1) {
+    if (length(ids) == 1) {
         ids <- list(ids)
     }
 
-    g <- cypher_query(engine, query = "MATCH (n) WHERE n.id IN $ids RETURN n",
-                     parameters = list(ids = ids))
+    g <- cypher_query(engine,
+        query = "MATCH (n) WHERE n.id IN $ids RETURN n",
+        parameters = list(ids = ids)
+    )
 
     return(g)
 }

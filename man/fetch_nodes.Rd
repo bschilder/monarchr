@@ -45,22 +45,22 @@ library(dplyr)
 
 \dontshow{if (monarch_engine_check()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 monarch_engine() |>
-  fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
+    fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
 \dontshow{\}) # examplesIf}
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # a large query
 monarch_engine() |>
-  fetch_nodes("biolink:Disease" \%in_list\% category)
+    fetch_nodes("biolink:Disease" \%in_list\% category)
 \dontshow{\}) # examplesIf}
 # file_engine supports the same features as neo4j_engine
 # (using the example KGX file packaged with monarchr)
 data(eds_marfan_kg)
 
 eds_marfan_kg |>
-  fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
+    fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
 
 # grab all Homo sapiens genes
 eds_marfan_kg |>
-  fetch_nodes(in_taxon_label == "Homo sapiens" & "biolink:Gene" \%in_list\% category)
+    fetch_nodes(in_taxon_label == "Homo sapiens" & "biolink:Gene" \%in_list\% category)
 
 }

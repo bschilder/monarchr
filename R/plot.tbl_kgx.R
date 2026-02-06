@@ -23,83 +23,96 @@
 #' @examples
 #' data(eds_marfan_kg)
 #' g <- eds_marfan_kg |>
-#'      fetch_nodes(query_ids = "MONDO:0007525") |>
-#'      expand(predicates = "biolink:has_phenotype",
-#'             categories = "biolink:PhenotypicFeature")|>
-#'      expand(categories = "biolink:Gene")
+#'     fetch_nodes(query_ids = "MONDO:0007525") |>
+#'     expand(
+#'         predicates = "biolink:has_phenotype",
+#'         categories = "biolink:PhenotypicFeature"
+#'     ) |>
+#'     expand(categories = "biolink:Gene")
 #' plot(g)
 #' @export
 plot.tbl_kgx <- function(x,
-									...,
-									layout = "auto",
-									node_color = pcategory,
-									node_shape = namespace,
-									edge_color = predicate,
-									edge_linetype = primary_knowledge_source,
-									node_label = name,
-									plot_ids = FALSE,
-							    label_size = 2,
-									fan_strength = 2,
-									edge_alpha = 0.9,
-									node_alpha = 0.9)
-{
-	edge_linetype_colname <- rlang::quo_name(rlang::enquo(edge_linetype))
-	if(is.null(edges(x)[[edge_linetype_colname]])) {
-	 	edge_linetype <- NULL
-	 	warning("Edge attribute ", edge_linetype_colname, " not found for use in setting line type. Ignoring.")
-	}
+    ...,
+    layout = "auto",
+    node_color = pcategory,
+    node_shape = namespace,
+    edge_color = predicate,
+    edge_linetype = primary_knowledge_source,
+    node_label = name,
+    plot_ids = FALSE,
+    label_size = 2,
+    fan_strength = 2,
+    edge_alpha = 0.9,
+    node_alpha = 0.9) {
+    edge_linetype_colname <- rlang::quo_name(rlang::enquo(edge_linetype))
+    if (is.null(edges(x)[[edge_linetype_colname]])) {
+        edge_linetype <- NULL
+        warning("Edge attribute ", edge_linetype_colname, " not found for use in setting line type. Ignoring.")
+    }
 
-	node_shape_colname <- rlang::quo_name(rlang::enquo(node_shape))
-	if(is.null(nodes(x)[[node_shape_colname]])) {
-		node_shape <- NULL
-		warning("Node attribute ", node_shape_colname, " not found for use in setting node shape. Ignoring.")
-	} else {
-		# although we don't expect any NA values, we don't want any that are NA to have no points (the default),
-		# so map them to character "NA" for plotting
-		x <- x |>
-			activate(nodes) |>
-			mutate({{node_shape}} := ifelse(is.na({{node_shape}}), "NA", {{node_shape}}))
-	}
-
-
-	node_label_colname <- rlang::quo_name(rlang::enquo(node_label))
-	if(node_label_colname == "name" && !"name" %in% colnames(nodes(x))) {
-		node_label <- sym("id")
-	}
-
-	x <- x |>
-		activate(nodes) |>
-		mutate(plot_name := stringr::str_wrap({{node_label}}, 20))
-
-	if(plot_ids == TRUE) {
-		x <- x |>
-			activate(nodes) |>
-			mutate(plot_name = stringr::str_wrap(paste0(plot_name, " (", id, ")"), 20))
-	}
+    node_shape_colname <- rlang::quo_name(rlang::enquo(node_shape))
+    if (is.null(nodes(x)[[node_shape_colname]])) {
+        node_shape <- NULL
+        warning("Node attribute ", node_shape_colname, " not found for use in setting node shape. Ignoring.")
+    } else {
+        # although we don't expect any NA values, we don't want any that are NA to have no points (the default),
+        # so map them to character "NA" for plotting
+        x <- x |>
+            activate(nodes) |>
+            mutate({{ node_shape }} := ifelse(is.na({{ node_shape }}), "NA", {{ node_shape }}))
+    }
 
 
-	p <- ggraph(x, layout = layout, ...) +
-		geom_edge_fan(mapping = aes(color = {{edge_color}},
-																edge_linetype = {{edge_linetype}}),
-									arrow = arrow(length = unit(2, 'mm'),
-																type = "open"),
-									end_cap = circle(2.5, 'mm'),
-									alpha = edge_alpha,
-									strength = fan_strength,
-									width = 0.5) +
-	  geom_node_point(mapping = aes(color = {{node_color}},
-	  															shape = {{node_shape}}),
-	  								alpha = node_alpha,
-	  								size = 3) +
-		geom_node_label(mapping = aes(label = plot_name),
-										box.padding = 0.4,
-										min.segment.length=0,
-										size = label_size,
-										repel = TRUE,
-										segment.colour = alpha("black", 0.8),
-										segment.linetype = "dotted",
-										fill = "#FFFFFF88") +
-		scale_y_continuous(trans = "reverse")
+    node_label_colname <- rlang::quo_name(rlang::enquo(node_label))
+    if (node_label_colname == "name" && !"name" %in% colnames(nodes(x))) {
+        node_label <- sym("id")
+    }
 
-  return(p)
+    x <- x |>
+        activate(nodes) |>
+        mutate(plot_name := stringr::str_wrap({{ node_label }}, 20))
+
+    if (plot_ids == TRUE) {
+        x <- x |>
+            activate(nodes) |>
+            mutate(plot_name = stringr::str_wrap(paste0(plot_name, " (", id, ")"), 20))
+    }
+
+
+    p <- ggraph(x, layout = layout, ...) +
+        geom_edge_fan(
+            mapping = aes(
+                color = {{ edge_color }},
+                edge_linetype = {{ edge_linetype }}
+            ),
+            arrow = arrow(
+                length = unit(2, "mm"),
+                type = "open"
+            ),
+            end_cap = circle(2.5, "mm"),
+            alpha = edge_alpha,
+            strength = fan_strength,
+            width = 0.5
+        ) +
+        geom_node_point(
+            mapping = aes(
+                color = {{ node_color }},
+                shape = {{ node_shape }}
+            ),
+            alpha = node_alpha,
+            size = 3
+        ) +
+        geom_node_label(
+            mapping = aes(label = plot_name),
+            box.padding = 0.4,
+            min.segment.length = 0,
+            size = label_size,
+            repel = TRUE,
+            segment.colour = alpha("black", 0.8),
+            segment.linetype = "dotted",
+            fill = "#FFFFFF88"
+        ) +
+        scale_y_continuous(trans = "reverse")
+
+    return(p)
 }

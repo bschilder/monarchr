@@ -4,6 +4,7 @@
 
 * Improved examples and documentation for R CMD CHECK
 * Moved limited-use dependencies to Suggests
+* Various fixes for notes and warnings for `BiocCheck()`
 
 # monarchr 2.1.2
 

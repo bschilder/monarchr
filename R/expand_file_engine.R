@@ -2,11 +2,10 @@
 
 #' @importFrom igraph V
 transitive_query_internal <- function(engine,
-                                      g,
-                                      direction = "out",
-                                      predicates = NULL,
-                                      categories = NULL) {
-
+    g,
+    direction = "out",
+    predicates = NULL,
+    categories = NULL) {
     # assert that direction is "out" or "in"
     assert_that(direction == "out" | direction == "in", msg = "Direction must be 'out' or 'in' when using transitive closure.")
 
@@ -18,7 +17,9 @@ transitive_query_internal <- function(engine,
         filter(predicate %in% predicates)
 
     # and as usual we'll get the nodes connected to those edges
-    filtered_edges_df <- filtered_edges %>% activate(edges) %>% as_tibble()
+    filtered_edges_df <- filtered_edges %>%
+        activate(edges) %>%
+        as_tibble()
     new_nodes <- c(filtered_edges_df$object, filtered_edges_df$subject)
 
     # now we keep just those nodes
@@ -44,7 +45,7 @@ transitive_query_internal <- function(engine,
         filter(depth >= 0) %>%
         arrange(depth)
 
-    if(!is.null(categories)) {
+    if (!is.null(categories)) {
         bfs_result <- bfs_result %>%
             filter(purrr::map_lgl(category, ~ any(.x %in% categories)) | id %in% query_ids)
     }
@@ -57,22 +58,21 @@ transitive_query_internal <- function(engine,
 
 # supports non-transitive, out or in only
 direction_fetch_internal <- function(engine,
-                                     g,
-                                     direction = "out",
-                                     predicates = NULL,
-                                     categories = NULL) {
-
+    g,
+    direction = "out",
+    predicates = NULL,
+    categories = NULL) {
     engine_graph <- engine$graph
 
     # ids of nodes in the query graph
     node_ids <- as.character(tidygraph::as_tibble(tidygraph::activate(g, nodes))$id)
 
     # get outgoing edges from the query nodes (keeps all nodes in the engine graph)
-    if(direction == "out") {
+    if (direction == "out") {
         new_edges <- engine_graph %>%
             activate(edges) %>%
             filter(subject %in% node_ids)
-    } else if(direction == "in") {
+    } else if (direction == "in") {
         new_edges <- engine_graph %>%
             activate(edges) %>%
             filter(object %in% node_ids)
@@ -81,7 +81,7 @@ direction_fetch_internal <- function(engine,
     }
 
     # if predicates are specified, filter by them
-    if(!is.null(predicates)) {
+    if (!is.null(predicates)) {
         new_edges <- new_edges %>%
             filter(predicate %in% predicates)
     }
@@ -100,7 +100,7 @@ direction_fetch_internal <- function(engine,
     # note that node category is a list column, each node can have multiple categories
     # we need to use map_lgl from the purrr package to check if any of the categories are in the categories
     # we also need to keep all the query nodes
-    if(!is.null(categories)) {
+    if (!is.null(categories)) {
         new_edges <- new_edges %>%
             filter(purrr::map_lgl(category, ~ any(.x %in% categories)) | id %in% node_ids)
     }
@@ -111,17 +111,15 @@ direction_fetch_internal <- function(engine,
 }
 
 
-
 #' @import tidygraph
 #' @import dplyr
 #' @importFrom assertthat assert_that
 expand_file_engine <- function(engine,
-                                    graph,
-                                    direction = "both",
-                                    predicates = NULL,
-                                    categories = NULL,
-                                    transitive = FALSE) {
-
+    graph,
+    direction = "both",
+    predicates = NULL,
+    categories = NULL,
+    transitive = FALSE) {
     assert_that(is.tbl_graph(graph))
     assert_that(direction %in% c("in", "out", "both"))
     assert_that(is.null(predicates) | is.character(predicates))
@@ -130,16 +128,14 @@ expand_file_engine <- function(engine,
 
     new_edges <- NULL
 
-    if(transitive && length(predicates) != 1) {
-      stop("Transitive closure requires exactly one specified predicate.")
-
-    } else if(transitive) {
+    if (transitive && length(predicates) != 1) {
+        stop("Transitive closure requires exactly one specified predicate.")
+    } else if (transitive) {
         new_edges <- transitive_query_internal(engine, graph, direction, predicates, categories)
-
     } else {
-        if(direction == "out" || direction == "in") {
+        if (direction == "out" || direction == "in") {
             new_edges <- direction_fetch_internal(engine, graph, direction, predicates, categories)
-        } else if(direction == "both") {
+        } else if (direction == "both") {
             new_out_edges <- direction_fetch_internal(engine, graph, "out", predicates, categories)
             new_in_edges <- direction_fetch_internal(engine, graph, "in", predicates, categories)
             suppressMessages(new_edges <- kg_join(new_out_edges, new_in_edges), classes = "message") # suppress joining info
@@ -148,4 +144,3 @@ expand_file_engine <- function(engine,
 
     return(new_edges)
 }
-

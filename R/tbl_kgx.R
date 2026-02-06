@@ -20,45 +20,57 @@
 #' @export
 #' @importFrom tidygraph tbl_graph
 tbl_kgx <- function(nodes = NULL, edges = NULL, attach_engine = NULL, ...) {
-	# nodes can be empty, if so we need to create an empty data frame
-	if(nrow(nodes) == 0) {
-		nodes <- data.frame(id = character(0))
-		nodes$category <- list()
-		edges <- data.frame(subject = character(0), predicate = character(0), object = character(0))
-	 }
+    # nodes can be empty, if so we need to create an empty data frame
+    if (nrow(nodes) == 0) {
+        nodes <- data.frame(id = character(0))
+        nodes$category <- list()
+        edges <- data.frame(subject = character(0), predicate = character(0), object = character(0))
+    }
 
-	if(is.null(nodes$id)) { stop("tbl_kgx nodes must have an 'id' column.") }
-	if(is.null(nodes$id)) { stop("tbl_kgx nodes must have an 'category' column.") }
+    if (is.null(nodes$id)) {
+        stop("tbl_kgx nodes must have an 'id' column.")
+    }
+    if (is.null(nodes$id)) {
+        stop("tbl_kgx nodes must have an 'category' column.")
+    }
 
-	# we do allow graphs with no edges
-	if(!is.null(edges)) {
-		if(is.null(edges$subject)) { stop("tbl_kgx edges must have an 'subject' column.") }
-		if(is.null(edges$predicate)) { stop("tbl_kgx edges must have an 'predicate' column.") }
-		if(is.null(edges$object)) { stop("tbl_kgx edges must have an 'object' column.") }
+    # we do allow graphs with no edges
+    if (!is.null(edges)) {
+        if (is.null(edges$subject)) {
+            stop("tbl_kgx edges must have an 'subject' column.")
+        }
+        if (is.null(edges$predicate)) {
+            stop("tbl_kgx edges must have an 'predicate' column.")
+        }
+        if (is.null(edges$object)) {
+            stop("tbl_kgx edges must have an 'object' column.")
+        }
 
-		# set canonical to and from columns from subject and object if they don't already exist
-		if(!"from" %in% colnames(edges)) {
-			edges$from <- edges$subject
-		}
-		if(!"to" %in% colnames(edges)) {
-			edges$to <- edges$object
-		}
-	} else {
-		# but if given no edges, we spec out subject, predicate, object cols at least (and to and from)
-		edges <- data.frame(subject = character(), predicate = character(), object = character(),
-												to = character(), from = character())
-	}
+        # set canonical to and from columns from subject and object if they don't already exist
+        if (!"from" %in% colnames(edges)) {
+            edges$from <- edges$subject
+        }
+        if (!"to" %in% colnames(edges)) {
+            edges$to <- edges$object
+        }
+    } else {
+        # but if given no edges, we spec out subject, predicate, object cols at least (and to and from)
+        edges <- data.frame(
+            subject = character(), predicate = character(), object = character(),
+            to = character(), from = character()
+        )
+    }
 
-	g <- tidygraph::tbl_graph(nodes = nodes, edges = edges, node_key = "id")
+    g <- tidygraph::tbl_graph(nodes = nodes, edges = edges, node_key = "id")
 
-	attr(g, "last_engine") <- attach_engine
-	class(g) <- c("tbl_kgx", class(g))
+    attr(g, "last_engine") <- attach_engine
+    class(g) <- c("tbl_kgx", class(g))
 
-	# if we have an engine, use its preferences for setting df column order
-	# (order_cols uses the last attached engine)
-	if(!is.null(attach_engine)) {
-		g <- order_cols(g)
-	}
+    # if we have an engine, use its preferences for setting df column order
+    # (order_cols uses the last attached engine)
+    if (!is.null(attach_engine)) {
+        g <- order_cols(g)
+    }
 
-	return(g)
+    return(g)
 }

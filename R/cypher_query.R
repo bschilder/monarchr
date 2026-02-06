@@ -21,4 +21,3 @@
 cypher_query <- function(engine, query, parameters = NULL, ...) {
     UseMethod("cypher_query")
 }
-

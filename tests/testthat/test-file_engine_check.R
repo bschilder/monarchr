@@ -3,10 +3,10 @@ library(assertthat)
 
 
 test_that("file_engine_check works as expected", {
-    #testthat::skip("temporary skip")
+    # testthat::skip("temporary skip")
 
-		filename <- system.file("extdata", "eds_marfan_kg.tar.gz", package = "monarchr")
-		expect_true(file_engine_check(filename, warn = FALSE))
+    filename <- system.file("extdata", "eds_marfan_kg.tar.gz", package = "monarchr")
+    expect_true(file_engine_check(filename, warn = FALSE))
 
     filename <- system.file("extdata", "nosuch_kgx_tsv.tar.gz", package = "monarchr")
     expect_false(file_engine_check(filename, warn = FALSE))

@@ -3,7 +3,7 @@ library(assertthat)
 
 
 test_that("tbl_kgx constructor follows the rules", {
-    #testthat::skip("temporary skip")
+    # testthat::skip("temporary skip")
 
     # first up, properly formatted node and edge dfs should work
     nodes_df <- data.frame(id = c("a", "b"), category = c("foo", "bar"))

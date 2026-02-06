@@ -24,9 +24,11 @@ Compute sparsity (proportion of zero values) in a matrix or graph.
 ## Using example KGX file packaged with monarchr
 data(eds_marfan_kg)
 g <- eds_marfan_kg |>
-     fetch_nodes(query_ids = "MONDO:0007525") |>
-     expand(predicates = "biolink:has_phenotype",
-            categories = "biolink:PhenotypicFeature")
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+       predicates = "biolink:has_phenotype",
+       categories = "biolink:PhenotypicFeature"
+    )
 
 graph_sparsity(g)
 }

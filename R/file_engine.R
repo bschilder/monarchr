@@ -41,19 +41,19 @@ file_engine <- function(filename, preferences = NULL, ...) {
     # if the file is a URL, download it
     # save it in the users' current working directory
 
-    if(grepl("^http", filename)) {
+    if (grepl("^http", filename)) {
         base <- basename(filename)
         download.file(filename, destfile = base)
         filename <- base
     }
 
 
-    if(!file.exists(filename)) {
+    if (!file.exists(filename)) {
         stop("File does not exist.")
     }
 
     # ensure that files is a .tar.gz
-    if(!grepl(".tar.gz$", filename)) {
+    if (!grepl(".tar.gz$", filename)) {
         stop("File must be a .tar.gz file.")
     }
 
@@ -62,33 +62,39 @@ file_engine <- function(filename, preferences = NULL, ...) {
     nodes_file <- grep("_nodes.tsv$", files, value = TRUE)
     edges_file <- grep("_edges.tsv$", files, value = TRUE)
 
-    if(length(nodes_file) == 0) {
+    if (length(nodes_file) == 0) {
         stop("No nodes file found.")
     }
 
-    if(length(edges_file) == 0) {
+    if (length(edges_file) == 0) {
         stop("No edges file found.")
     }
 
     # suppresses non-fatal warnings; it appears that many kgs in kghub
     # have more column headers than columns which causes vroom to issue a warning
-    nodes <- suppressWarnings(classes = "vroom_parse_issue",
-                              readr::read_tsv(archive::archive_read(filename, file = nodes_file),
-                              col_types = readr::cols(id = readr::col_character(), category = readr::col_character()),
-                              show_col_types = FALSE)
-                             )
+    nodes <- suppressWarnings(
+        classes = "vroom_parse_issue",
+        readr::read_tsv(archive::archive_read(filename, file = nodes_file),
+            col_types = readr::cols(id = readr::col_character(), category = readr::col_character()),
+            show_col_types = FALSE
+        )
+    )
 
-    edges <- suppressWarnings(classes = "vroom_parse_issue",
-                              readr::read_tsv(archive::archive_read(filename, file = edges_file),
-                              col_types = readr::cols(subject = readr::col_character(), predicate = readr::col_character(), object = readr::col_character()),
-                              show_col_types = FALSE)
-                             )
+    edges <- suppressWarnings(
+        classes = "vroom_parse_issue",
+        readr::read_tsv(archive::archive_read(filename, file = edges_file),
+            col_types = readr::cols(subject = readr::col_character(), predicate = readr::col_character(), object = readr::col_character()),
+            show_col_types = FALSE
+        )
+    )
 
     content_check <- check_kgx_file_ok(nodes, edges)
-    if(!content_check[[1]]) {
-    	message <- paste0(c("There appears to be an issue with the graph content or formatting. The following errors are noted:",
-    											content_check[[2]]), collapse = "\n   ")
-    	stop(message)
+    if (!content_check[[1]]) {
+        message <- paste0(c(
+            "There appears to be an issue with the graph content or formatting. The following errors are noted:",
+            content_check[[2]]
+        ), collapse = "\n   ")
+        stop(message)
     }
 
     # although we read category in as a character vector, it should be a list column
@@ -102,7 +108,7 @@ file_engine <- function(filename, preferences = NULL, ...) {
     # drop the 'description', 'name', and 'id' columns though, those should never be lists
     list_cols <- list_cols[!list_cols %in% c("description", "name", "id")]
 
-    for(col in list_cols) {
+    for (col in list_cols) {
         nodes[[col]] <- strsplit(nodes[[col]], "\\|")
     }
 
@@ -116,46 +122,43 @@ file_engine <- function(filename, preferences = NULL, ...) {
 
 #' @noRd
 check_kgx_file_ok <- function(nodes_df, edges_df) {
-	node_check <- check_node_kgx_df(nodes_df)
-	edge_check <- check_edge_kgx_df(edges_df)
-	ok <- all(node_check[[1]] & edge_check[[1]])
-	errors <- c(node_check[[2]], edge_check[[2]])
-	return(list(ok, errors))
+    node_check <- check_node_kgx_df(nodes_df)
+    edge_check <- check_edge_kgx_df(edges_df)
+    ok <- all(node_check[[1]] & edge_check[[1]])
+    errors <- c(node_check[[2]], edge_check[[2]])
+    return(list(ok, errors))
 }
 
 #' @noRd
 check_node_kgx_df <- function(nodes_df) {
-	ok <- TRUE
-	errors <- c()
-	if(!"id" %in% names(nodes_df)) {
-		ok <- FALSE
-		errors <- c(errors, "No `id` column found in the nodes file. Is the archive a proper KGX-formatted knowledge graph? Nodes in KGX formatted graphs must have a character `id` column formatted as a CURIE (with entries e.g. 'MONDO:0019391').")
-	}
-	if(!"category" %in% names(nodes_df)) {
-		ok <- FALSE
-		errors <- c(errors, "No `category` column found in the nodes file. Is the archive a proper KGX-formatted knowledge graph? Nodes in KGX formatted graphs must have a multi-valued, |-separated `category` column (with entries e.g. 'biolink:Entity|biolink:NamedThing|biolink:Cell').")
-	}
-	return(list(ok, errors))
+    ok <- TRUE
+    errors <- c()
+    if (!"id" %in% names(nodes_df)) {
+        ok <- FALSE
+        errors <- c(errors, "No `id` column found in the nodes file. Is the archive a proper KGX-formatted knowledge graph? Nodes in KGX formatted graphs must have a character `id` column formatted as a CURIE (with entries e.g. 'MONDO:0019391').")
+    }
+    if (!"category" %in% names(nodes_df)) {
+        ok <- FALSE
+        errors <- c(errors, "No `category` column found in the nodes file. Is the archive a proper KGX-formatted knowledge graph? Nodes in KGX formatted graphs must have a multi-valued, |-separated `category` column (with entries e.g. 'biolink:Entity|biolink:NamedThing|biolink:Cell').")
+    }
+    return(list(ok, errors))
 }
 
 #' @noRd
 check_edge_kgx_df <- function(edges_df) {
-	ok <- TRUE
-	errors <- c()
-	if(!"subject" %in% names(edges_df)) {
-		ok <- FALSE
-		errors <- c(errors, "No `subject` column found in the edges file. Is the archive a proper KGX-formatted knowledge graph? Edges in KGX formatted graphs must have a `subject` column (with entries e.g. 'MONDO:0019391').")
-	}
-	if(!"predicate" %in% names(edges_df)) {
-		ok <- FALSE
-		errors <- c(errors, "No `predicate` column found in the edges file. Is the archive a proper KGX-formatted knowledge graph? Edges in KGX formatted graphs must have a `predicate` column (with entries e.g. 'biolink:has_phenotype').")
-	}
-	if(!"object" %in% names(edges_df)) {
-		ok <- FALSE
-		errors <- c(errors, "No `object` column found in the edges file. Is the archive a proper KGX-formatted knowledge graph? Edges in KGX formatted graphs must have an `object` column (with entries e.g. 'HP:0004322').")
-	}
-	return(list(ok, errors))
+    ok <- TRUE
+    errors <- c()
+    if (!"subject" %in% names(edges_df)) {
+        ok <- FALSE
+        errors <- c(errors, "No `subject` column found in the edges file. Is the archive a proper KGX-formatted knowledge graph? Edges in KGX formatted graphs must have a `subject` column (with entries e.g. 'MONDO:0019391').")
+    }
+    if (!"predicate" %in% names(edges_df)) {
+        ok <- FALSE
+        errors <- c(errors, "No `predicate` column found in the edges file. Is the archive a proper KGX-formatted knowledge graph? Edges in KGX formatted graphs must have a `predicate` column (with entries e.g. 'biolink:has_phenotype').")
+    }
+    if (!"object" %in% names(edges_df)) {
+        ok <- FALSE
+        errors <- c(errors, "No `object` column found in the edges file. Is the archive a proper KGX-formatted knowledge graph? Edges in KGX formatted graphs must have an `object` column (with entries e.g. 'HP:0004322').")
+    }
+    return(list(ok, errors))
 }
-
-
-

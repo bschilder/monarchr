@@ -4,20 +4,20 @@ library(assertthat)
 # g1 does not have a disease node, so in the result the target EDS should not be matched by any query
 test_that("monarch_semsim works", {
     suppressWarnings({
-        g1 <- monarch_engine() |> 
-           fetch_nodes(query_ids = "MONDO:0007947") |> # Marfan syndrome
-           expand(categories = "biolink:PhenotypicFeature", limit = 5) |>
-           activate(nodes) |>
-           filter(pcategory == "biolink:PhenotypicFeature") |>
-           mutate(source = "g1")
+        g1 <- monarch_engine() |>
+            fetch_nodes(query_ids = "MONDO:0007947") |> # Marfan syndrome
+            expand(categories = "biolink:PhenotypicFeature", limit = 5) |>
+            activate(nodes) |>
+            filter(pcategory == "biolink:PhenotypicFeature") |>
+            mutate(source = "g1")
 
-    # MONDO:0007522 EDS classic type
-        g2 <- monarch_engine() |> 
-           fetch_nodes(query_ids = "MONDO:0007522") |> # EDS classic type
-           expand(categories = "biolink:PhenotypicFeature", limit = 5) |>
-           activate(nodes) |>
-           mutate(source = "g2")
-     })
+        # MONDO:0007522 EDS classic type
+        g2 <- monarch_engine() |>
+            fetch_nodes(query_ids = "MONDO:0007522") |> # EDS classic type
+            expand(categories = "biolink:PhenotypicFeature", limit = 5) |>
+            activate(nodes) |>
+            mutate(source = "g2")
+    })
 
     sim <- monarch_semsim(g1, g2)
 
@@ -43,6 +43,6 @@ test_that("monarch_semsim works", {
     expect_equal(sim |> get_engine(), g1 |> get_engine())
 
     # test plot
-    #plot(sim |> graph_join(g1) |> graph_join(g2), node_color = paste(source, pcategory))
-    #print(sim)
+    # plot(sim |> graph_join(g1) |> graph_join(g2), node_color = paste(source, pcategory))
+    # print(sim)
 })

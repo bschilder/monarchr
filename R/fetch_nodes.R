@@ -30,12 +30,12 @@
 #'
 #' @examplesIf monarch_engine_check()
 #' monarch_engine() |>
-#'   fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
+#'     fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
 #'
 #' @examplesIf FALSE
 #' # a large query
 #' monarch_engine() |>
-#'   fetch_nodes("biolink:Disease" %in_list% category)
+#'     fetch_nodes("biolink:Disease" %in_list% category)
 #'
 #' @examples
 #' # file_engine supports the same features as neo4j_engine
@@ -43,11 +43,11 @@
 #' data(eds_marfan_kg)
 #'
 #' eds_marfan_kg |>
-#'   fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
+#'     fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
 #'
 #' # grab all Homo sapiens genes
 #' eds_marfan_kg |>
-#'   fetch_nodes(in_taxon_label == "Homo sapiens" & "biolink:Gene" %in_list% category)
+#'     fetch_nodes(in_taxon_label == "Homo sapiens" & "biolink:Gene" %in_list% category)
 #'
 #' @export
 fetch_nodes <- function(engine, ..., query_ids = NULL, limit = NULL) {

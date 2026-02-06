@@ -32,10 +32,12 @@ Then adds the centrality score as an node attribute.
 \examples{
 data(eds_marfan_kg)
 g <- eds_marfan_kg |>
-          fetch_nodes(query_ids = "MONDO:0007525") |>
-          expand(predicates = "biolink:has_phenotype",
-                 categories = "biolink:PhenotypicFeature")|>
-          expand(categories = "biolink:Gene")
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    ) |>
+    expand(categories = "biolink:Gene")
 g <- graph_centrality(g)
 nodes(g)$centrality
 }

@@ -26,6 +26,5 @@
 #' @import tidygraph
 #' @import dplyr
 example_graph <- function(engine, ...) {
-	UseMethod("example_graph")
+    UseMethod("example_graph")
 }
-

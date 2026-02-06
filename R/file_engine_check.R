@@ -13,18 +13,22 @@
 #' print(file_engine_check(system.file("extdata", "nosuch_kgx_tsv.tar.gz", package = "monarchr")))
 file_engine_check <- function(filename, warn = TRUE) {
     # use try to see if we can successfully create a connection; return TRUE if successful, FALSE if not
-	tryCatch({
-		e <- file_engine(filename)
-		return(TRUE)
-	}, error = function(e) {
-		if(warn) {
-            warning(e$message)
+    tryCatch(
+        {
+            e <- file_engine(filename)
+            return(TRUE)
+        },
+        error = function(e) {
+            if (warn) {
+                warning(e$message)
+            }
+            return(FALSE)
+        },
+        warning = function(e) {
+            if (warn) {
+                warning(e$message)
+            }
+            return(FALSE)
         }
-		return(FALSE)
-	}, warning = function(e) {
-        if(warn) {
-            warning(e$message)
-        }
-        return(FALSE)
-    })
+    )
 }

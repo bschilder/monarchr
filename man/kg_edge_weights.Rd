@@ -35,10 +35,12 @@ several pieces of categorical, ordinal, and continuous metadata.
 \examples{
 data(eds_marfan_kg)
 g <- eds_marfan_kg |>
-     fetch_nodes(query_ids = "MONDO:0007525") |>
-     expand(predicates = "biolink:has_phenotype",
-            categories = "biolink:PhenotypicFeature")|>
-     expand(categories = "biolink:Gene")
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    ) |>
+    expand(categories = "biolink:Gene")
 g2 <- kg_edge_weights(g)
 edges(g2)$weight
 }

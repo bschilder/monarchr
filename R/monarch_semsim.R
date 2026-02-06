@@ -28,12 +28,12 @@
 #' @examplesIf monarch_engine_check(service = "semsim")
 #'
 #' g1 <- monarch_engine() |>
-#'   fetch_nodes(query_ids = "MONDO:0007947") |>
-#'   expand(categories = "biolink:PhenotypicFeature")
+#'     fetch_nodes(query_ids = "MONDO:0007947") |>
+#'     expand(categories = "biolink:PhenotypicFeature")
 #'
 #' g2 <- monarch_engine() |>
-#'   fetch_nodes(query_ids = "MONDO:0007522") |>
-#'   expand(categories = "biolink:PhenotypicFeature")
+#'     fetch_nodes(query_ids = "MONDO:0007522") |>
+#'     expand(categories = "biolink:PhenotypicFeature")
 #'
 #' sim <- monarch_semsim(g1, g2)
 #' print(sim)
@@ -47,19 +47,18 @@
 #' print(sim)
 #'
 monarch_semsim <- function(query_graph,
-                           target_graph,
-                           metric = "ancestor_information_content",
-                           include_reverse = FALSE,
-                           keep_unmatched = FALSE) {
-
-	if (!requireNamespace("httr", quietly = TRUE)) {
-		stop(
-			"The 'httr' package is required to use monarch_semsim() ",
-			"but is not installed. Please install it with:\n",
-			"  install.packages('httr')",
-			call. = FALSE
-		)
-	}
+    target_graph,
+    metric = "ancestor_information_content",
+    include_reverse = FALSE,
+    keep_unmatched = FALSE) {
+    if (!requireNamespace("httr", quietly = TRUE)) {
+        stop(
+            "The 'httr' package is required to use monarch_semsim() ",
+            "but is not installed. Please install it with:\n",
+            "  install.packages('httr')",
+            call. = FALSE
+        )
+    }
 
     # check that the metric is valid
     assert_that(metric %in% c("ancestor_information_content", "jaccard_similarity", "phenodigm_score"), msg = "metric must be one of 'ancestor_information_content', 'jaccard_similarity', or 'phenodigm_score'")
@@ -82,7 +81,7 @@ monarch_semsim <- function(query_graph,
 
     response <- httr::POST(api_url, body = params, encode = "json")
 
-    if(response$status_code != 200) {
+    if (response$status_code != 200) {
         stop(response$status_code, " ", httr::http_status(response$status_code)$message)
     }
 
@@ -116,7 +115,7 @@ monarch_semsim <- function(query_graph,
     subject_best_matches <- do.call(rbind, subject_best_matches)
     keep_edges_df <- subject_best_matches
 
-    if(include_reverse) {
+    if (include_reverse) {
         # parse object best matches
         object_best_matches <- response_content$object_best_matches
         object_best_matches <- lapply(seq_along(object_best_matches), function(i) {
@@ -137,7 +136,7 @@ monarch_semsim <- function(query_graph,
         keep_edges_df <- rbind(keep_edges_df, object_best_matches)
     }
 
-    if(keep_unmatched) {
+    if (keep_unmatched) {
         mentioned_ids <- unique(c(nodes(query_graph)$id, nodes(target_graph)$id))
     } else {
         mentioned_ids <- unique(c(keep_edges_df$subject, keep_edges_df$object))

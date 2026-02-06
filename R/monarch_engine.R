@@ -27,16 +27,18 @@
 #' res <- monarch |> fetch_nodes(query_ids = c("MONDO:0007522", "MONDO:0007947"))
 #' print(res)
 #'
-monarch_engine <- function(url = c("https://neo4j.monarchinitiative.org",
-																	 "http://neo4j.monarchinitiative.org",
-																	 "https://neo4j.monarchinitiative.org:7473",
-																	 "http://neo4j.monarchinitiative.org:7473"),
-                           api_url = "https://api.monarchinitiative.org/v3/api",
-                           preferences = NULL,
-													 timeout = 2,
-                           ...) {
-  e <- neo4j_engine(url = url, preferences = preferences, timeout = timeout, ...)
-  e$preferences$monarch_api_url <- api_url
-  class(e) <- c("monarch_engine", class(e))
-  return(e)
+monarch_engine <- function(url = c(
+        "https://neo4j.monarchinitiative.org",
+        "http://neo4j.monarchinitiative.org",
+        "https://neo4j.monarchinitiative.org:7473",
+        "http://neo4j.monarchinitiative.org:7473"
+    ),
+    api_url = "https://api.monarchinitiative.org/v3/api",
+    preferences = NULL,
+    timeout = 2,
+    ...) {
+    e <- neo4j_engine(url = url, preferences = preferences, timeout = timeout, ...)
+    e$preferences$monarch_api_url <- api_url
+    class(e) <- c("monarch_engine", class(e))
+    return(e)
 }

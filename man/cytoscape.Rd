@@ -28,9 +28,9 @@ and running independently of the R session.
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data(eds_marfan_kg)
 g <- eds_marfan_kg |>
-	 fetch_nodes(query_ids = "MONDO:0020066") |>
-	 expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
-	 expand(categories = c("biolink:PhenotypicFeature", "biolink:Gene"))
+    fetch_nodes(query_ids = "MONDO:0020066") |>
+    expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
+    expand(categories = c("biolink:PhenotypicFeature", "biolink:Gene"))
 
 # Cytoscape must be installed and running
 cytoscape(g)

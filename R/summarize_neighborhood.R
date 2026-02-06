@@ -29,7 +29,7 @@
 #' @export
 #' @examplesIf monarch_engine_check()
 #' monarch_search("fanconi anemia", limit = 5) |>
-#'   summarize_neighborhood(direction = "both", summarize = "edges")
+#'     summarize_neighborhood(direction = "both", summarize = "edges")
 #' @import tidygraph
 #' @import dplyr
 #' @importFrom assertthat assert_that

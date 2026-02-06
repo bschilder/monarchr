@@ -18,24 +18,24 @@
 #' print(stats)
 #'
 summary.neo4j_engine <- function(object, ..., quiet = FALSE) {
-	if(!quiet) {
-		cat("\n")
-		cat("A Neo4j-backed knowledge graph engine.\n")
-		cat("Gathering statistics, please wait...\n")
-	}
+    if (!quiet) {
+        cat("\n")
+        cat("A Neo4j-backed knowledge graph engine.\n")
+        cat("Gathering statistics, please wait...\n")
+    }
 
     node_summary_df <- cypher_query_df(object, "MATCH (n) UNWIND labels(n) AS category WITH category, COUNT(n) AS count RETURN category, count ORDER BY count DESC")
     edge_summary_df <- cypher_query_df(object, "MATCH ()-[r]->() RETURN type(r) AS predicate, COUNT(*) AS count ORDER BY count DESC")
 
     counts_query <- "
-	    // Count the total number of nodes
-			MATCH (n)
-			RETURN 'nodes_total' AS Type, COUNT(n) AS Count
-			UNION
-			// Count the total number of edges
-			MATCH ()-[r]->()
-			RETURN 'edges_total' AS Type, COUNT(r) AS Count
-	    "
+        // Count the total number of nodes
+        MATCH (n)
+        RETURN 'nodes_total' AS Type, COUNT(n) AS Count
+        UNION
+        // Count the total number of edges
+        MATCH ()-[r]->()
+        RETURN 'edges_total' AS Type, COUNT(r) AS Count
+        "
 
     total_df <- cypher_query_df(object, counts_query)
     total_nodes <- total_df$Count[1]
@@ -44,7 +44,7 @@ summary.neo4j_engine <- function(object, ..., quiet = FALSE) {
     properties <- cypher_query_df(object, "CALL db.propertyKeys()")$propertyKey
 
 
-    if(!quiet) {
+    if (!quiet) {
         cat("Total nodes: ", total_nodes, "\n")
         cat("Total edges: ", total_edges, "\n")
         cat("\n")
@@ -71,11 +71,13 @@ summary.neo4j_engine <- function(object, ..., quiet = FALSE) {
     props <- as.list(properties)
     names(props) <- props
 
-    return(invisible(list(node_summary = node_summary_df,
-    											edge_summary = edge_summary_df,
-    											total_nodes = total_nodes,
-    											total_edges = total_edges,
-    											cats = cats,
-    											preds = preds,
-    											props = props)))
+    return(invisible(list(
+        node_summary = node_summary_df,
+        edge_summary = edge_summary_df,
+        total_nodes = total_nodes,
+        total_edges = total_edges,
+        cats = cats,
+        preds = preds,
+        props = props
+    )))
 }

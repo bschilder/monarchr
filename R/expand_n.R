@@ -18,62 +18,66 @@
 #' ## Using example KGX file packaged with monarchr
 #' data(eds_marfan_kg)
 #' g <- eds_marfan_kg |>
-#'      fetch_nodes(query_ids = "MONDO:0007525") |>
-#'      expand(predicates = "biolink:has_phenotype",
-#'             categories = "biolink:PhenotypicFeature")
+#'     fetch_nodes(query_ids = "MONDO:0007525") |>
+#'     expand(
+#'         predicates = "biolink:has_phenotype",
+#'         categories = "biolink:PhenotypicFeature"
+#'     )
 #'
 #' g_expanded <- g |>
-#'               expand_n(predicates = "biolink:subclass_of", n=3)
+#'     expand_n(predicates = "biolink:subclass_of", n = 3)
 #' @import tidygraph
 #' @import dplyr
 expand_n <- function(graph,
-										 return_each = FALSE,
-										 direction = "both",
-										 predicates = NULL,
-										 categories = NULL,
-										 transitive = NULL,
-										 n=1,
-										 ...) {
-	## Check args
-	## Check args
-	check_len <- function(arg,n,i){
-		if(is.list(arg)){
-			if(length(arg) != n){
-				stop("When provided a list, arguments must be equal to n.")
-			}
-			return(arg[[i]])
-		}else{
-			return(arg)
-		}
-	}
-	if(!is.null(transitive)) {
-		warning("Arguments to expand_n() are passed on to expand(), except for transitive which is set to NULL. Ignoring provided setting for transitive in expand_n().")
-	}
+    return_each = FALSE,
+    direction = "both",
+    predicates = NULL,
+    categories = NULL,
+    transitive = NULL,
+    n = 1,
+    ...) {
+    ## Check args
+    ## Check args
+    check_len <- function(arg, n, i) {
+        if (is.list(arg)) {
+            if (length(arg) != n) {
+                stop("When provided a list, arguments must be equal to n.")
+            }
+            return(arg[[i]])
+        } else {
+            return(arg)
+        }
+    }
+    if (!is.null(transitive)) {
+        warning("Arguments to expand_n() are passed on to expand(), except for transitive which is set to NULL. Ignoring provided setting for transitive in expand_n().")
+    }
 
-	## Expand graph
-	message(
-		"Initial graph size:",
-		nrow(nodes(graph)),"nodes ||",nrow(edges(graph)),"edges"
-	)
-	if(return_each) graph_list <- list(iteration0=graph)
+    ## Expand graph
+    message(
+        "Initial graph size:",
+        nrow(nodes(graph)), "nodes ||", nrow(edges(graph)), "edges"
+    )
+    if (return_each) graph_list <- list(iteration0 = graph)
 
-	for(i in seq_len(n)){
-		message("Expanding graph: iteration ",i,"/",n)
-		graph <- expand(graph = graph,
-										direction = check_len(direction,n,i),
-										predicates = check_len(predicates,n,i),
-										categories = check_len(categories,n,i),
-										transitive = FALSE,
-										...)
-		if(return_each) graph_list[[paste0("iteration",i)]] <- graph
-		message(
-			"Graph size:",
-			nrow(nodes(graph)),"nodes ||",nrow(edges(graph)),"edges"
-		)
-	}
-	if(return_each){
-		return(graph_list)
-	} else {
-		return(graph)
-	}
+    for (i in seq_len(n)) {
+        message("Expanding graph: iteration ", i, "/", n)
+        graph <- expand(
+            graph = graph,
+            direction = check_len(direction, n, i),
+            predicates = check_len(predicates, n, i),
+            categories = check_len(categories, n, i),
+            transitive = FALSE,
+            ...
+        )
+        if (return_each) graph_list[[paste0("iteration", i)]] <- graph
+        message(
+            "Graph size:",
+            nrow(nodes(graph)), "nodes ||", nrow(edges(graph)), "edges"
+        )
+    }
+    if (return_each) {
+        return(graph_list)
+    } else {
+        return(graph)
+    }
 }

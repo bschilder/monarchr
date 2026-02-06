@@ -7,10 +7,10 @@
 #'
 #' ```
 #' monarch_engine() |>
-#' 	fetch_nodes(query_ids = c("MONDO:0020066", "MONDO:0007947")) |>
-#' 	expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
-#' 	expand() |>
-#' 	expand(predicates = "biolink:subclass_of", direction = "out", transitive = TRUE)
+#'    fetch_nodes(query_ids = c("MONDO:0020066", "MONDO:0007947")) |>
+#'    expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
+#'    expand() |>
+#'    expand(predicates = "biolink:subclass_of", direction = "out", transitive = TRUE)
 #' ```
 #'
 #' This example engine may also be loaded from file via
@@ -27,10 +27,9 @@
 #' @examples
 #' data(eds_marfan_kg)
 #' phenos <- eds_marfan_kg |>
-#'           fetch_nodes(query_ids = "MONDO:0007525") |>
-#'           expand(predicates = "biolink:has_phenotype",
-#'                  categories = "biolink:PhenotypicFeature")
+#'     fetch_nodes(query_ids = "MONDO:0007525") |>
+#'     expand(
+#'         predicates = "biolink:has_phenotype",
+#'         categories = "biolink:PhenotypicFeature"
+#'     )
 "eds_marfan_kg"
-
-
-

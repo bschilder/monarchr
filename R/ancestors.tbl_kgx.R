@@ -13,13 +13,15 @@
 #' @examples
 #' data(eds_marfan_kg)
 #' g <- eds_marfan_kg |>
-#' 	 fetch_nodes(query_ids = "MONDO:0020066") |>
-#' 	 ancestors()
+#'     fetch_nodes(query_ids = "MONDO:0020066") |>
+#'     ancestors()
 #'
 #' @import tidygraph
 #' @import dplyr
 ancestors.tbl_kgx <- function(g, ...) {
-	return(g |> expand(predicates = "biolink:subclass_of",
-										 direction = "out",
-										 transitive = TRUE))
+    return(g |> expand(
+        predicates = "biolink:subclass_of",
+        direction = "out",
+        transitive = TRUE
+    ))
 }
