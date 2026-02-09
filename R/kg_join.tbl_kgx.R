@@ -22,22 +22,29 @@ null_col_entries_to_na <- function(df) {
 #' @import dplyr
 #' @export
 kg_join.tbl_kgx <- function(graph1, graph2, ...) {
-    nodes_g1 <- nodes(graph1)
-    nodes_g2 <- nodes(graph2)
+    nodes_g1 <- null_col_entries_to_na(nodes(graph1))
+    nodes_g2 <- null_col_entries_to_na(nodes(graph2))
 
     # we don't want to keep the to and from columns in the edges, since we'll be rebuilding edges from scratch,
     # and be running them through unique()
-    edges_g1 <- edges(graph1) |> select(-to, -from)
-    edges_g2 <- edges(graph2) |> select(-to, -from)
+    edges_g1 <- null_col_entries_to_na(edges(graph1) |> select(-to, -from))
+    edges_g2 <- null_col_entries_to_na(edges(graph2) |> select(-to, -from))
 
-    all_nodes <- unique(nodes_g1 |>
-        full_join(nodes_g2)) |>
-        mutate(idx = row_number()) # add an index column to the nodes
+    all_nodes <- unique(
+                  null_col_entries_to_na(
+                    nodes_g1 |>
+                      full_join(nodes_g2)
+                  )
+                ) |>
+                 mutate(idx = row_number())  # add an index column to the nodes
 
 
-    all_edges <- unique(edges_g1 |>
-        full_join(edges_g2))
-
+    all_edges <- unique(
+                  null_col_entries_to_na(
+                    edges_g1 |>
+                      full_join(edges_g2)
+                  )
+                )
 
     # given a single row of an edge data frame, we need to replicate it for each distinct from/to pair that match subjects and objects
     fill_edges <- function(row_df) {
