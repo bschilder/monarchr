@@ -14,14 +14,14 @@
 \item{quiet}{Logical, whether to suppress printing of the summary}
 }
 \value{
-A list of dataframes and named lists
+A classed list of data frames and named lists.
 }
 \description{
 Given a KGX file-based KG engine, provides summary information in the form of
 node counts, category counts across nodes, relationship type counts, and available properties.
-General information about the graph is printed to the console, and a list of
-dataframes with this information is returned invisibly. Also returned
-are \code{cats}, \code{preds}, and \code{props} entries, containing lists of available
+The returned summary object prints a readable console report and also contains
+data frames with this information. Also returned are \code{cats}, \code{preds}, and
+\code{props} entries, containing lists of available
 categories/predicates/properties for convenient auto-completion in RStudio.
 }
 \details{

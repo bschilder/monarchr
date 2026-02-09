@@ -2,9 +2,9 @@
 #'
 #' Given a KGX file-based KG engine, provides summary information in the form of
 #' node counts, category counts across nodes, relationship type counts, and available properties.
-#' General information about the graph is printed to the console, and a list of
-#' dataframes with this information is returned invisibly. Also returned
-#' are `cats`, `preds`, and `props` entries, containing lists of available
+#' The returned summary object prints a readable console report and also contains
+#' data frames with this information. Also returned are `cats`, `preds`, and
+#' `props` entries, containing lists of available
 #' categories/predicates/properties for convenient auto-completion in RStudio.
 #'
 #' When applied to a `file_engine`, also included are node-specific and edge-specific properties.
@@ -12,7 +12,7 @@
 #' @param object A `file_engine` object
 #' @param ... Other parameters (not used)
 #' @param quiet Logical, whether to suppress printing of the summary
-#' @return A list of dataframes and named lists
+#' @return A classed list of data frames and named lists.
 #' @export
 #' @examples
 #' # Using example KGX file packaged with monarchr
@@ -24,11 +24,6 @@
 #' @import tidygraph
 #' @import dplyr
 summary.file_engine <- function(object, ..., quiet = FALSE) {
-    if (!quiet) {
-        cat("\n")
-        cat("A KGX file-backed knowledge graph engine.\n")
-    }
-
     g <- object$graph
 
     total_nodes <- g |>
@@ -100,28 +95,6 @@ summary.file_engine <- function(object, ..., quiet = FALSE) {
         arrange(desc(count))
 
 
-    if (!quiet) {
-        cat("Total nodes: ", total_nodes, "\n")
-        cat("Total edges: ", total_edges, "\n")
-        cat("\n")
-        cat("Node category counts:\n")
-        # print the data frame without row names
-        print(node_summary_df, row.names = FALSE)
-        cat("\n")
-        cat("Edge type counts:\n")
-        # print the data frame without row names
-        print(edge_summary_df, row.names = FALSE)
-        cat("\n")
-        cat("Node property counts:\n")
-        print(node_prop_counts, row.names = FALSE)
-        cat("\n")
-        cat("Edge property counts:\n")
-        print(edge_prop_counts, row.names = FALSE)
-        cat("\n\n")
-        cat("For more information about Biolink node (Class) and edge (Association) properties, see https://biolink.github.io/biolink-model/.")
-    }
-
-
     cats <- as.list(node_summary_df$category)
     names(cats) <- cats
 
@@ -137,7 +110,7 @@ summary.file_engine <- function(object, ..., quiet = FALSE) {
     edge_props <- as.list(edge_props)
     names(edge_props) <- edge_props
 
-    return(invisible(list(
+    res <- list(
         node_summary = node_summary_df,
         edge_summary = edge_summary_df,
         total_nodes = total_nodes,
@@ -147,5 +120,49 @@ summary.file_engine <- function(object, ..., quiet = FALSE) {
         cats = cats,
         preds = preds,
         props = props
-    )))
+    )
+
+    class(res) <- c("summary.file_engine", "summary_monarchr", class(res))
+
+    if (quiet) {
+        return(invisible(res))
+    }
+
+    return(res)
+}
+
+
+#' Print a file-engine summary
+#'
+#' @param x A `summary.file_engine` object.
+#' @param ... Other parameters (not used).
+#' @return Invisibly returns `x`.
+#' @export
+print.summary.file_engine <- function(x, ...) {
+    format_table <- function(df) {
+        capture.output(noquote(format(df, row.names = FALSE)))
+    }
+
+    writeLines(c(
+        "",
+        "A KGX file-backed knowledge graph engine.",
+        paste0("Total nodes: ", x$total_nodes),
+        paste0("Total edges: ", x$total_edges),
+        "",
+        "Node category counts:"
+    ))
+    writeLines(format_table(x$node_summary))
+    writeLines(c("", "Edge type counts:"))
+    writeLines(format_table(x$edge_summary))
+    writeLines(c("", "Node property counts:"))
+    writeLines(format_table(x$node_properties_summary))
+    writeLines(c("", "Edge property counts:"))
+    writeLines(format_table(x$edge_properties_summary))
+    writeLines(c(
+        "",
+        "For more information about Biolink node (Class) and edge",
+        "(Association) properties, see https://biolink.github.io/biolink-model/."
+    ))
+
+    return(invisible(x))
 }
