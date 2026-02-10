@@ -31,7 +31,8 @@ of supported classes. Or a \code{layout_ggraph} object as returned from
 \code{create_layout} in which case all subsequent arguments is ignored.}
   }}
 
-\item{layout}{The layout to use for the plot. Default is "auto" as used by \code{ggraph}.}
+\item{layout}{The layout to use for the plot. Default is "auto" as used by
+\code{ggraph}.}
 
 \item{node_color}{The column to use for node color. Default is "pcategory".}
 
@@ -39,7 +40,8 @@ of supported classes. Or a \code{layout_ggraph} object as returned from
 
 \item{edge_color}{The column to use for edge color. Default is "predicate".}
 
-\item{edge_linetype}{The column to use for edge line type. Default is "primary_knowledge_source".}
+\item{edge_linetype}{The column to use for edge line type. Default is
+"primary_knowledge_source".}
 
 \item{node_label}{The column to use for node labels. Defaults to "name".}
 

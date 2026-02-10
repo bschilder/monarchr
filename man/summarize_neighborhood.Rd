@@ -14,7 +14,8 @@ summarize_neighborhood(
 \arguments{
 \item{graph}{A query graph to summarize the surrounding neighborhood for}
 
-\item{engine}{(Optional) An engine to use. If not provided, the graph's most recent engine is used.}
+\item{engine}{(Optional) An engine to use. If not provided, the graph's most
+recent engine is used.}
 
 \item{direction}{The direction of edges to include in the neighborhood}
 
@@ -33,7 +34,8 @@ graph's collective neighborhood in the larger KG.
 \details{
 Note that the number of relationships returned may be larger than the number
 of nodes they connect to; use summarize = "edges" to see edge counts between
-nodes of different categories, and summarize = "nodes" to see counts of connected
+nodes of different categories, and summarize = "nodes" to see counts of
+connected
 node categories.
 
 Additionally, when using \code{summarize = "edges"}, the summary will include

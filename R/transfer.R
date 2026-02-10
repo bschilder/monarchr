@@ -7,14 +7,16 @@
 #'
 #' The return value will be either a list, or if the result would be a list
 #' with all length-1 or length-0 elements, a vector with 0-length elements
-#' replaced by NA. Practically, this results in a list when necessary and a vector
+#' replaced by NA. Practically, this results in a list when necessary and a
+#' vector
 #' otherwise.
 #'
 #' @return Vector or list, with one entry per node.
 #' @seealso [roll_up()], [transitive_closure], [descendants()], [ancestors()]
 #' @param colname The node column to transfer information from
 #' @param over The edge predicate to transfer information over
-#' @param direction Whether to transfer information along the predicate direction ("out") or against ("in")
+#' @param direction Whether to transfer information along the predicate
+#'                  direction ("out") or against ("in")
 #'
 #' @examples
 #' library(dplyr)

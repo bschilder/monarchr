@@ -17,17 +17,25 @@ kg_join(graph1, graph2, ...)
 A \code{tbl_kgx()} graph
 }
 \description{
-Given two KGX graphs, returns a new KGX graph that is the union of the two input graphs,
-with any edges between nodes repeated for aother nodes with the same subject and object \code{id}.
+Given two KGX graphs, returns a new KGX graph that is the union of the two
+input graphs,
+with any edges between nodes repeated for aother nodes with the same subject
+and object \code{id}.
 The engine of the first graph is used for the new graph.
 }
 \details{
-This function first computes new node and edge data, by taking the full natural join of
-node and edge data from the two input graphs, and then keeping unique rows. Note that nodes with
-the same \code{id} that differ in any shared column are effectively kept as separate, taken
-to represent the same entity in different contexts. (However, a node with an additional property will be
-merged with a node without that property, as defined by the natural join.) In these
-cases, any edge that connects to one of these nodes is also valid for the other node, and so the
+This function first computes new node and edge data, by taking the full
+natural join of
+node and edge data from the two input graphs, and then keeping unique rows.
+Note that nodes with
+the same \code{id} that differ in any shared column are effectively kept as
+separate, taken
+to represent the same entity in different contexts. (However, a node with an
+additional property will be
+merged with a node without that property, as defined by the natural join.)
+In these
+cases, any edge that connects to one of these nodes is also valid for the
+other node, and so the
 method repeats edges across nodes with the same \code{id}.
 }
 \examples{

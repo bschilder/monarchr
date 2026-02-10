@@ -4,7 +4,8 @@
 #' (see https://github.com/biolink/kgx/blob/master/specification/kgx-format.md)
 #' loads it as a graph.
 #'
-#' @param filename File to the graph from. Must end in .tar.gz and conform to KGX specification (see description).
+#' @param filename File to the graph from. Must end in .tar.gz and conform to
+#'                 KGX specification (see description).
 #' @param attach_engine An engine to attach to the graph (optional).
 #' @param ... Other parameters (unused)
 #' @return A `tbl_kgx` graph.

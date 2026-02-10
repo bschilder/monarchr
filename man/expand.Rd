@@ -17,15 +17,24 @@ expand(
 \arguments{
 \item{graph}{A query \code{tbl_kgx()} graph ot query with.}
 
-\item{engine}{(Optional) An engine to use for fetching query graph edges. If not provided, the graph's most recent engine is used.}
+\item{engine}{(Optional) An engine to use for fetching query graph edges. If
+not provided, the graph's most recent engine is used.}
 
-\item{direction}{The direction of associations to fetch. Can be "in", "out", or "both". Default is "both".}
+\item{direction}{The direction of associations to fetch. Can be "in", "out",
+or "both". Default is "both".}
 
-\item{predicates}{A vector of relationship predicates (nodes in g are subjects in the KG), indicating which edges to consider in the neighborhood. If NULL (default), all edges are considered.}
+\item{predicates}{A vector of relationship predicates (nodes in g are
+subjects in the KG), indicating which edges to consider in
+the neighborhood. If NULL (default), all edges are
+considered.}
 
-\item{categories}{A vector of node categories, indicating which nodes in the larger KG may be fetched. If NULL (default), all nodes in the larger KG are will be fetched.}
+\item{categories}{A vector of node categories, indicating which nodes in the
+larger KG may be fetched. If NULL (default), all nodes in
+the larger KG are will be fetched.}
 
-\item{transitive}{If TRUE, include transitive closure of the neighborhood. Default is FALSE. Useful in combination with predicates like \code{biolink:subclass_of}.}
+\item{transitive}{If TRUE, include transitive closure of the neighborhood.
+Default is FALSE. Useful in combination with predicates
+like \code{biolink:subclass_of}.}
 
 \item{...}{Other parameters passed to methods.}
 }
@@ -34,9 +43,12 @@ A \code{tbl_kgx()} graph
 }
 \description{
 Given an optional KG engine (e.g. a \code{file_engine()},
-\code{neo4j_engine()}, or \code{monarch_engine()}) and a query \code{tbl_kgx()} graph, fetches additional nodes and edges
-from the KG, expanding the query graph according to specific criteria. If the first parameter is an engine, that
-engine is used; if the first parameter is a query graph, the most recent engine associated with the graph is used.
+\code{neo4j_engine()}, or \code{monarch_engine()}) and a query \code{tbl_kgx()} graph,
+fetches additional nodes and edges
+from the KG, expanding the query graph according to specific criteria. If
+the first parameter is an engine, that
+engine is used; if the first parameter is a query graph, the most recent
+engine associated with the graph is used.
 }
 \examples{
 \dontshow{if (monarch_engine_check()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

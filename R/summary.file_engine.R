@@ -1,13 +1,16 @@
 #' Summarize contents of a KGX-file-based KG engine
 #'
 #' Given a KGX file-based KG engine, provides summary information in the form of
-#' node counts, category counts across nodes, relationship type counts, and available properties.
-#' The returned summary object prints a readable console report and also contains
+#' node counts, category counts across nodes, relationship type counts, and
+#' available properties.
+#' The returned summary object prints a readable console report and also
+#' contains
 #' data frames with this information. Also returned are `cats`, `preds`, and
 #' `props` entries, containing lists of available
 #' categories/predicates/properties for convenient auto-completion in RStudio.
 #'
-#' When applied to a `file_engine`, also included are node-specific and edge-specific properties.
+#' When applied to a `file_engine`, also included are node-specific and
+#' edge-specific properties.
 #'
 #' @param object A `file_engine` object
 #' @param ... Other parameters (not used)

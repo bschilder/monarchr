@@ -1,7 +1,10 @@
 #' Check if an element is contained in list sub-elements
 #'
-#' This function is useful for filtering dataframes by list columns. It checks if an element is contained in each list element, returning a logical vector. Note
-#' that this is different than `%in%` which does not work with list columns in a natural manner.
+#' This function is useful for filtering dataframes by list columns. It checks
+#' if an element is contained in each list element, returning a logical vector.
+#' Note
+#' that this is different than `%in%` which does not work with list columns in
+#' a natural manner.
 #'
 #' @examples
 #' library(dplyr)

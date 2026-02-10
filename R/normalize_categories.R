@@ -1,7 +1,9 @@
 #' Normalize Categories
 #'
-#' This function takes a list of vectors of categories and an ordered preference list over categories.
-#' It selects the most preferred category from each vector, or the first category if no preferred categories are included.
+#' This function takes a list of vectors of categories and an ordered
+#' preference list over categories.
+#' It selects the most preferred category from each vector, or the first
+#' category if no preferred categories are included.
 #'
 #' @param cats_list A list of vectors of categories.
 #' @param cats_prefs An ordered preference list over categories.

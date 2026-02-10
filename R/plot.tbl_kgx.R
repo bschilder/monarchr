@@ -2,11 +2,13 @@
 #'
 #' @export
 #' @param x A \link{tbl_kgx} graph.
-#' @param layout The layout to use for the plot. Default is "auto" as used by `ggraph`.
+#' @param layout The layout to use for the plot. Default is "auto" as used by
+#'               `ggraph`.
 #' @param node_color The column to use for node color. Default is "pcategory".
 #' @param node_shape The column to use for node shape Default is "namespace".
 #' @param edge_color The column to use for edge color. Default is "predicate".
-#' @param edge_linetype The column to use for edge line type. Default is "primary_knowledge_source".
+#' @param edge_linetype The column to use for edge line type. Default is
+#'                      "primary_knowledge_source".
 #' @param node_label The column to use for node labels. Defaults to "name".
 #' @param plot_ids Whether to show node IDs in node labels. Defaults to FALSE.
 #' @param label_size Size of node label text. Default is 2.

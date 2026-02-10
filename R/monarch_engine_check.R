@@ -1,9 +1,14 @@
 #' Check availability of Monarch Initiative API
 #'
-#' Attempts to connect to the Monarch Initiative API and use the specified functionality. Returns FALSE if the API is not available the result is not as expected.
+#' Attempts to connect to the Monarch Initiative API and use the specified
+#' functionality. Returns FALSE if the API is not available the result is not
+#' as expected.
 #'
-#' @param warn A logical indicating whether to print a warning message if with failure information if the database is not available or not properly formatted. Default is TRUE.
-#' @param service The service to check: "search", "semsim", "graph", or a vector of these. Default is "graph".
+#' @param warn A logical indicating whether to print a warning message if with
+#'             failure information if the database is not available or not
+#'             properly formatted. Default is TRUE.
+#' @param service The service to check: "search", "semsim", "graph", or a
+#'                vector of these. Default is "graph".
 #' @return TRUE if the available features are online, FALSE otherwise.
 #' @export
 #' @examples

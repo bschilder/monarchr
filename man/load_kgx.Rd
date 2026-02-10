@@ -7,7 +7,8 @@
 load_kgx(filename, attach_engine = NULL, ...)
 }
 \arguments{
-\item{filename}{File to the graph from. Must end in .tar.gz and conform to KGX specification (see description).}
+\item{filename}{File to the graph from. Must end in .tar.gz and conform to
+KGX specification (see description).}
 
 \item{attach_engine}{An engine to attach to the graph (optional).}
 

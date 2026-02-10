@@ -4,7 +4,8 @@
 #' predicate as transitive.
 #'
 #' @return Graph with transitive edges added.
-#' @seealso [transitive_closure()], [roll_up()], [transfer()], [descendants()], [ancestors()]
+#' @seealso [transitive_closure()], [roll_up()], [transfer()], [descendants()],
+#'          [ancestors()]
 #' @param g The `tbl_kgx` graph to compute on.
 #' @param predicate The edge predicate to reduce over.
 #'

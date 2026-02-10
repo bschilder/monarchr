@@ -2,7 +2,8 @@
 #'
 #' Given a graph, saves it using the tabular KGX format
 #' (see https://github.com/biolink/kgx/blob/master/specification/kgx-format.md) for later
-#' use with `load_kgx()` (or even backing an engine with `file_engine()`). Note that if
+#' use with `load_kgx()` (or even backing an engine with `file_engine()`). Note
+#' that if
 #' any engine is associated with the graph it is not saved.
 #'
 #' @param graph A `tbl_kgx` graph to save.

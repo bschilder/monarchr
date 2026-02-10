@@ -17,7 +17,8 @@ A tbl_kgx graph.
 \description{
 Expand a tbl_kgx graph to include all ancestors of nodes defined transitively
 by "biolink:subclass_of" relationships. This is a simple wrapper around
-expand(predicates = "biolink:subclass_of", direction = "out", transitive = TRUE)
+expand(predicates = "biolink:subclass_of", direction = "out", transitive =
+TRUE)
 }
 \examples{
 data(eds_marfan_kg)

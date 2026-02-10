@@ -16,11 +16,16 @@ roll(
 \arguments{
 \item{column}{The node column to draw rollup or rolldown information from.}
 
-\item{fun}{The aggregation function to use when rolling up or down. Default is \code{c}}
+\item{fun}{The aggregation function to use when rolling up or down. Default
+is \code{c}}
 
-\item{include_self}{Whether to include each nodes' value in \code{column} in the rollup/rolldown for that node.}
+\item{include_self}{Whether to include each nodes' value in \code{column} in the
+rollup/rolldown for that node.}
 
-\item{predicates}{A vector of relationship predicates (nodes in g are subjects in the KG), indicating which edges to consider in the rollup/rolldown. Should be transitive; default \code{biolink:subclass_of}}
+\item{predicates}{A vector of relationship predicates (nodes in g are
+subjects in the KG), indicating which edges to consider in
+the rollup/rolldown. Should be transitive; default
+\code{biolink:subclass_of}}
 
 \item{direction}{Whether to roll up or down.}
 

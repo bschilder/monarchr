@@ -46,5 +46,6 @@ g_reduced <- g_closed |>
 plot(g_reduced, edge_color = primary_knowledge_source)
 }
 \seealso{
-\code{\link[=transitive_closure]{transitive_closure()}}, \code{\link[=roll_up]{roll_up()}}, \code{\link[=transfer]{transfer()}}, \code{\link[=descendants]{descendants()}}, \code{\link[=ancestors]{ancestors()}}
+\code{\link[=transitive_closure]{transitive_closure()}}, \code{\link[=roll_up]{roll_up()}}, \code{\link[=transfer]{transfer()}}, \code{\link[=descendants]{descendants()}},
+\code{\link[=ancestors]{ancestors()}}
 }

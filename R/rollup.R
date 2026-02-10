@@ -2,9 +2,14 @@
 #'
 #'
 #' @param column The node column to draw rollup or rolldown information from.
-#' @param fun The aggregation function to use when rolling up or down. Default is `c`
-#' @param include_self Whether to include each nodes' value in `column` in the rollup/rolldown for that node.
-#' @param predicates A vector of relationship predicates (nodes in g are subjects in the KG), indicating which edges to consider in the rollup/rolldown. Should be transitive; default `biolink:subclass_of`
+#' @param fun The aggregation function to use when rolling up or down. Default
+#'            is `c`
+#' @param include_self Whether to include each nodes' value in `column` in the
+#'                     rollup/rolldown for that node.
+#' @param predicates A vector of relationship predicates (nodes in g are
+#'                   subjects in the KG), indicating which edges to consider in
+#'                   the rollup/rolldown. Should be transitive; default
+#'                   `biolink:subclass_of`
 #' @param direction Whether to roll up or down.
 #' @param ... Other parameters (unused)
 #' @return Vector or list, with one entry per node.
@@ -93,13 +98,15 @@ roll <- function(column,
 }
 
 
-#' Roll node data up (along) or down (against) transitive edges. Use with `mutate()`
+#' Roll node data up (along) or down (against) transitive edges. Use with
+#' `mutate()`
 #'
 #' This function computes, for each node, an aggregated set of data from all
 #' descendant (for roll-ups) or ancestor (for roll-downs) nodes defined by
 #' specified edge predicates. Designed for use with `mutate()`
 #' on node data, for each node N, the specified `fun` is called
-#' on the node table `column` filtered to nodes that can reach (be reached by) N over
+#' on the node table `column` filtered to nodes that can reach (be reached by)
+#' N over
 #' `predicates` edges. If `include_self` is true, N itself is included.
 #'
 #' Note that path counts and order are not considered; rollups (rolldowns)
@@ -107,12 +114,14 @@ roll <- function(column,
 #'
 #' The return value will be either a list, or if the result would be a list
 #' with all length-1 or length-0 elements, a vector with 0-length elements
-#' replaced by NA. Practically, this results in a list when necessary and a vector
+#' replaced by NA. Practically, this results in a list when necessary and a
+#' vector
 #' otherwise.
 #'
 #' @inheritParams roll
 #' @return Vector or list, with one entry per node.
-#' @seealso [roll_down()], [descendants()], [ancestors(), [transfer()], [transitive_closure()]]
+#' @seealso [roll_down()], [descendants()], [ancestors(), [transfer()],
+#'          [transitive_closure()]]
 #'
 #' @examples
 #' library(dplyr)

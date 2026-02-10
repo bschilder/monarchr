@@ -19,7 +19,8 @@ The input graph (invisibly).
 \description{
 Given a graph, saves it using the tabular KGX format
 (see https://github.com/biolink/kgx/blob/master/specification/kgx-format.md) for later
-use with \code{load_kgx()} (or even backing an engine with \code{file_engine()}). Note that if
+use with \code{load_kgx()} (or even backing an engine with \code{file_engine()}). Note
+that if
 any engine is associated with the graph it is not saved.
 }
 \examples{

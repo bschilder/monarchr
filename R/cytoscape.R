@@ -1,9 +1,11 @@
 #' Send a graph to Cytoscape
 #'
 #' Given a tbl_kgx graph, send it to Cytoscape for visualization. Node labels
-#' are mapped to node `name` (if available, otherwise they default to node `id`),
+#' are mapped to node `name` (if available, otherwise they default to node
+#' `id`),
 #' node color is mapped to `pcategory`, edge color is mapped to `predicate`,
-#' node hover-over text is set to `description` (if available, otherwise node `id`),
+#' node hover-over text is set to `description` (if available, otherwise node
+#' `id`),
 #' and edge hover-over text is set to `predicate`. Nodes are layed out
 #' using the Kamada-Kawai method. These properties and more may be customized in
 #' the Cytoscape application. This function requires that Cytoscape is installed

@@ -7,7 +7,8 @@
 file_engine(filename, preferences = NULL, ...)
 }
 \arguments{
-\item{filename}{A character string indicating the filename or URL of the KGX-based tsv file.}
+\item{filename}{A character string indicating the filename or URL of the
+KGX-based tsv file.}
 
 \item{preferences}{A named list of preferences for the engine.}
 
@@ -17,12 +18,19 @@ file_engine(filename, preferences = NULL, ...)
 An object of class \code{file_engine}
 }
 \description{
-Creates a knowledge graph engine backed by a KGX-based tab-separated file. This must be a filename or URL to a \code{.tar.gz} file containing a \verb{*_nodes.tsv} and \verb{*_edges.tsv} file. If a URL is provided, the file will be downloaded to the user's current working directory.
+Creates a knowledge graph engine backed by a KGX-based tab-separated file.
+This must be a filename or URL to a \code{.tar.gz} file containing a
+\verb{*_nodes.tsv} and \verb{*_edges.tsv} file. If a URL is provided, the file will be
+downloaded to the user's current working directory.
 }
 \details{
-Engines store preference information specifying how data are fetched and manipulated; for example,
-while node \code{category} is multi-valued (nodes may have multiple categories, for example "biolink:Gene" and "biolink:NamedThing"),
-typically a single category is used to represent the node in a graph, and is returned as the nodes' \code{pcategory}. A preference list of categories to use for \code{pcategory} is
+Engines store preference information specifying how data are fetched and
+manipulated; for example,
+while node \code{category} is multi-valued (nodes may have multiple categories,
+for example "biolink:Gene" and "biolink:NamedThing"),
+typically a single category is used to represent the node in a graph, and is
+returned as the nodes' \code{pcategory}. A preference list of categories to use
+for \code{pcategory} is
 stored in the engine's preferences. A default set of preferences is stored in the package for use with KGX (BioLink-compatible) graphs (see https://github.com/biolink/kgx/blob/master/specification/kgx-format.md),
 but these can be overridden by the user.
 }

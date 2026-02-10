@@ -1,8 +1,10 @@
 #' Summarize contents of a Neo4j KG engine
 #'
 #' Given a Neo4j based KG engine, provides summary information in the form of
-#' node counts, category counts across nodes, relationship type counts, and available properties.
-#' The returned summary object prints a readable console report and also contains
+#' node counts, category counts across nodes, relationship type counts, and
+#' available properties.
+#' The returned summary object prints a readable console report and also
+#' contains
 #' data frames with this information. Also returned are `cats`, `preds`, and
 #' `props` entries, containing lists of available
 #' categories/predicates/properties for convenient auto-completion in RStudio.

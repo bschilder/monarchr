@@ -17,14 +17,21 @@ monarch_semsim(
 
 \item{target_graph}{A tbl_kgx graph.}
 
-\item{metric}{The semantic similarity metric to use. Default is \code{"ancestor_information_content"}. Also available are \code{"jaccard_similarity"} and \code{"phenodigm_score"}.}
+\item{metric}{The semantic similarity metric to use. Default is
+\code{"ancestor_information_content"}. Also available are
+\code{"jaccard_similarity"} and \code{"phenodigm_score"}.}
 
-\item{include_reverse}{Whether to include the best matches from the target graph to the query graph. Default is \code{FALSE}.}
+\item{include_reverse}{Whether to include the best matches from the target
+graph to the query graph. Default is \code{FALSE}.}
 
-\item{keep_unmatched}{Whether to keep nodes in the target graph that do not have a match. Default is \code{FALSE}.}
+\item{keep_unmatched}{Whether to keep nodes in the target graph that do not
+have a match. Default is \code{FALSE}.}
 }
 \value{
-A tbl_kgx graph with \code{"computed:best_matches"} edges between the nodes of the two input graphs and columns for \code{monarch_semsim_metric}, \code{monarch_semsim_score}, and \code{monarch_semsim_ancestor_id}.
+A tbl_kgx graph with \code{"computed:best_matches"} edges between the
+nodes of the two input graphs and columns for
+\code{monarch_semsim_metric}, \code{monarch_semsim_score}, and
+\code{monarch_semsim_ancestor_id}.
 }
 \description{
 This function calls the Monarch-hosted semantic similarity API to compare two
@@ -32,13 +39,19 @@ graphs, via the same endpoints as the Monarch Phenotype Explorer:
 https://monarchinitiative.org/explore#phenotype-explorer.
 }
 \details{
-The API returns the best matches between the nodes of the two graphs, based on
-a specified knowledge-graph-based metric: the default is \code{"ancestor_information_content"},
-also available are \code{"jaccard_similarity"} and \code{"phenodigm_score"}. The result is
-returned as a graph, with \code{"computed:best_matches"} edges between the nodes of the two input graphs.
+The API returns the best matches between the nodes of the two graphs, based
+on
+a specified knowledge-graph-based metric: the default is
+\code{"ancestor_information_content"},
+also available are \code{"jaccard_similarity"} and \code{"phenodigm_score"}. The
+result is
+returned as a graph, with \code{"computed:best_matches"} edges between the nodes
+of the two input graphs.
 
-By default, the function only returns the best matches from the first graph to the second graph, and
-removes any nodes that do not have a match. If \code{include_reverse = TRUE}, the function also returns
+By default, the function only returns the best matches from the first graph
+to the second graph, and
+removes any nodes that do not have a match. If \code{include_reverse = TRUE}, the
+function also returns
 the best matches from the second graph to the first graph.
 
 The engine attached to the return graph is that of the query.

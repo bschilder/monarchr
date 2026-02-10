@@ -16,7 +16,8 @@ A tbl_kgx graph
 }
 \description{
 Given a KG engine, returns a graph representing the diversity
-of node categories and edge predicates for browsing. The returned graph is guaranteed to
+of node categories and edge predicates for browsing. The returned graph is
+guaranteed to
 contain at least one node of every category, and at least one edge of every
 predicate. No other guarantees are made: the example graph is not minimal
 to satisfy these criteria, it is not random or even pseudo-random, and it

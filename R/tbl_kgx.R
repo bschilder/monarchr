@@ -1,16 +1,23 @@
 #' Create a KGX graph object
 #'
-#' This function creates a new tbl_kgx object which inherits from tidygraph::tbl_graph, from node and edge dataframes, ensuring they conform to the KGX specification
+#' This function creates a new tbl_kgx object which inherits from
+#' tidygraph::tbl_graph, from node and edge dataframes, ensuring they conform
+#' to the KGX specification
 #' described at https://github.com/biolink/kgx/blob/master/specification/kgx-format.md. Specifically, nodes must have an 'id' and 'category' column,
-#' and edges, if provided, must have 'subject', 'predicate', and 'object' columns. The function allows graphs with no edges.
-#' The function sets 'from' and 'to' columns in the edges from 'subject' and 'object' respectively, and sets the node key to 'id'.
+#' and edges, if provided, must have 'subject', 'predicate', and 'object'
+#' columns. The function allows graphs with no edges.
+#' The function sets 'from' and 'to' columns in the edges from 'subject' and
+#' 'object' respectively, and sets the node key to 'id'.
 #' Additional columns are allowed.
 #'
 #' This function will generally be called internally.
 #'
-#' @param nodes A data frame containing the nodes of the graph. Must have 'id' and 'category' columns.
-#' @param edges A data frame containing the edges of the graph. Must have 'subject', 'predicate', and 'object' columns. Can be NULL.
-#' @param attach_engine An engine to attach to the newly created graph for use in future queries based on the graph.
+#' @param nodes A data frame containing the nodes of the graph. Must have 'id'
+#'              and 'category' columns.
+#' @param edges A data frame containing the edges of the graph. Must have
+#'              'subject', 'predicate', and 'object' columns. Can be NULL.
+#' @param attach_engine An engine to attach to the newly created graph for use
+#'                      in future queries based on the graph.
 #' @param ... Additional arguments passed to the function.
 #' @return A KGX graph object.
 #' @examples

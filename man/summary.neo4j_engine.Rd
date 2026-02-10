@@ -18,8 +18,10 @@ A classed list of data frames and named lists.
 }
 \description{
 Given a Neo4j based KG engine, provides summary information in the form of
-node counts, category counts across nodes, relationship type counts, and available properties.
-The returned summary object prints a readable console report and also contains
+node counts, category counts across nodes, relationship type counts, and
+available properties.
+The returned summary object prints a readable console report and also
+contains
 data frames with this information. Also returned are \code{cats}, \code{preds}, and
 \code{props} entries, containing lists of available
 categories/predicates/properties for convenient auto-completion in RStudio.

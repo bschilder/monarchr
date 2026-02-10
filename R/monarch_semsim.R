@@ -4,23 +4,36 @@
 #' graphs, via the same endpoints as the Monarch Phenotype Explorer:
 #' https://monarchinitiative.org/explore#phenotype-explorer.
 #'
-#' The API returns the best matches between the nodes of the two graphs, based on
-#' a specified knowledge-graph-based metric: the default is `"ancestor_information_content"`,
-#' also available are `"jaccard_similarity"` and `"phenodigm_score"`. The result is
-#' returned as a graph, with `"computed:best_matches"` edges between the nodes of the two input graphs.
+#' The API returns the best matches between the nodes of the two graphs, based
+#' on
+#' a specified knowledge-graph-based metric: the default is
+#' `"ancestor_information_content"`,
+#' also available are `"jaccard_similarity"` and `"phenodigm_score"`. The
+#' result is
+#' returned as a graph, with `"computed:best_matches"` edges between the nodes
+#' of the two input graphs.
 #'
-#' By default, the function only returns the best matches from the first graph to the second graph, and
-#' removes any nodes that do not have a match. If `include_reverse = TRUE`, the function also returns
+#' By default, the function only returns the best matches from the first graph
+#' to the second graph, and
+#' removes any nodes that do not have a match. If `include_reverse = TRUE`, the
+#' function also returns
 #' the best matches from the second graph to the first graph.
 #'
 #' The engine attached to the return graph is that of the query.
 #'
 #' @param query_graph A tbl_kgx graph.
 #' @param target_graph A tbl_kgx graph.
-#' @param metric The semantic similarity metric to use. Default is `"ancestor_information_content"`. Also available are `"jaccard_similarity"` and `"phenodigm_score"`.
-#' @param include_reverse Whether to include the best matches from the target graph to the query graph. Default is `FALSE`.
-#' @param keep_unmatched Whether to keep nodes in the target graph that do not have a match. Default is `FALSE`.
-#' @return A tbl_kgx graph with `"computed:best_matches"` edges between the nodes of the two input graphs and columns for `monarch_semsim_metric`, `monarch_semsim_score`, and `monarch_semsim_ancestor_id`.
+#' @param metric The semantic similarity metric to use. Default is
+#'               `"ancestor_information_content"`. Also available are
+#'               `"jaccard_similarity"` and `"phenodigm_score"`.
+#' @param include_reverse Whether to include the best matches from the target
+#'                        graph to the query graph. Default is `FALSE`.
+#' @param keep_unmatched Whether to keep nodes in the target graph that do not
+#'                       have a match. Default is `FALSE`.
+#' @return A tbl_kgx graph with `"computed:best_matches"` edges between the
+#'         nodes of the two input graphs and columns for
+#'         `monarch_semsim_metric`, `monarch_semsim_score`, and
+#'         `monarch_semsim_ancestor_id`.
 #' @export
 #'
 #' @import tidygraph

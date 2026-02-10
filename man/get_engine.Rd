@@ -9,7 +9,8 @@ get_engine(g, fail_if_missing = TRUE)
 \arguments{
 \item{g}{A tbl_kgx graph.}
 
-\item{fail_if_missing}{If TRUE, fail if there is no engine associated with the graph.}
+\item{fail_if_missing}{If TRUE, fail if there is no engine associated with
+the graph.}
 }
 \value{
 A graph engine object.

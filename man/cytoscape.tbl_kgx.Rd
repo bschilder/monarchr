@@ -16,9 +16,11 @@ NULL, invisibly
 }
 \description{
 Given a tbl_kgx graph, send it to Cytoscape for visualization. Node labels
-are mapped to node \code{name} (if available, otherwise they default to node \code{id}),
+are mapped to node \code{name} (if available, otherwise they default to node
+\code{id}),
 node color is mapped to \code{pcategory}, edge color is mapped to \code{predicate},
-node hover-over text is set to \code{description} (if available, otherwise node \code{id}),
+node hover-over text is set to \code{description} (if available, otherwise node
+\code{id}),
 and edge hover-over text is set to \code{predicate}. Nodes are layed out
 using the Kamada-Kawai method. These properties and more may be customized in
 the Cytoscape application. This function requires that Cytoscape is installed

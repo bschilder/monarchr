@@ -7,11 +7,14 @@
 tbl_kgx(nodes = NULL, edges = NULL, attach_engine = NULL, ...)
 }
 \arguments{
-\item{nodes}{A data frame containing the nodes of the graph. Must have 'id' and 'category' columns.}
+\item{nodes}{A data frame containing the nodes of the graph. Must have 'id'
+and 'category' columns.}
 
-\item{edges}{A data frame containing the edges of the graph. Must have 'subject', 'predicate', and 'object' columns. Can be NULL.}
+\item{edges}{A data frame containing the edges of the graph. Must have
+'subject', 'predicate', and 'object' columns. Can be NULL.}
 
-\item{attach_engine}{An engine to attach to the newly created graph for use in future queries based on the graph.}
+\item{attach_engine}{An engine to attach to the newly created graph for use
+in future queries based on the graph.}
 
 \item{...}{Additional arguments passed to the function.}
 }
@@ -19,10 +22,14 @@ tbl_kgx(nodes = NULL, edges = NULL, attach_engine = NULL, ...)
 A KGX graph object.
 }
 \description{
-This function creates a new tbl_kgx object which inherits from tidygraph::tbl_graph, from node and edge dataframes, ensuring they conform to the KGX specification
+This function creates a new tbl_kgx object which inherits from
+tidygraph::tbl_graph, from node and edge dataframes, ensuring they conform
+to the KGX specification
 described at https://github.com/biolink/kgx/blob/master/specification/kgx-format.md. Specifically, nodes must have an 'id' and 'category' column,
-and edges, if provided, must have 'subject', 'predicate', and 'object' columns. The function allows graphs with no edges.
-The function sets 'from' and 'to' columns in the edges from 'subject' and 'object' respectively, and sets the node key to 'id'.
+and edges, if provided, must have 'subject', 'predicate', and 'object'
+columns. The function allows graphs with no edges.
+The function sets 'from' and 'to' columns in the edges from 'subject' and
+'object' respectively, and sets the node key to 'id'.
 Additional columns are allowed.
 }
 \details{

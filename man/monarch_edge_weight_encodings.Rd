@@ -9,14 +9,19 @@ monarch_edge_weight_encodings()
 \value{
 A list of encodings for various edge attributes:
 \describe{
-\item{knowledge_level}{A named list assigning weights based on knowledge assertion levels:
+\item{knowledge_level}{A named list assigning weights based on knowledge
+assertion levels:
 \itemize{
-\item \code{"knowledge_assertion"}: \code{1} (full weight for direct assertions)
-\item \code{"logical_entailment"}: \code{1} (full weight for inferred relationships)
-\item \code{"not_provided"}: \code{0} (no weight when knowledge level is unspecified)
+\item \code{"knowledge_assertion"}: \code{1} (full weight for direct
+assertions)
+\item \code{"logical_entailment"}: \code{1} (full weight for inferred
+relationships)
+\item \code{"not_provided"}: \code{0} (no weight when knowledge level is
+unspecified)
 }
 }
-\item{frequency_qualifier}{A named list mapping Human Phenotype Ontology (HPO) frequency terms to numeric weights:
+\item{frequency_qualifier}{A named list mapping Human Phenotype Ontology
+(HPO) frequency terms to numeric weights:
 \itemize{
 \item \code{"HP:0040281"}: \code{1} ("Very frequent")
 \item \code{"HP:0040282"}: \code{0.75} ("Frequent")
@@ -30,13 +35,20 @@ A list of encodings for various edge attributes:
 \item \code{FALSE}: \code{0} (non-negated relationships have no penalty)
 }
 }
-\item{has_total}{\code{NULL}. Placeholder for total counts; can be overridden with custom logic.}
-\item{has_quotient}{An empty numeric vector. Placeholder for quotient-based weight calculations.}
-\item{has_count}{\code{NULL}. Placeholder for count-based weight computations.}
-\item{has_percentage}{\code{NULL}. Placeholder for percentage-based weight computations.}
-\item{has_evidence}{\code{NULL}. Placeholder for evidence-based weight computations.}
-\item{onset_qualifier}{\code{NULL}. Placeholder for onset qualifiers, which can influence weights.}
-\item{publications}{A function that computes the weight based on the number of unique publications:
+\item{has_total}{\code{NULL}. Placeholder for total counts; can be
+overridden with custom logic.}
+\item{has_quotient}{An empty numeric vector. Placeholder for quotient-based
+weight calculations.}
+\item{has_count}{\code{NULL}. Placeholder for count-based weight
+computations.}
+\item{has_percentage}{\code{NULL}. Placeholder for percentage-based weight
+computations.}
+\item{has_evidence}{\code{NULL}. Placeholder for evidence-based weight
+computations.}
+\item{onset_qualifier}{\code{NULL}. Placeholder for onset qualifiers, which
+can influence weights.}
+\item{publications}{A function that computes the weight based on the number
+of unique publications:
 \itemize{
 \item Takes a vector of publication IDs and returns the count of unique IDs.
 }

@@ -1,10 +1,14 @@
 #' Execute a Cypher Query
 #'
-#' This function takes a Cypher query and parameters, executes the query using the given engine, and returns the result as a tbl_kgx graph.
+#' This function takes a Cypher query and parameters, executes the query using
+#' the given engine, and returns the result as a tbl_kgx graph.
 #'
 #' @param engine A neo4j KG engine
-#' @param query A string representing the Cypher query. Multiple queries may be passed as a vector; if so, Neo2R::multicypher if used and the result is returned as a single joined graph.
-#' @param parameters A list of parameters for the Cypher query. Default is an empty list.
+#' @param query A string representing the Cypher query. Multiple queries may be
+#'              passed as a vector; if so, Neo2R::multicypher if used and the
+#'              result is returned as a single joined graph.
+#' @param parameters A list of parameters for the Cypher query. Default is an
+#'                   empty list.
 #' @param ... Additional arguments passed to the function.
 #' @return The result of the Cypher query as a tbl_kgx graph.
 #' @export
