@@ -1,6 +1,8 @@
 library(testthat)
 library(assertthat)
 
+skip_if_lite()
+
 test_that("cypher_query returns a graph object", {
     # skip for now
     # testthat::skip("temporary skip")

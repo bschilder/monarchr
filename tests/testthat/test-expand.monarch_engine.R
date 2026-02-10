@@ -1,6 +1,7 @@
 library(testthat)
 library(assertthat)
 
+skip_if_lite()
 
 test_that("paging works as expected 1", {
     # there should MONDO:0008678 has ~ 234 phenotypes

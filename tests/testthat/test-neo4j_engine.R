@@ -1,6 +1,8 @@
 library(testthat)
 library(assertthat)
 
+skip_if_lite()
+
 test_that("neo4j_engine caching", {
     e <- neo4j_engine(
         url = c(

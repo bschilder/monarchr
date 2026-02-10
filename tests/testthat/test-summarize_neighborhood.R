@@ -1,6 +1,8 @@
 library(testthat)
 library(assertthat)
 
+skip_if_lite()
+
 test_that("summarize_neighborhood returns reasonable results", {
     # skip for now
     # testthat::skip("temporary skip")

@@ -1,6 +1,8 @@
 library(testthat)
 library(assertthat)
 
+skip_if_lite()
+
 # g1 does not have a disease node, so in the result the target EDS should not be matched by any query
 test_that("monarch_semsim works", {
     suppressWarnings({

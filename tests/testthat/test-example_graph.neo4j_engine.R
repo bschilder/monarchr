@@ -1,6 +1,8 @@
 library(testthat)
 library(assertthat)
 
+skip_if_lite()
+
 test_that("example_graph for neo4j engine", {
     # testthat::skip("temporary skip")
     options(width = 150)
