@@ -45,11 +45,13 @@ test_that("we can load data from url with file_engine", {
     # the graph attribute should be a tbl_kgx
     expect_true(inherits(e$graph, "tbl_kgx"))
 
-    # the nodes df should have a description field for this test of type character
+    # the nodes df should have a description field for this test of type
+    # character
     nodes_df <- nodes(e$graph)
     expect_true("description" %in% names(nodes_df))
 
-    # the edges df should have a knowledge_source field for this test of type character
+    # the edges df should have a knowledge_source field for this test of type
+    # character
     edges_df <- edges(e$graph)
     expect_true("knowledge_source" %in% names(edges_df))
 

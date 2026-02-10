@@ -166,7 +166,8 @@ test_that("fetch_Edges file_engine works", {
     expect_equal(nrow(edges_df), 6)
     expect_equal(sum(edges_df$predicate == "biolink:subclass_of"), 6)
 
-    ##### Check OUT with predicates biolink:has_mode_of_inheritance and categories biolink:PhenotypicFeature
+    ##### Check OUT with predicates biolink:has_mode_of_inheritance and
+    #categories biolink:PhenotypicFeature
     g <- fetch_nodes(e, query_ids = c(query_ids, "HGNC:2201")) %>% expand(categories = "biolink:PhenotypicFeature", predicates = "biolink:has_mode_of_inheritance", direction = "out")
     nodes_df <- g %>%
         activate(nodes) %>%

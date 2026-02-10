@@ -4,8 +4,7 @@ library(assertthat)
 skip_if_lite()
 
 test_that("cypher_query returns a graph object", {
-    # skip for now
-    # testthat::skip("temporary skip")
+    # skip for now testthat::skip("temporary skip")
 
     e <- monarch_engine()
     g <- cypher_query(e, query = "MATCH (s) -[r]- (o) return s, r, o LIMIT 1")
@@ -18,8 +17,7 @@ test_that("cypher_query returns a graph object", {
 })
 
 test_that("cypher_query works with multicypher queries", {
-    # skip for now
-    # testthat::skip("temporary skip")
+    # skip for now testthat::skip("temporary skip")
 
     e <- monarch_engine()
     queries <- c(

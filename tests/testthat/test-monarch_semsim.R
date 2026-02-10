@@ -3,7 +3,8 @@ library(assertthat)
 
 skip_if_lite()
 
-# g1 does not have a disease node, so in the result the target EDS should not be matched by any query
+# g1 does not have a disease node, so in the result the target EDS should not
+# be matched by any query
 test_that("monarch_semsim works", {
     suppressWarnings({
         g1 <- monarch_engine() |>
@@ -23,7 +24,8 @@ test_that("monarch_semsim works", {
 
     sim <- monarch_semsim(g1, g2)
 
-    # the number of edges in the result should equal the number of nodes in the query graph
+    # the number of edges in the result should equal the number of nodes in the
+    # query graph
     expect_equal(sim |> activate(edges) |> nrow(), g1 |> activate(nodes) |> nrow())
     # the edges subject should be the same as the query graph nodes
     expect_equal(sim |> activate(edges) |> pull(subject) |> sort(), g1 |> activate(nodes) |> pull(id) |> sort())
@@ -34,11 +36,13 @@ test_that("monarch_semsim works", {
     # using jaccard similarity for flavor
     sim <- monarch_semsim(g1, g2, metric = "jaccard_similarity", include_reverse = TRUE, keep_unmatched = TRUE)
 
-    # all query and target nodes will be subjects exactly once in the resulting edges
+    # all query and target nodes will be subjects exactly once in the resulting
+    # edges
     query_target_node_ids <- c(g1 |> activate(nodes) |> pull(id), g2 |> activate(nodes) |> pull(id))
     expect_equal(sim |> activate(edges) |> pull(subject) |> sort(), query_target_node_ids |> sort())
 
-    # the number of edges in the result should equal the number of nodes in the query graph plus the number of nodes in the target graph
+    # the number of edges in the result should equal the number of nodes in the
+    # query graph plus the number of nodes in the target graph
     expect_equal(edges(sim) |> nrow(), length(query_target_node_ids))
 
     # make sure the engine of the result is the same as the query graph

@@ -8,8 +8,8 @@ test_that("fetch_nodes neo4j works with basid id query", {
 
     e <- monarch_engine()
 
-    # fetch_nodes(id %in% c("MONDO:0007525", "HGNC:4635")) should result in an error
-    # do so silently in the logs...
+    # fetch_nodes(id %in% c("MONDO:0007525", "HGNC:4635")) should result in an
+    # error do so silently in the logs...
     g <- fetch_nodes(e, query_ids = c("MONDO:0007525", "HGNC:4635"))
 
     nodes_df <- g %>%
@@ -37,7 +37,8 @@ test_that("fetch_nodes neo4j works with complex query syntax", {
     expect_equal(nrow(nodes_df), 1)
     expect_equal(nodes_df$id, "MONDO:0007525")
 
-    # check to see that we can chain the fetch_nodes function with other functions
+    # check to see that we can chain the fetch_nodes function with other
+    # functions
     g <- e %>%
         fetch_nodes(id == "MONDO:0007525") %>%
         expand(categories = "biolink:Gene")

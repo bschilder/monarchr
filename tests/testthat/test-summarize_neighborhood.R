@@ -4,8 +4,7 @@ library(assertthat)
 skip_if_lite()
 
 test_that("summarize_neighborhood returns reasonable results", {
-    # skip for now
-    # testthat::skip("temporary skip")
+    # skip for now testthat::skip("temporary skip")
 
     g <- monarch_engine() |> fetch_nodes(query_ids = "MONDO:0019391")
 

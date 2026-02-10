@@ -33,7 +33,8 @@ test_that("fetch_nodes file_engine works with complex query syntax", {
     filename <- system.file("extdata", "eds_marfan_kg.tar.gz", package = "monarchr")
     e <- file_engine(filename)
 
-    # fetch_nodes(id %in% c("MONDO:0007525", "MONDO:0007526")) actually does work with file_engine
+    # fetch_nodes(id %in% c("MONDO:0007525", "MONDO:0007526")) actually does
+    # work with file_engine
     g <- e %>% fetch_nodes(id %in% c("MONDO:0007525", "MONDO:0007526"))
     nodes_df <- g %>%
         activate(nodes) %>%

@@ -55,7 +55,8 @@ test_that("neo4j_engine works as expected (using monarch neo4j db)", {
     ))
 
     g <- fetch_nodes(e, query_ids = "MONDO:0006043")
-    # this should have 6 subtypes (two direct, four under one of the direct children)
+    # this should have 6 subtypes (two direct, four under one of the direct
+    # children)
     subtypes <- g %>% expand(
         direction = "in",
         predicates = "biolink:subclass_of",

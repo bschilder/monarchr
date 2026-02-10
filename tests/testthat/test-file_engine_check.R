@@ -12,7 +12,7 @@ test_that("file_engine_check works as expected", {
     expect_false(file_engine_check(filename, warn = FALSE))
 
     # we can try to connect to a remote file, but we can't test for TRUE here
-    # because this check my be run without a connection
-    # so we'll just test that it returns logical
+    # because this check my be run without a connection so we'll just test that
+    # it returns logical
     expect_type(file_engine_check("https://no-such-host.kghub.io/kg-obo/dummy/dummy_kgx_tsv.tar.gz", warn = FALSE), "logical")
 })

@@ -59,15 +59,17 @@ test_that("paging works as expected 2", {
     expect_true(all(g2_edge_ids %in% g_edge_ids))
 })
 
-## for many these tests, actual values (as of 8/15/2024) are allowed to vary
-## somewhat to account for changes in the live KG using syntax like actual + float_minus:float_plus
+## for many these tests, actual values (as of 8/15/2024) are allowed to vary #
+#somewhat to account for changes in the live KG using syntax like actual +
+#float_minus:float_plus
 
 test_that("expand works as expected", {
     # testthat::skip("temporary skip")
 
     e <- monarch_engine()
     g <- fetch_nodes(e, query_ids = "MONDO:0006043")
-    # this should have 6 subtypes (two direct, four under one of the direct children)
+    # this should have 6 subtypes (two direct, four under one of the direct
+    # children)
     subtypes <- g %>% expand(
         direction = "in",
         predicates = "biolink:subclass_of",
@@ -119,10 +121,10 @@ test_that("expand works as expected", {
     expect_contains(2 + -1:2, nrow(nodes_df))
     expect_contains(1 + 0:2, nrow(edges_df))
 
-    # 8 outgoing biolink:has_phenotype to biolink:PhenotypicFeature
-    # 1 incoming biolink:causes from biolink:Gene
-    # 1 outgoing biolink:subclass_of to biolink:Disease
-    # 1 outgoing biolink:has_mode_of_inheritance to biolink:PhenotypicFeature
+    # 8 outgoing biolink:has_phenotype to biolink:PhenotypicFeature 1 incoming
+    # biolink:causes from biolink:Gene 1 outgoing biolink:subclass_of to
+    # biolink:Disease 1 outgoing biolink:has_mode_of_inheritance to
+    # biolink:PhenotypicFeature
 
     g <- fetch_nodes(e, query_ids = "MONDO:0012187")
     phenos <- g %>% expand(
@@ -146,7 +148,8 @@ test_that("expand works as expected", {
     neighborhood <- g %>% expand()
     expect_contains(12 + -2:2, neighborhood %>% activate(nodes) %>% data.frame() %>% nrow())
 
-    # there should be 57 phenotypic features connected to this disease and its 2 subtypes
+    # there should be 57 phenotypic features connected to this disease and its
+    # 2 subtypes
     # check in neo4j: MATCH (p0)<-[r0:`biolink:has_phenotype`]-(n)<-[r:`biolink:subclass_of`*]-(q)-[r2:`biolink:has_phenotype`]-(p)  WHERE n.id IN ["MONDO:0009242"]  RETURN p0, r0, n, r, q, r2, p
     g <- fetch_nodes(e, query_ids = "MONDO:0009242")
     with_subtypes <- g %>% expand(direction = "in", predicates = "biolink:subclass_of", transitive = TRUE)

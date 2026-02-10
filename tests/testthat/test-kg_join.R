@@ -30,8 +30,8 @@ test_that("kg_join works", {
 
     res <- kg_join(g1, g2)
 
-    # because of the duplication of c in the nodes, we should have 5 nodes
-    # and because of the edge between c and d, we should have 2 edges for that one
+    # because of the duplication of c in the nodes, we should have 5 nodes and
+    # because of the edge between c and d, we should have 2 edges for that one
     # along with the other three edges for 5 total
     expect_equal(nrow(nodes(res)), 5)
     expect_equal(nrow(edges(res)), 5)
