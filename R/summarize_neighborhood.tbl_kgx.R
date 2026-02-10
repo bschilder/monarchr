@@ -2,8 +2,8 @@
 #' @import dplyr
 #' @importFrom assertthat assert_that
 summarize_neighborhood_nodes_neo4j_engine <- function(graph, engine, direction = "both", ...) {
-    # returns a dataframe of node categories and counts
-    # operates over the combined neighborhoods of the nodes in g
+    # returns a dataframe of node categories and counts operates over the
+    # combined neighborhoods of the nodes in g
     if (direction == "both") {
         query <- "MATCH (n)-[r]-(m) WHERE n.id IN $nodes AND NOT m.id IN $nodes RETURN m.category AS category, count(*) AS count"
     } else if (direction == "in") {
@@ -37,8 +37,8 @@ summarize_neighborhood_nodes_neo4j_engine <- function(graph, engine, direction =
 #' @import dplyr
 #' @importFrom assertthat assert_that
 summarize_neighborhood_edges_neo4j_engine <- function(graph, engine, direction = "both", ...) {
-    # returns a dataframe of relationship types and counts, broken down by pcategory
-    # operates over the combined neighborhoods of the nodes in g
+    # returns a dataframe of relationship types and counts, broken down by
+    # pcategory operates over the combined neighborhoods of the nodes in g
     if (direction == "both") {
         query <- "MATCH (n)-[r]-(m) WHERE n.id IN $nodes AND NOT m.id IN $nodes RETURN r.predicate AS predicate, n.category as query_category, m.category AS result_category, count(*) AS count"
     } else if (direction == "in") {

@@ -47,8 +47,8 @@ example_graph.file_engine <- function(engine, ...) {
 
     sample_preds_graph <- tbl_kgx(nodes = sample_nodes, edges = sample_edges, attach_engine = engine)
 
-    # this might not represent all categories however.
-    # So we compute the categories that are represented thus far
+    # this might not represent all categories however. So we compute the
+    # categories that are represented thus far
     used_categories <- sample_preds_graph |>
         activate(nodes) |>
         as.data.frame() |>
@@ -66,13 +66,14 @@ example_graph.file_engine <- function(engine, ...) {
     # compute the node categories that are still needed
     needed_categories <- setdiff(all_node_categories, used_categories)
 
-    # now sample nodes of those categories, and an arbitrary connection
-    # trouble is, nodes_df$category is a list column...
+    # now sample nodes of those categories, and an arbitrary connection trouble
+    # is, nodes_df$category is a list column...
     sample_cats_node_ids <- needed_categories |>
         lapply(function(x) {
             has_cat_rows <- which(x %in_list% nodes_df$category)
             return(nodes_df$id[has_cat_rows[1]])
-            # unique because a single node may be selected to represent multiple needed categories
+            # unique because a single node may be selected to represent
+            # multiple needed categories
         }) |>
         unlist() |>
         unique()

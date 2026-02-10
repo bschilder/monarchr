@@ -20,12 +20,14 @@ neo4j_engine_check <- function(url,
     # this will throw an error if it cannot connect:
     # graph_conn <- neo2R::startGraph(url, username = username, password = password)
 
-    # use try to see if we can successfully create a connection; return TRUE if successful, FALSE if not
+    # use try to see if we can successfully create a connection; return TRUE if
+    # successful, FALSE if not
     tryCatch(
         {
             e <- neo4j_engine(url = url, username = username, password = password)
-            # check to see if we can run a query, we'll just grab one random node; this should fail
-            # if something is wrong (e.g. the database is not in KGX format)
+            # check to see if we can run a query, we'll just grab one random
+            # node; this should fail if something is wrong (e.g. the database
+            # is not in KGX format)
             cypher_query(e, "MATCH (n)-[r]->(q) RETURN n, r, q LIMIT 1")
             return(TRUE)
         },

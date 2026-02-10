@@ -29,9 +29,9 @@ roll <- function(column,
         stop("'direction' must be one of 'up' or 'down'.")
     }
 
-    # for some reason usin Inf or -1 to use an infinite neighborhood size
-    # works on my local machine, but not in the github build checks.
-    # using order = num_nodes + 1 to ensure the order is large enough
+    # for some reason usin Inf or -1 to use an infinite neighborhood size works
+    # on my local machine, but not in the github build checks. using order =
+    # num_nodes + 1 to ensure the order is large enough
     num_nodes <- nrow(nodes(g_filt)) + 1
 
     mode <- ifelse(direction == "up", "in", "out")
@@ -56,10 +56,11 @@ roll <- function(column,
         })
     }
 
-    # at this point the result is a list, mapping node index to a vector of descendant
-    # node indices
+    # at this point the result is a list, mapping node index to a vector of
+    # descendant node indices
 
-    ## 3 – pull the column we’re going to aggregate -----------------------------
+    ## 3 – pull the column we’re going to aggregate
+    #-----------------------------
     node_vals <- nodes(g_filt) |> pull({{ column }})
 
     ## 4 – apply `fun` to each set of descendants ------------------------------

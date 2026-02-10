@@ -18,8 +18,9 @@ expr_to_cypher <- function(expr) {
     expr <- stringr::str_replace_all(expr, stringr::fixed("|"), "OR")
     expr <- stringr::str_replace_all(expr, stringr::fixed("!"), "NOT")
 
-    # Properly handle property referencing for equality
-    # this looks for patterns like `property_name = *****`, where ***** can be anything; it becomes `n.property_name = *****`
+    # Properly handle property referencing for equality this looks for patterns
+    # like `property_name = *****`, where ***** can be anything; it becomes
+    # `n.property_name = *****`
     expr <- stringr::str_replace_all(expr, stringr::regex("\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b(?=\\s*=)"), "n.\\1")
 
     # Handle IN where the property name should be on the right side
@@ -56,7 +57,8 @@ generate_cypher_conditionals <- function(...) {
 #' @import stringr
 fetch_nodes.neo4j_engine <- function(engine, ..., query_ids = NULL, page_size = 5000, limit = NULL) {
     if (!is.null(query_ids)) {
-        # if query_ids is of length 1, we need to wrap it in a list for it to be sent as an array param
+        # if query_ids is of length 1, we need to wrap it in a list for it to
+        # be sent as an array param
         if (length(query_ids) == 1) {
             query_ids <- list(query_ids)
         }
@@ -67,7 +69,8 @@ fetch_nodes.neo4j_engine <- function(engine, ..., query_ids = NULL, page_size = 
         params <- list()
     }
 
-    # cypher_query can't handle no-param param lists, replace with NULL if empty
+    # cypher_query can't handle no-param param lists, replace with NULL if
+    # empty
     if (length(params) == 0) {
         params <- NULL
     }

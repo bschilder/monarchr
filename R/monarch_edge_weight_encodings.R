@@ -83,14 +83,6 @@ monarch_edge_weight_encodings <- function() {
     )
 }
 
-# knowledge_level *
-# frequency_qualifier **
-# negated ?
-# has_total
-# has_quotient
-# has_count
-# has_percentage *
-# has_evidence *
-# has_percentage
-# onset_qualifier
+# knowledge_level * frequency_qualifier ** negated ? has_total has_quotient
+# has_count has_percentage * has_evidence * has_percentage onset_qualifier
 # publications **

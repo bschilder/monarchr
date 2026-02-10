@@ -66,9 +66,9 @@ monarch_semsim <- function(query_graph,
     engine <- monarch_engine()
     api_url <- paste0(engine$preferences$monarch_api_url, "/semsim/compare")
 
-    # these are called subject_ids and object_ids in the API, but
-    # these don't relate to "subject" and "object" of a predicate
-    # we use the APIs terminology here
+    # these are called subject_ids and object_ids in the API, but these don't
+    # relate to "subject" and "object" of a predicate we use the APIs
+    # terminology here
     subject_ids <- nodes(query_graph)$id
     objects_ids <- nodes(target_graph)$id
 
@@ -87,14 +87,11 @@ monarch_semsim <- function(query_graph,
 
     response_content <- httr::content(response, "parsed")
 
-    # the result will have:
-    # $subject_best_matches
-    #   -> named list with names being subject IDs, sublist entries of interest:
-    #      $match_target: the best match target ID
-    #      $score: the similarity score
-    #      $similarity: a list with an $ancestor_id entry that might be of use
-    # $object_best_matches
-    #   -> named list with names being object IDs, same as above
+    # the result will have: $subject_best_matches -> named list with names
+    # being subject IDs, sublist entries of interest: $match_target: the best
+    # match target ID $score: the similarity score $similarity: a list with an
+    # $ancestor_id entry that might be of use $object_best_matches -> named
+    # list with names being object IDs, same as above
 
     # parse subject best matches
     subject_best_matches <- response_content$subject_best_matches

@@ -42,7 +42,8 @@ save_kgx <- function(graph, filename = "saved_kgx_graph.tar.gz", ...) {
 
     pipe_format <- function(df) {
         df |>
-            # list columns need to be converted to character cols, with |-separated entries
+            # list columns need to be converted to character cols, with
+            # |-separated entries
             lapply(function(col) {
                 if (is.list(col)) {
                     # both empty and NA values should be empty strings

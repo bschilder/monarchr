@@ -20,9 +20,11 @@ expand_neo4j_engine <- function(engine,
         stop("Transitive closure requires exactly one specified predicate.")
     }
 
-    ## Get and fix query params: node_ids in query, predicates requested, result categories requested
+    ## Get and fix query params: node_ids in query, predicates requested,
+    #result categories requested
 
-    # neo4j queries that use IN require a list of values, and a length-1 character vector is treated as a scalar
+    # neo4j queries that use IN require a list of values, and a length-1
+    # character vector is treated as a scalar
     node_ids <- as.character(tidygraph::as_tibble(tidygraph::activate(graph, nodes))$id)
     if (length(node_ids) == 1) {
         node_ids <- list(node_ids)
@@ -58,7 +60,8 @@ expand_neo4j_engine <- function(engine,
 
     query_r <- "[r]"
     if (transitive) {
-        # if transitive is TRUE here, we know that predicates is a length-1 character vector
+        # if transitive is TRUE here, we know that predicates is a length-1
+        # character vector
         query_r <- "[r:`" %+% predicates %+% "`*]"
     } else if (length(predicates) == 1) {
         query_r <- "[r:`" %+% predicates %+% "`]"
@@ -118,7 +121,8 @@ expand_neo4j_engine <- function(engine,
 
     ## FULL QUERY - with paging and limiting
 
-    ## get a listing of the edges in the query graph for determining new edge pulls
+    ## get a listing of the edges in the query graph for determining new edge
+    #pulls
     query_edges_df <- edges(graph)
     query_edges_triples <- paste(query_edges_df$subject, query_edges_df$predicate, query_edges_df$object)
 
@@ -127,7 +131,8 @@ expand_neo4j_engine <- function(engine,
     result_cumulative <- tbl_kgx(nodes = data.frame())
 
     total_edges_fetched <- 0
-    # for keeping track of which new edges have been fetched (that are not in the query graph)
+    # for keeping track of which new edges have been fetched (that are not in
+    # the query graph)
     new_triples_fetched <- character()
 
     last_result_size <- -1
@@ -148,23 +153,26 @@ expand_neo4j_engine <- function(engine,
         last_result_size <- nrow(result_edges_df)
 
         if (last_result_size > 0) {
-            ## main work: keep track of max relationship fetched, update running graph
+            ## main work: keep track of max relationship fetched, update
+            #running graph
             last_max_relationship_id <- max(attr(result, "relationship_ids"))
             suppressMessages(result_cumulative <- graph_join(result_cumulative, result), class = "message")
             total_edges_fetched <- total_edges_fetched + last_result_size
 
             ## which new edges (not present in the query graph) did we fetch?
             result_edges_triples <- paste(result_edges_df$subject, result_edges_df$predicate, result_edges_df$object)
-            # this is not ideal, could be optimized with a proper hash/set-like data structure
+            # this is not ideal, could be optimized with a proper hash/set-like
+            # data structure
             new_result_edges_triples <- result_edges_triples[!result_edges_triples %in% query_edges_triples]
             # update running pool of new fetched eddges
             new_triples_fetched <- union(new_triples_fetched, new_result_edges_triples)
 
             message("Expanding; fetched", total_edges_fetched, "of", total_results, "edges.")
 
-            # the number of new triples has likely increased - if there's a limit
-            # we should consider whether we are now over it; if so, trim the new result
-            # to just <limit> edges and corresponding nodes, and break
+            # the number of new triples has likely increased - if there's a
+            # limit we should consider whether we are now over it; if so, trim
+            # the new result to just <limit> edges and corresponding nodes, and
+            # break
             if (!is.null(limit)) {
                 if (length(new_triples_fetched) >= limit) {
                     keep_triple_ids <- head(new_triples_fetched, n = limit)

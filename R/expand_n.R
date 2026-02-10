@@ -36,8 +36,7 @@ expand_n <- function(graph,
     transitive = NULL,
     n = 1,
     ...) {
-    ## Check args
-    ## Check args
+    ## Check args # Check args
     check_len <- function(arg, n, i) {
         if (is.list(arg)) {
             if (length(arg) != n) {

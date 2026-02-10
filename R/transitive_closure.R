@@ -55,8 +55,8 @@ transitive_closure <- function(g, predicate = "biolink:subclass_of") {
         mutate(index = dplyr::row_number()) |>
         select(id, index)
 
-    # we create edge keys so that we can filter out edges that are duplicates created as part of
-    # the process above (the original, non-transitive edges)
+    # we create edge keys so that we can filter out edges that are duplicates
+    # created as part of the process above (the original, non-transitive edges)
     g <- g |>
         activate(edges) |>
         mutate(edge_key = paste(subject, "@", predicate, "@", object))

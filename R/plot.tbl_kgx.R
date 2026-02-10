@@ -55,8 +55,9 @@ plot.tbl_kgx <- function(x,
         node_shape <- NULL
         warning("Node attribute ", node_shape_colname, " not found for use in setting node shape. Ignoring.")
     } else {
-        # although we don't expect any NA values, we don't want any that are NA to have no points (the default),
-        # so map them to character "NA" for plotting
+        # although we don't expect any NA values, we don't want any that are NA
+        # to have no points (the default), so map them to character "NA" for
+        # plotting
         x <- x |>
             activate(nodes) |>
             mutate({{ node_shape }} := ifelse(is.na({{ node_shape }}), "NA", {{ node_shape }}))

@@ -4,9 +4,9 @@
 #' @noRd
 stitch_vectors <- function(x) {
     # Neo4j array results come back as lists of length-1 character vectors;
-    # these need to be stitched together to length-N character vectors.
-    # We leave these in a list element to distinguish sets of size 1 from
-    # scalar strings
+    # these need to be stitched together to length-N character vectors. We
+    # leave these in a list element to distinguish sets of size 1 from scalar
+    # strings
 
     # Check if the element is a list
     if (is.list(x)) {
@@ -61,8 +61,11 @@ neo2r_to_kgx <- function(res, engine) {
     # the code below does not account for that
     # (this was previously unseen as all nodes had a multivalued `category` property)
 
-    # this could be more of an issue with edges below; even though there should be no edges without a subject, predicate, and object,
-    # it is possible that some edges may not have any other properties, and so the code below assuming edge properties are lists may fail, even in a well-formed KGX graph
+    # this could be more of an issue with edges below; even though there should
+    # be no edges without a subject, predicate, and object, it is possible that
+    # some edges may not have any other properties, and so the code below
+    # assuming edge properties are lists may fail, even in a well-formed KGX
+    # graph
 
 
     ## node info
@@ -122,9 +125,11 @@ neo2r_to_kgx <- function(res, engine) {
     # .. ..$ subsets    : chr "_upper_level|cellxgene_subset"
     #
 
-    # this loop pulls together each property (which may be missing for some entries hence the NULL -> NA mapping)
-    # as a dataframe column. However, we don't know whether what comes out should be a vector or list column
-    # this previously used sapply, replaced with lapply and check for vector-able conversion
+    # this loop pulls together each property (which may be missing for some
+    # entries hence the NULL -> NA mapping) as a dataframe column. However, we
+    # don't know whether what comes out should be a vector or list column this
+    # previously used sapply, replaced with lapply and check for vector-able
+    # conversion
     for (prop_name in node_prop_names) {
         temp <- lapply(res$nodes, function(node) {
             prop_value <- node$properties[[prop_name]]
@@ -135,7 +140,8 @@ neo2r_to_kgx <- function(res, engine) {
             }
         })
 
-        # the resulting list can be represented as a vector if all elements are not lists and length 1
+        # the resulting list can be represented as a vector if all elements are
+        # not lists and length 1
         checks <- unlist(lapply(temp, function(el) {
             !is.list(el) & length(el) == 1
         }))
@@ -190,7 +196,8 @@ neo2r_to_kgx <- function(res, engine) {
             }
         })
 
-        # the resulting list can be represented as a vector if all elements are not lists and length 1
+        # the resulting list can be represented as a vector if all elements are
+        # not lists and length 1
         checks <- unlist(lapply(temp, function(el) {
             !is.list(el) & length(el) == 1
         }))
@@ -241,20 +248,19 @@ internal_cypher_query <- function(engine, query, parameters = NULL, ...) { #
 cypher_query.neo4j_engine <- function(engine, query, parameters = NULL, ...) { #
 
     if (!is.null(engine$cache)) {
-        # ok, this is a bit wonky
-        # the engine stores its cache
-        # we create a memoized internal function using that cache
-        # and then we call the function
-        # BUT, the engine itself needs to be sent to the function,
-        # and if its cache keeps changing it wont memoize properly
-        # so we create a copy of the engine without a cache and use that
+        # ok, this is a bit wonky the engine stores its cache we create a
+        # memoized internal function using that cache and then we call the
+        # function BUT, the engine itself needs to be sent to the function, and
+        # if its cache keeps changing it wont memoize properly so we create a
+        # copy of the engine without a cache and use that
         engine_copy <- engine
         engine_copy$cache <- NULL
 
         internal <- memoise::memoise(internal_cypher_query, cache = engine$cache)
         res <- internal(engine_copy, query, parameters, ...)
 
-        # before we return, we reset the cache of the engine attached to the graph.
+        # before we return, we reset the cache of the engine attached to the
+        # graph.
         res$engine$cache <- engine$cache
         return(res)
     } else {

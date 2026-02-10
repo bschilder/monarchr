@@ -11,7 +11,8 @@ base_engine <- function(name = "default_engine", preferences = NULL, ...) {
     default_preferences <- options("default_prefs")$default_prefs
 
     if (!is.null(preferences)) {
-        # if preferences is a length-1 character vector ending with .yaml, and the file exists, read it
+        # if preferences is a length-1 character vector ending with .yaml, and
+        # the file exists, read it
         if (is.character(preferences) &&
             length(preferences) == 1 &&
             grepl("\\.yaml$", preferences) &&
@@ -24,9 +25,9 @@ base_engine <- function(name = "default_engine", preferences = NULL, ...) {
         }
     }
 
-    # now, if preferences is still not null, we want to override the default entries
-    # that are provided in the preferences list
-    # but just those, leaving other defaults in place
+    # now, if preferences is still not null, we want to override the default
+    # entries that are provided in the preferences list but just those, leaving
+    # other defaults in place
     if (!is.null(preferences)) {
         for (p in names(preferences)) {
             default_preferences[[p]] <- preferences[[p]]

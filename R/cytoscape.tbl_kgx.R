@@ -1,9 +1,8 @@
 ###### Internal functions
 
-# Generates a palette with num_colors entries, mapping
-# inputs pseudorandomly to them. if levels_only = FALSE,
-# a vector of RGB values the same length as input is returned.
-# if levels_only = TRUE, a named vector is returned mapping input
+# Generates a palette with num_colors entries, mapping inputs pseudorandomly to
+# them. if levels_only = FALSE, a vector of RGB values the same length as input
+# is returned. if levels_only = TRUE, a named vector is returned mapping input
 # levels to RGB values
 color_cats <- function(input, num_colors = 16, levels_only = TRUE) {
     # Ensure the input is treated as a factor
@@ -16,8 +15,8 @@ color_cats <- function(input, num_colors = 16, levels_only = TRUE) {
     hashes <- lapply(levels(factors), function(x) digest::digest(paste0(x, "salt"), algo = "crc32", serialize = FALSE))
     hash_integers <- unlist(lapply(hashes, function(x) strtoi(substr(x, 1, 5), base = 16)))
 
-    # Map hashes to indices in the color palette
-    # Use modulo to wrap around if there are more factors than colors
+    # Map hashes to indices in the color palette Use modulo to wrap around if
+    # there are more factors than colors
     color_indices <- (hash_integers %% length(palette)) + 1
 
     color_map <- setNames(palette[color_indices], levels(factors))

@@ -46,7 +46,8 @@ tbl_kgx <- function(nodes = NULL, edges = NULL, attach_engine = NULL, ...) {
             stop("tbl_kgx edges must have an 'object' column.")
         }
 
-        # set canonical to and from columns from subject and object if they don't already exist
+        # set canonical to and from columns from subject and object if they
+        # don't already exist
         if (!"from" %in% colnames(edges)) {
             edges$from <- edges$subject
         }
@@ -54,7 +55,8 @@ tbl_kgx <- function(nodes = NULL, edges = NULL, attach_engine = NULL, ...) {
             edges$to <- edges$object
         }
     } else {
-        # but if given no edges, we spec out subject, predicate, object cols at least (and to and from)
+        # but if given no edges, we spec out subject, predicate, object cols at
+        # least (and to and from)
         edges <- data.frame(
             subject = character(), predicate = character(), object = character(),
             to = character(), from = character()

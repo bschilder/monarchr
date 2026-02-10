@@ -50,11 +50,13 @@ transfer <- function(colname = NULL, over, direction = "out") {
     }
     from <- ifelse(direction == "out", "subject", "object")
     toward <- ifelse(from == "subject", "object", "subject")
-    # print(paste("Pulling from", from, "to", toward, "data from", {{colname}}))
+    # print(paste("Pulling from", from, "to", toward, "data from",
+    # {{colname}}))
 
     edge_data <- .E() |> filter(predicate %in% over)
     node_data <- .N()
-    # so we have a set of edges, for each unique object... we need to collect expr
+    # so we have a set of edges, for each unique object... we need to collect
+    # expr
     node_ids <- node_data$id
     agg_results <- lapply(node_ids, function(node_id) {
         relevant_edges <- edge_data[edge_data[[toward]] == node_id, ] #|> filter(object == node_id)

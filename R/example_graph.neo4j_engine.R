@@ -18,7 +18,8 @@
 #' @import tidygraph
 #' @import dplyr
 example_graph.neo4j_engine <- function(engine, ...) {
-    # first, let's discover the different edge types (predicates) available from the schema info
+    # first, let's discover the different edge types (predicates) available
+    # from the schema info
     pred_types_query <- "CALL db.schema.visualization() YIELD relationships
         UNWIND relationships AS rel
         RETURN DISTINCT type(rel) AS predicate"

@@ -1,4 +1,5 @@
-############ Internal functions for fetching edges from a file engine ############
+############ Internal functions for fetching edges from a file engine
+#############
 
 #' @importFrom igraph V
 transitive_query_internal <- function(engine,
@@ -29,13 +30,15 @@ transitive_query_internal <- function(engine,
 
     query_ids <- as.character(tidygraph::as_tibble(tidygraph::activate(g, nodes))$id)
 
-    # let's use igraph to get the node identifiers for each node listed in query_ids from the filtered_edges graph
+    # let's use igraph to get the node identifiers for each node listed in
+    # query_ids from the filtered_edges graph
     igraph_ids <- igraph::V(as.igraph(filtered_edges))$id
     igraph_id_nums <- seq_along(igraph_ids)
     names(igraph_id_nums) <- igraph_ids
     query_id_nums <- igraph_id_nums[query_ids]
 
-    # if there are query IDs that are not in the post-filtered graph, they will have NA values, we need to remove them
+    # if there are query IDs that are not in the post-filtered graph, they will
+    # have NA values, we need to remove them
     query_id_nums <- query_id_nums[!is.na(query_id_nums)]
 
     # now we can do a breadth-first search from the query nodes
@@ -67,7 +70,8 @@ direction_fetch_internal <- function(engine,
     # ids of nodes in the query graph
     node_ids <- as.character(tidygraph::as_tibble(tidygraph::activate(g, nodes))$id)
 
-    # get outgoing edges from the query nodes (keeps all nodes in the engine graph)
+    # get outgoing edges from the query nodes (keeps all nodes in the engine
+    # graph)
     if (direction == "out") {
         new_edges <- engine_graph %>%
             activate(edges) %>%
@@ -90,16 +94,17 @@ direction_fetch_internal <- function(engine,
     new_edges_df <- new_edges %>% as_tibble()
     new_nodes <- c(new_edges_df$object, new_edges_df$subject)
 
-    # now we keep just the nodes in the engine graph that are connected to the kept edges
-    # this includes the query nodes and the result nodes
+    # now we keep just the nodes in the engine graph that are connected to the
+    # kept edges this includes the query nodes and the result nodes
     new_edges <- new_edges %>%
         activate(nodes) %>%
         filter(id %in% new_nodes)
 
     # if result categories is not NULL, we need to further filter the nodes
-    # note that node category is a list column, each node can have multiple categories
-    # we need to use map_lgl from the purrr package to check if any of the categories are in the categories
-    # we also need to keep all the query nodes
+    # note that node category is a list column, each node can have multiple
+    # categories we need to use map_lgl from the purrr package to check if any
+    # of the categories are in the categories we also need to keep all the
+    # query nodes
     if (!is.null(categories)) {
         new_edges <- new_edges %>%
             filter(purrr::map_lgl(category, ~ any(.x %in% categories)) | id %in% node_ids)

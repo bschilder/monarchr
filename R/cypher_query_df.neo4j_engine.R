@@ -16,13 +16,11 @@ internal_cypher_query_df <- function(engine, query, parameters = NULL, ...) {
 #' @importFrom memoise memoise
 cypher_query_df.neo4j_engine <- function(engine, query, parameters = NULL, ...) {
     if (!is.null(engine$cache)) {
-        # ok, this is a bit wonky
-        # the engine stores its cache
-        # we create a memoized internal function using that cache
-        # and then we call the function
-        # BUT, the engine itself needs to be sent to the function,
-        # and if its cache keeps changing it wont memoize properly
-        # so we create a copy of the engine without a cache and use that
+        # ok, this is a bit wonky the engine stores its cache we create a
+        # memoized internal function using that cache and then we call the
+        # function BUT, the engine itself needs to be sent to the function, and
+        # if its cache keeps changing it wont memoize properly so we create a
+        # copy of the engine without a cache and use that
         engine_copy <- engine
         engine_copy$cache <- NULL
 

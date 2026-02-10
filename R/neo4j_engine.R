@@ -48,8 +48,8 @@ neo4j_engine <- function(url,
         message("Trying to connect to ", url[i])
         tryCatch(
             {
-                # we create a test connection with a timeout to see if the URL is ok
-                # catch the error below if it times out
+                # we create a test connection with a timeout to see if the URL
+                # is ok catch the error below if it times out
                 testconn <- startGraph(url[i],
                     username = username,
                     password = password,
@@ -57,9 +57,10 @@ neo4j_engine <- function(url,
                     ...
                 )
 
-                # if it connected, we need a new connection without the timeout,
-                # because any specified timeout will be applied to future queries with the connection
-                # and not be allowed to run for long
+                # if it connected, we need a new connection without the
+                # timeout, because any specified timeout will be applied to
+                # future queries with the connection and not be allowed to run
+                # for long
                 conn <- startGraph(url[i],
                     username = username,
                     password = password,
