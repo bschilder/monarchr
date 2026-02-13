@@ -245,7 +245,10 @@ internal_cypher_query <- function(engine, query, parameters = NULL, ...) { #
 #' @importFrom neo2R multicypher
 #' @importFrom tibble tibble
 #' @importFrom tidygraph graph_join
-cypher_query.neo4j_engine <- function(engine, query, parameters = NULL, ...) { #
+cypher_query.neo4j_engine <- function(engine, 
+                                        query, 
+                                        parameters = NULL, 
+                                        ...) {
 
     if (!is.null(engine$cache)) {
         # ok, this is a bit wonky the engine stores its cache we create a
@@ -256,7 +259,8 @@ cypher_query.neo4j_engine <- function(engine, query, parameters = NULL, ...) { #
         engine_copy <- engine
         engine_copy$cache <- NULL
 
-        internal <- memoise::memoise(internal_cypher_query, cache = engine$cache)
+        internal <- memoise::memoise(internal_cypher_query, 
+                                        cache = engine$cache)
         res <- internal(engine_copy, query, parameters, ...)
 
         # before we return, we reset the cache of the engine attached to the

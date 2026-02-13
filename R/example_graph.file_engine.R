@@ -46,7 +46,9 @@ example_graph.file_engine <- function(engine, ...) {
     sample_nodes <- nodes_df |>
         filter(id %in% sample_edges$subject | id %in% sample_edges$object)
 
-    sample_preds_graph <- tbl_kgx(nodes = sample_nodes, edges = sample_edges, attach_engine = engine)
+    sample_preds_graph <- tbl_kgx(nodes = sample_nodes,
+                                    edges = sample_edges,
+                                    attach_engine = engine)
 
     # this might not represent all categories however. So we compute the
     # categories that are represented thus far
@@ -90,15 +92,19 @@ example_graph.file_engine <- function(engine, ...) {
     sample_cats_edges <- do.call(rbind, sample_cats_edges_list)
 
     # now we need to select the corresponding nodes via their ids
-    sample_cats_all_ids <- c(sample_cats_edges$subject, sample_cats_edges$object) |>
+    sample_cats_all_ids <- c(sample_cats_edges$subject,
+                                sample_cats_edges$object) |>
         unique()
 
     sample_cats_nodes <- nodes_df |>
         filter(id %in% sample_cats_all_ids)
 
     # and join it all up
-    sample_cats_graph <- tbl_kgx(nodes = sample_cats_nodes, edges = sample_cats_edges, attach_engine = engine, )
+    sample_cats_graph <- tbl_kgx(nodes = sample_cats_nodes,
+                                    edges = sample_cats_edges,
+                                    attach_engine = engine)
 
-    suppressMessages(all <- kg_join(sample_cats_graph, sample_preds_graph), classes = "message")
+    suppressMessages(all <- kg_join(sample_cats_graph, sample_preds_graph),
+                        classes = "message")
     return(all)
 }

@@ -32,7 +32,9 @@ the given engine, and returns the result as a data frame.
 engine <- monarch_engine()
 
 query <- "MATCH (n) WHERE n.id IN $ids RETURN n LIMIT 10"
-parameters <- list(ids = c("MONDO:0007525", "MONDO:0020066", "MONDO:0034021"))
+parameters <- list(ids = c("MONDO:0007525", 
+                           "MONDO:0020066", 
+                           "MONDO:0034021"))
 
 result <- cypher_query_df(engine, query, parameters)
 print(result)

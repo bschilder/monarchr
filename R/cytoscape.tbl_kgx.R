@@ -12,8 +12,14 @@ color_cats <- function(input, num_colors = 16, levels_only = TRUE) {
 
 
     # Hash function to convert factor levels to numeric values consistently
-    hashes <- lapply(levels(factors), function(x) digest::digest(paste0(x, "salt"), algo = "crc32", serialize = FALSE))
-    hash_integers <- unlist(lapply(hashes, function(x) strtoi(substr(x, 1, 5), base = 16)))
+    hashes <- lapply(levels(factors), function(x) {
+                                digest::digest(paste0(x, "salt"),
+                                                algo = "crc32",
+                                                serialize = FALSE)
+                            })
+    hash_integers <- unlist(lapply(hashes, function(x) {
+                                            strtoi(substr(x, 1, 5), base = 16)
+                                        }))
 
     # Map hashes to indices in the color palette Use modulo to wrap around if
     # there are more factors than colors
@@ -52,7 +58,9 @@ color_cats <- function(input, num_colors = 16, levels_only = TRUE) {
 #' data(eds_marfan_kg)
 #' g <- eds_marfan_kg |>
 #'     fetch_nodes(query_ids = "MONDO:0020066") |>
-#'     expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
+#'     expand(predicates = "biolink:subclass_of", 
+#'            direction = "in", 
+#'            transitive = TRUE) |>
 #'     expand(categories = c("biolink:PhenotypicFeature", "biolink:Gene"))
 #'
 #' # Cytoscape must be installed and running
@@ -76,7 +84,11 @@ cytoscape.tbl_kgx <- function(g, ...) {
             RCy3::cytoscapePing(...)
         },
         error = function(e) {
-            message("Unable to connect to Cytoscape. Is it installed and running?", "\nRCy3 Issue:\n", e$message)
+            message(
+                "Unable to connect to Cytoscape. Is it installed and running?", 
+                "\nRCy3 Issue:\n", 
+                e$message
+            )
         }
     )
 
@@ -88,14 +100,19 @@ cytoscape.tbl_kgx <- function(g, ...) {
     }
 
     if ("namespace" %in% colnames(nodes_df)) {
-        nodes_df$tooltip <- paste0(nodes_df$tooltip, "NAMESPACE: ", nodes_df$namespace)
+        nodes_df$tooltip <- paste0(nodes_df$tooltip,
+                                    "NAMESPACE: ",
+                                    nodes_df$namespace)
     }
 
     nodes_df$tooltip <- stringr::str_wrap(nodes_df$tooltip, 50)
 
     edges_df <- edges(g)
     if ("primary_knowledge_source" %in% colnames(edges_df)) {
-        edges_df$tooltip <- paste0("PREDICATE: ", edges_df$predicate, " PRIMARY KNOWLEDGE SOURCE: ", edges_df$primary_knowledge_source)
+        edges_df$tooltip <- paste0("PREDICATE: ",
+                                    edges_df$predicate,
+                                    " PRIMARY KNOWLEDGE SOURCE: ",
+                                    edges_df$primary_knowledge_source)
     } else {
         edges_df$tooltip <- paste0("PREDICATE: ", edges_df$predicate)
     }
@@ -114,8 +131,16 @@ cytoscape.tbl_kgx <- function(g, ...) {
 
     pal <- color_cats(nodes(g)$pcategory, levels_only = TRUE)
     pal_edges <- color_cats(edges(g)$predicate, levels_only = TRUE)
-    RCy3::setNodeColorMapping("pcategory", table.column.values = names(pal), colors = pal, mapping.type = "d", ...)
-    RCy3::setEdgeColorMapping("predicate", table.column.values = names(pal_edges), colors = pal_edges, mapping.type = "d", ...)
+    RCy3::setNodeColorMapping("pcategory",
+                                table.column.values = names(pal),
+                                colors = pal,
+                                mapping.type = "d",
+                                ...)
+    RCy3::setEdgeColorMapping("predicate",
+                                table.column.values = names(pal_edges),
+                                colors = pal_edges,
+                                mapping.type = "d",
+                                ...)
 
     RCy3::setNodeTooltipMapping(table.column = "tooltip", ...)
     RCy3::setEdgeTooltipMapping(table.column = "tooltip", ...)

@@ -8,7 +8,9 @@ transitive_query_internal <- function(engine,
     predicates = NULL,
     categories = NULL) {
     # assert that direction is "out" or "in"
-    assert_that(direction == "out" | direction == "in", msg = "Direction must be 'out' or 'in' when using transitive closure.")
+    assert_that(direction == "out" | direction == "in",
+        msg = "Direction must be 'out' or 'in' when using transitive closure."
+    )
 
     # first let's get the edges that match the predicate
     engine_graph <- engine$graph
@@ -28,7 +30,9 @@ transitive_query_internal <- function(engine,
         activate(nodes) %>%
         filter(id %in% new_nodes)
 
-    query_ids <- as.character(tidygraph::as_tibble(tidygraph::activate(g, nodes))$id)
+    query_ids <- as.character(
+        tidygraph::as_tibble(tidygraph::activate(g, nodes))$id
+    )
 
     # let's use igraph to get the node identifiers for each node listed in
     # query_ids from the filtered_edges graph
@@ -50,7 +54,8 @@ transitive_query_internal <- function(engine,
 
     if (!is.null(categories)) {
         bfs_result <- bfs_result %>%
-            filter(purrr::map_lgl(category, ~ any(.x %in% categories)) | id %in% query_ids)
+            filter(purrr::map_lgl(category, ~ any(.x %in% categories)) |
+                                                id %in% query_ids)
     }
 
     suppressMessages(bfs_result <- kg_join(g, bfs_result), classes = "message")
@@ -68,7 +73,9 @@ direction_fetch_internal <- function(engine,
     engine_graph <- engine$graph
 
     # ids of nodes in the query graph
-    node_ids <- as.character(tidygraph::as_tibble(tidygraph::activate(g, nodes))$id)
+    node_ids <- as.character(
+        tidygraph::as_tibble(tidygraph::activate(g, nodes))$id
+    )
 
     # get outgoing edges from the query nodes (keeps all nodes in the engine
     # graph)
@@ -107,10 +114,11 @@ direction_fetch_internal <- function(engine,
     # query nodes
     if (!is.null(categories)) {
         new_edges <- new_edges %>%
-            filter(purrr::map_lgl(category, ~ any(.x %in% categories)) | id %in% node_ids)
+            filter(purrr::map_lgl(category, ~ any(.x %in% categories)) |
+                                                id %in% node_ids)
     }
 
-    suppressMessages(new_edges <- kg_join(g, new_edges), classes = "message") # suppress joining info
+    suppressMessages(new_edges <- kg_join(g, new_edges), classes = "message")
 
     return(new_edges)
 }
@@ -136,14 +144,31 @@ expand_file_engine <- function(engine,
     if (transitive && length(predicates) != 1) {
         stop("Transitive closure requires exactly one specified predicate.")
     } else if (transitive) {
-        new_edges <- transitive_query_internal(engine, graph, direction, predicates, categories)
+        new_edges <- transitive_query_internal(engine,
+                                                graph,
+                                                direction,
+                                                predicates,
+                                                categories)
     } else {
         if (direction == "out" || direction == "in") {
-            new_edges <- direction_fetch_internal(engine, graph, direction, predicates, categories)
+            new_edges <- direction_fetch_internal(engine,
+                                                    graph,
+                                                    direction,
+                                                    predicates,
+                                                    categories)
         } else if (direction == "both") {
-            new_out_edges <- direction_fetch_internal(engine, graph, "out", predicates, categories)
-            new_in_edges <- direction_fetch_internal(engine, graph, "in", predicates, categories)
-            suppressMessages(new_edges <- kg_join(new_out_edges, new_in_edges), classes = "message") # suppress joining info
+            new_out_edges <- direction_fetch_internal(engine,
+                                                        graph,
+                                                        "out",
+                                                        predicates,
+                                                        categories)
+            new_in_edges <- direction_fetch_internal(engine,
+                                                        graph,
+                                                        "in",
+                                                        predicates,
+                                                        categories)
+            suppressMessages(new_edges <- kg_join(new_out_edges, new_in_edges),
+                                classes = "message")
         }
     }
 

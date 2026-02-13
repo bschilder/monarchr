@@ -10,16 +10,21 @@
 #' ```
 #' monarch_engine() |>
 #'    fetch_nodes(query_ids = c("MONDO:0020066", "MONDO:0007947")) |>
-#'    expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
+#'    expand(predicates = "biolink:subclass_of",
+#'           direction = "in",
+#'           transitive = TRUE) |>
 #'    expand() |>
-#' expand(predicates = "biolink:subclass_of", direction = "out", transitive =
-#' TRUE)
+#'    expand(predicates = "biolink:subclass_of",
+#'           direction = "out",
+#'           transitive = TRUE)
 #' ```
 #'
 #' This example engine may also be loaded from file via
 #'
 #' ```
-#' filename <- system.file("extdata", "eds_marfan_kg.tar.gz", package = "monarchr")
+#' filename <- system.file("extdata",
+#'                         "eds_marfan_kg.tar.gz",
+#'                         package = "monarchr")
 #' eds_marfan_kg <- file_engine(filename)
 #' ```
 #'
