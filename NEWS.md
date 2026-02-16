@@ -1,12 +1,17 @@
-# monarchr 2.1.3
+# monarchr 2.1.4
 
 ## Bug Fixes
 
 * Improved examples and documentation for R CMD CHECK
 * Moved limited-use dependencies to Suggests
 * Various fixes for notes and warnings for `BiocCheck()`
-* Fix bug in Cypher paging code resulting in duplicate nodes and edges in some cases.
 * `summary()` now operates canonically via dedicated summary class and methods.
+
+# monarchr 2.1.3
+
+## Bug Fixes
+
+* Fix bug in Cypher paging code resulting in duplicate nodes and edges in some cases.
 
 # monarchr 2.1.2
 
