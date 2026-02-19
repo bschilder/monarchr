@@ -9,3 +9,6 @@
 /docs/
 /Meta/
 /vignettes/**/*.html
+monarchR.BiocCheck
+monarchR.Rcheck
+monarchr_*.tar.gz
