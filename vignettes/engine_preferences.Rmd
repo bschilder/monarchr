@@ -3,9 +3,9 @@ title: "Engine Preferences"
 author: "Shawn T O'Neil"
 date: "Vignette updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i>"
 output:
-  rmarkdown::html_document
+  rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Visualizing Knowledge Graphs}
+  %\VignetteIndexEntry{Engine Preferences}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,7 +13,12 @@ vignette: >
 
 ```{r, include=FALSE, message=FALSE}
 options(width = 300)
-knitr::opts_chunk$set(eval = TRUE, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
+
+# Run live/networked chunks only when building pkgdown (or when explicitly forced).
+live_eval <- identical(tolower(Sys.getenv("IN_PKGDOWN", "false")), "true") ||
+    identical(tolower(Sys.getenv("MONARCHR_VIGNETTE_EVAL", "false")), "true")
+
+knitr::opts_chunk$set(eval = live_eval, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
 ```
 
 # Engine Preferences
@@ -116,8 +121,6 @@ In the above example, because caching is disabled, the fetch and expansion are r
 ```{r, eval=TRUE}
 sessioninfo::session_info()
 ```
-
-
 
 
 

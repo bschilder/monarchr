@@ -29,9 +29,12 @@ jobs:
           rspm: ~
     steps:
     - uses: neurogenomics/rworkflows@master
+      env:
+        IN_PKGDOWN: "true"
+        _R_CHECK_RD_VALIDATE_RD2HTML_: "false"
       with:
-        run_bioccheck: ${{ false }}
-        run_rcmdcheck: ${{ false }}
+        run_bioccheck: ${{ true }}
+        run_rcmdcheck: ${{ true }}
         as_cran: ${{ true }}
         run_vignettes: ${{ true }}
         has_testthat: ${{ true }}

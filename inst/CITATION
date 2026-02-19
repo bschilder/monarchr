@@ -1,0 +1,23 @@
+citHeader("To cite package 'monarchr' in publications use:")
+
+bibentry(
+  bibtype = "Article",
+  title = "monarchr: an R package for querying biomedical knowledge graphs",
+  author = c(
+    person("Shawn", "O'Neil"),
+    person("Brian", "Schilder"),
+    person("Kevin", "Schaper"),
+    person("Corey", "Cox"),
+    person("Daniel", "Korn"),
+    person("Sarah", "Gehrke"),
+    person("Christopher J", "Mungall"),
+    person("Melissa A", "Haendel")
+  ),
+  journal = "Bioinformatics",
+  volume = "41",
+  number = "10",
+  pages = "btaf549",
+  year = "2025",
+  doi = "10.1093/bioinformatics/btaf549",
+  publisher = "Oxford University Press"
+)

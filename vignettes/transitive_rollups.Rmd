@@ -3,7 +3,7 @@ title: "Rollups and Transitivity"
 author: "Shawn T O'Neil"
 date: "Vignette updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i>"
 output:
-  rmarkdown::html_document
+  rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Rollups and Transitivity}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,7 +13,12 @@ vignette: >
 
 ```{r, include=FALSE, message=FALSE}
 options(width = 300)
-knitr::opts_chunk$set(eval = TRUE, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
+
+# Run live/networked chunks only when building pkgdown (or when explicitly forced).
+live_eval <- identical(tolower(Sys.getenv("IN_PKGDOWN", "false")), "true") ||
+    identical(tolower(Sys.getenv("MONARCHR_VIGNETTE_EVAL", "false")), "true")
+
+knitr::opts_chunk$set(eval = live_eval, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
 ```
 
 First, let's load some required libraries, and instantiate a session-cached `monarch_engine()` for querying.
@@ -265,7 +270,6 @@ plot(phenos_final,
 ```{r, eval=TRUE}
 sessioninfo::session_info()
 ```
-
 
 
 

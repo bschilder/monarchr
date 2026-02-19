@@ -9,6 +9,8 @@
 /docs/
 /Meta/
 /vignettes/**/*.html
-monarchR.BiocCheck
-monarchR.Rcheck
+monarchr.BiocCheck/
+monarchr.Rcheck/
 monarchr_*.tar.gz
+
+*.Rproj

@@ -3,7 +3,7 @@ title: "MonarchR Basics"
 author: "Shawn T O'Neil"
 date: "Vignette updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i>"
 output:
-  rmarkdown::html_document
+  rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{monarchr}
   %\VignetteEngine{knitr::rmarkdown}
@@ -17,7 +17,12 @@ library(tidygraph)
 library(monarchr)
 
 options(width = 300)
-knitr::opts_chunk$set(eval = TRUE, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
+
+# Run live/networked chunks only when building pkgdown (or when explicitly forced).
+live_eval <- identical(tolower(Sys.getenv("IN_PKGDOWN", "false")), "true") ||
+    identical(tolower(Sys.getenv("MONARCHR_VIGNETTE_EVAL", "false")), "true")
+
+knitr::opts_chunk$set(eval = live_eval, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
 ```
 
 
@@ -25,9 +30,9 @@ knitr::opts_chunk$set(eval = TRUE, echo = TRUE, fig.width = 10, message = FALSE,
 
 Knowledge graphs (KGs) represent entities (such as genes, diseases, or phenotypes) and
 the relationships between them; for example that the `CFTR` gene `causes` the disease
-`Cystic fibrosis`. In the [Monarch Initiative](https://monarchiniative.org) KG, this
+`Cystic fibrosis`. In the [Monarch Initiative](https://monarchinitiative.org) KG, this
 information is stored in a *directed, labeled property graph*, with properties
-attached to the entities (nodes) and relationships (edges). The [KGX format](https://github.com/biolink/kgx/blob/master/specification/kgx-format.md) used by 
+attached to the entities (nodes) and relationships (edges). The [KGX format](https://github.com/biolink/kgx) used by 
 Monarch provides a simple specification for KGs:
 
 * Nodes must have an `id` property
@@ -43,7 +48,7 @@ The `monarchr` package provides access to the cloud-hosted Monarch Initiative KG
 and [others in KGX format](https://kghub.org) via graph-database and file-based "engines", 
 with a simple but flexible set of query functions. The example below finds all
 of the sub-types of [Neimann-Pick Disease](https://monarchinitiative.org/MONDO:0001982), and all of the
-genes associated with those. (You an use the [Monarch Initiative](https://monarchiniative.org) website to
+genes associated with those. (You an use the [Monarch Initiative](https://monarchinitiative.org) website to
 identify IDs for genes, diseases, phenotypes and more, or `search_nodes()` described below.)
 
 
@@ -68,21 +73,21 @@ Backed by `tidygraph` and `igraph`, `monarchr` is part of a larger ecosystem of 
     - Interactive: [`visNetwork`](https://datastorm-open.github.io/visNetwork/), [`threejs`](https://bwlewis.github.io/rthreejs/)
 - Exploratory analyses: [`EGAnet`](https://r-ega.net/)
 - Graph algorithms: 
-    - Various: [`igraph`](https://r.igraph.org/reference/index.html), [`migraph`](https://cran.r-project.org/web/packages/migraph/index.html), [`netrankr`](https://github.com/schochastics/netrankr/)
-    - Matching: [`iGraphMatch`](https://cran.r-project.org/web/packages/iGraphMatch/vignettes/iGraphMatch.html)
+    - Various: [`igraph`](https://r.igraph.org/reference/index.html), [`migraph`](https://CRAN.R-project.org/package=migraph), [`netrankr`](https://github.com/schochastics/netrankr/)
+    - Matching: [`iGraphMatch`](https://CRAN.R-project.org/package=iGraphMatch)
     - Graph neural networks: [`spinner`](https://rpubs.com/giancarlo_vercellino/spinner)
-    - Clustering: [`clustAnalytics`](https://cran.r-project.org/web/packages/clustAnalytics/index.html)
+    - Clustering: [`clustAnalytics`](https://CRAN.R-project.org/package=clustAnalytics)
     - Community detection: [`leidenAlg`](https://github.com/kharchenkolab/leidenAlg)
-    - Link prediction: [`linkprediction`](https://cran.r-project.org/web/packages/linkprediction/index.html)
+    - Link prediction: [`linkprediction`](https://CRAN.R-project.org/package=linkprediction)
 - Other:
     - Particle/force-based simulation: [`particles`](https://github.com/thomasp85/particles)
-    - ... others in the reverse imports for [`igraph`](https://cran.r-project.org/web/packages/igraph/index.html)
+    - ... others in the reverse imports for [`igraph`](https://CRAN.R-project.org/package=igraph)
 
 # Engines
 
-Two kinds of engines are supported, providing largely the same functionality: one supporting access to [Neo4j graph databases](https://neo4j.com/), and another supporting file-based access to TSV-formatted `.tar.gz` KGs hosted at [kghub.io](https://kghub.io). Regardless of source, KGs must conform to the [KGX specification](https://github.com/biolink/kgx/blob/master/specification/kgx-format.md).
+Two kinds of engines are supported, providing largely the same functionality: one supporting access to [Neo4j graph databases](https://neo4j.com/), and another supporting file-based access to TSV-formatted `.tar.gz` KGs hosted at [kghub.io](https://kghub.io). Regardless of source, KGs must conform to the [KGX specification](https://github.com/biolink/kgx).
 
-The most accessible engine provided by `monarchr` is the `monarch_engine()`, designed specifically to access the cloud-hosted [Monarch Initiative](https://monarchiniatiative.org) KG.
+The most accessible engine provided by `monarchr` is the `monarch_engine()`, designed specifically to access the cloud-hosted [Monarch Initiative](https://monarchinitiative.org) KG.
 
 ```{r}
 monarch <- monarch_engine()
@@ -291,6 +296,3 @@ Other useful features are covered in dedicated Vignettes:
 ```{r}
 sessioninfo::session_info()
 ```
-
-
-

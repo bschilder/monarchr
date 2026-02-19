@@ -1,5 +1,6 @@
 Package: monarchr
 Type: Package
+Depends: R (>= 4.4.0)
 Title: Monarch Knowledge Graph Queries
 Description: R package for easy access, manipulation, and analysis of
 		Monarch KG data Resources.

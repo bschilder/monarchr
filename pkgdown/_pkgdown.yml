@@ -7,7 +7,7 @@ articles:
 - title: Examples
   navbar: Examples
   contents:
-  - examples/visualizing_kgs
-  - examples/exploring_kgs
-  - examples/transitive_rollups
-  - examples/engine_preferences
+  - visualizing_kgs
+  - exploring_kgs
+  - transitive_rollups
+  - engine_preferences
