@@ -12,7 +12,7 @@
 #' data(eds_marfan_kg)
 #'
 #' g <- eds_marfan_kg |>
-#'   fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
+#'     fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
 #'
 #' other_engine <- eds_marfan_kg # this could be a different file engine (see `file_engine()`)
 #' g <- set_engine(g, other_engine)
@@ -21,9 +21,6 @@
 #'
 #' @export
 set_engine <- function(g, engine) {
-	attr(g, "last_engine") <- engine
-	return(g)
+    attr(g, "last_engine") <- engine
+    return(g)
 }
-
-
-

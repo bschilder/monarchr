@@ -9,17 +9,20 @@ fetch_nodes(engine, ..., query_ids = NULL, limit = NULL)
 \arguments{
 \item{engine}{A graph engine object}
 
-\item{...}{A set of conditions identifying the nodes to fetch, only used if query_ids is NULL}
+\item{...}{A set of conditions identifying the nodes to fetch, only used if
+query_ids is NULL}
 
 \item{query_ids}{A character vector of identifiers to fetch}
 
-\item{limit}{An integer specifying the maximum number of nodes to fetch. Default to NULL, no limit.}
+\item{limit}{An integer specifying the maximum number of nodes to fetch.
+Default to NULL, no limit.}
 }
 \value{
 A tbl_kgx object containing the nodes
 }
 \description{
-This function fetches nodes (and no edges) from a knowledge graph engine based on a set of
+This function fetches nodes (and no edges) from a knowledge graph engine
+based on a set of
 conditions or a set of identifiers. If query_ids is provided, the function
 will fetch nodes with the specified identifiers. If query_ids is NULL, the
 function will fetch nodes based on the conditions provided. Only a limited
@@ -31,11 +34,15 @@ If query_ids is NULL, the function will fetch nodes based on a condition
 expression. The following features are supported:
 \itemize{
 \item Matching node properties with boolean operators, e.g. \code{in_taxon_label == "Homo sapiens"}.
-\item Matching multi-valued properties with \verb{\%in_list\%}, e.g. \code{"biolink:Gene" \%in_list\% category}. NOTE: using \verb{\%in_list\%} against vector queries, e.g. \code{in_taxon_label \%in_list\% c("Homo sapiens", "Mus musculus")} is \emph{not} supported. Nor does \verb{\%in_list\%} support multi-valued left hand sides; \code{c("biolink:Disease", "biolink:Gene") \%in_list\% category} will not work.
+\item Matching multi-valued properties with \verb{\%in_list\%}, e.g. \code{"biolink:Gene" \%in_list\% category}. NOTE: using \verb{\%in_list\%} against vector queries, e.g.
+\code{in_taxon_label \%in_list\% c("Homo sapiens", "Mus musculus")} is \emph{not}
+supported. Nor does \verb{\%in_list\%} support multi-valued left hand sides;
+\code{c("biolink:Disease", "biolink:Gene") \%in_list\% category} will not work.
 \item Boolean connectives with \code{|}, \code{&}, and \code{!}, e.g. \code{in_taxon_label == "Homo sapiens" | "biolink:Gene" \%in_list\% category}.
 }
 
-If more than one condition parameter is specified, they are combined with \code{&}; for example,
+If more than one condition parameter is specified, they are combined with
+\code{&}; for example,
 \code{fetch_nodes(engine, in_taxon_label == "Homo sapiens", "biolink:Gene" \%in_list\% category)} is equivalent to
 \code{fetch_nodes(engine, in_taxon_label == "Homo sapiens" & "biolink:Gene" \%in_list\% category)}.
 }
@@ -45,21 +52,22 @@ library(dplyr)
 
 \dontshow{if (monarch_engine_check()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 monarch_engine() |>
-  fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
-
+    fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
+\dontshow{\}) # examplesIf}
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # a large query
 monarch_engine() |>
-  fetch_nodes("biolink:Disease" \%in_list\% category)
+    fetch_nodes("biolink:Disease" \%in_list\% category)
 \dontshow{\}) # examplesIf}
 # file_engine supports the same features as neo4j_engine
 # (using the example KGX file packaged with monarchr)
 data(eds_marfan_kg)
 
 eds_marfan_kg |>
-  fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
+    fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
 
 # grab all Homo sapiens genes
 eds_marfan_kg |>
-  fetch_nodes(in_taxon_label == "Homo sapiens" & "biolink:Gene" \%in_list\% category)
+    fetch_nodes(in_taxon_label == "Homo sapiens" & "biolink:Gene" \%in_list\% category)
 
 }

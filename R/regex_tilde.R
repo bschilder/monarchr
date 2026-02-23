@@ -11,5 +11,5 @@
 #' @export
 #' @importFrom stringr str_detect
 `%~%` <- function(string, pattern) {
-	str_detect(string, pattern)
+    str_detect(string, pattern)
 }

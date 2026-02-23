@@ -32,7 +32,7 @@ yet fully supported or tested.
 data(eds_marfan_kg)
 
 g <- eds_marfan_kg |>
-  fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
+    fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
 
 other_engine <- eds_marfan_kg # this could be a different file-engine (see `file_engine()`)
 g <- set_engine(g, other_engine)
@@ -43,7 +43,7 @@ print(get_engine(g))
 data(eds_marfan_kg)
 
 g <- eds_marfan_kg |>
-  fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
+    fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
 
 other_engine <- eds_marfan_kg # this could be a different file engine (see `file_engine()`)
 g <- set_engine(g, other_engine)

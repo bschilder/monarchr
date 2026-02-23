@@ -5,7 +5,7 @@
 \title{Specialized \code{plot()} function for KGX graphs}
 \usage{
 \method{plot}{tbl_kgx}(
-  g,
+  x,
   ...,
   layout = "auto",
   node_color = pcategory,
@@ -21,7 +21,7 @@
 )
 }
 \arguments{
-\item{g}{A \link{tbl_kgx} graph.}
+\item{x}{A \link{tbl_kgx} graph.}
 
 \item{...}{
   Arguments passed on to \code{\link[ggraph:ggraph]{ggraph::ggraph}}
@@ -31,7 +31,8 @@ of supported classes. Or a \code{layout_ggraph} object as returned from
 \code{create_layout} in which case all subsequent arguments is ignored.}
   }}
 
-\item{layout}{The layout to use for the plot. Default is "auto" as used by \code{ggraph}.}
+\item{layout}{The layout to use for the plot. Default is "auto" as used by
+\code{ggraph}.}
 
 \item{node_color}{The column to use for node color. Default is "pcategory".}
 
@@ -39,7 +40,8 @@ of supported classes. Or a \code{layout_ggraph} object as returned from
 
 \item{edge_color}{The column to use for edge color. Default is "predicate".}
 
-\item{edge_linetype}{The column to use for edge line type. Default is "primary_knowledge_source".}
+\item{edge_linetype}{The column to use for edge line type. Default is
+"primary_knowledge_source".}
 
 \item{node_label}{The column to use for node labels. Defaults to "name".}
 
@@ -53,15 +55,20 @@ of supported classes. Or a \code{layout_ggraph} object as returned from
 
 \item{node_alpha}{Alpha value for nodes, default 0.9.}
 }
+\value{
+A \code{ggraph} object.
+}
 \description{
 Specialized \code{plot()} function for KGX graphs
 }
 \examples{
 data(eds_marfan_kg)
 g <- eds_marfan_kg |>
-     fetch_nodes(query_ids = "MONDO:0007525") |>
-     expand(predicates = "biolink:has_phenotype",
-            categories = "biolink:PhenotypicFeature")|>
-     expand(categories = "biolink:Gene")
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    ) |>
+    expand(categories = "biolink:Gene")
 plot(g)
 }

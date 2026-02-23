@@ -1,3 +1,12 @@
+# monarchr 2.1.4
+
+## Bug Fixes
+
+* Improved examples and documentation for R CMD CHECK
+* Moved limited-use dependencies to Suggests
+* Various fixes for notes and warnings for `BiocCheck()`
+* `summary()` now operates canonically via dedicated summary class and methods.
+
 # monarchr 2.1.3
 
 ## Bug Fixes

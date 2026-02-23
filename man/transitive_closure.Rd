@@ -20,15 +20,18 @@ predicate as transitive. Resulting edge predicates will the be the
 same, but have primary_knowledge_source set to transitive_\if{html}{\out{<predicate>}}.
 }
 \examples{
+library(dplyr)
+library(tidygraph)
 data(eds_marfan_kg)
 
-eds_marfan_kg |> fetch_nodes(name == "Tall stature") |>
-  # get 2 levels of ancestors
-  expand_n(predicates = "biolink:subclass_of", direction = "out", n = 3) |>
-  activate(edges) |>
-  filter(primary_knowledge_source == "infores:upheno") |>
-  transitive_closure(predicate = "biolink:subclass_of") |>
-  plot(edge_color = primary_knowledge_source)
+eds_marfan_kg |>
+    fetch_nodes(name == "Tall stature") |>
+    # get 2 levels of ancestors
+    expand_n(predicates = "biolink:subclass_of", direction = "out", n = 3) |>
+    activate(edges) |>
+    filter(primary_knowledge_source == "infores:upheno") |>
+    transitive_closure(predicate = "biolink:subclass_of") |>
+    plot(edge_color = primary_knowledge_source)
 
 }
 \seealso{

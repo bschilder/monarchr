@@ -19,27 +19,33 @@ Computes the transitive reduction of a graph, treating the specified
 predicate as transitive.
 }
 \examples{
+library(dplyr)
+library(tidygraph)
 data(eds_marfan_kg)
 
-g <- eds_marfan_kg |> fetch_nodes(name == "Tall stature") |>
-	expand_n(predicates = "biolink:subclass_of", direction = "out", n = 3) |>
-	bind_edges(data.frame(from = 2,
-	                      to = 9,
-	                      predicate = "biolink_subclass_of",
-	                      primary_knowledge_source = "hand_annotated"))
+g <- eds_marfan_kg |>
+    fetch_nodes(name == "Tall stature") |>
+    expand_n(predicates = "biolink:subclass_of", direction = "out", n = 3) |>
+    bind_edges(data.frame(
+        from = 2,
+        to = 9,
+        predicate = "biolink_subclass_of",
+        primary_knowledge_source = "hand_annotated"
+    ))
 
 plot(g, edge_color = primary_knowledge_source)
 
 g_closed <- g |>
-	transitive_closure(predicate = "biolink:subclass_of")
+    transitive_closure(predicate = "biolink:subclass_of")
 
 plot(g_closed, edge_color = primary_knowledge_source)
 
 g_reduced <- g_closed |>
-	transitive_reduction()
+    transitive_reduction()
 
 plot(g_reduced, edge_color = primary_knowledge_source)
 }
 \seealso{
-\code{\link[=transitive_closure]{transitive_closure()}}, \code{\link[=roll_up]{roll_up()}}, \code{\link[=transfer]{transfer()}}, \code{\link[=descendants]{descendants()}}, \code{\link[=ancestors]{ancestors()}}
+\code{\link[=transitive_closure]{transitive_closure()}}, \code{\link[=roll_up]{roll_up()}}, \code{\link[=transfer]{transfer()}}, \code{\link[=descendants]{descendants()}},
+\code{\link[=ancestors]{ancestors()}}
 }

@@ -1,41 +1,48 @@
 ###### Internal functions
 
-# Generates a palette with num_colors entries, mapping
-# inputs pseudorandomly to them. if levels_only = FALSE,
-# a vector of RGB values the same length as input is returned.
-# if levels_only = TRUE, a named vector is returned mapping input
+# Generates a palette with num_colors entries, mapping inputs pseudorandomly to
+# them. if levels_only = FALSE, a vector of RGB values the same length as input
+# is returned. if levels_only = TRUE, a named vector is returned mapping input
 # levels to RGB values
 color_cats <- function(input, num_colors = 16, levels_only = TRUE) {
-	# Ensure the input is treated as a factor
-	factors <- factor(input)
+    # Ensure the input is treated as a factor
+    factors <- factor(input)
 
-	palette <- grDevices::hcl.colors(num_colors, palette = "Set3")
+    palette <- grDevices::hcl.colors(num_colors, palette = "Set3")
 
 
-	# Hash function to convert factor levels to numeric values consistently
-	hashes <- lapply(levels(factors), function(x) digest::digest(paste0(x, "salt"), algo = "crc32", serialize = FALSE))
-	hash_integers <- sapply(hashes, function(x) strtoi(substr(x, 1, 5), base=16))
+    # Hash function to convert factor levels to numeric values consistently
+    hashes <- lapply(levels(factors), function(x) {
+                                digest::digest(paste0(x, "salt"),
+                                                algo = "crc32",
+                                                serialize = FALSE)
+                            })
+    hash_integers <- unlist(lapply(hashes, function(x) {
+                                            strtoi(substr(x, 1, 5), base = 16)
+                                        }))
 
-	# Map hashes to indices in the color palette
-	# Use modulo to wrap around if there are more factors than colors
-	color_indices <- (hash_integers %% length(palette)) + 1
+    # Map hashes to indices in the color palette Use modulo to wrap around if
+    # there are more factors than colors
+    color_indices <- (hash_integers %% length(palette)) + 1
 
-	color_map <- setNames(palette[color_indices], levels(factors))
-	if(levels_only) {
-		return(color_map)
-	} else {
-		# Return the colors corresponding to the input
-		return(unname(color_map[as.character(input)]))
-	}
+    color_map <- setNames(palette[color_indices], levels(factors))
+    if (levels_only) {
+        return(color_map)
+    } else {
+        # Return the colors corresponding to the input
+        return(unname(color_map[as.character(input)]))
+    }
 }
 
 
 #' Send a graph to Cytoscape
 #'
 #' Given a tbl_kgx graph, send it to Cytoscape for visualization. Node labels
-#' are mapped to node `name` (if available, otherwise they default to node `id`),
+#' are mapped to node `name` (if available, otherwise they default to node
+#' `id`),
 #' node color is mapped to `pcategory`, edge color is mapped to `predicate`,
-#' node hover-over text is set to `description` (if available, otherwise node `id`),
+#' node hover-over text is set to `description` (if available, otherwise node
+#' `id`),
 #' and edge hover-over text is set to `predicate`. Nodes are layed out
 #' using the Kamada-Kawai method. These properties and more may be customized in
 #' the Cytoscape application. This function requires that Cytoscape is installed
@@ -50,63 +57,94 @@ color_cats <- function(input, num_colors = 16, levels_only = TRUE) {
 #' @examplesIf FALSE
 #' data(eds_marfan_kg)
 #' g <- eds_marfan_kg |>
-#' 	 fetch_nodes(query_ids = "MONDO:0020066") |>
-#' 	 expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
-#' 	 expand(categories = c("biolink:PhenotypicFeature", "biolink:Gene"))
+#'     fetch_nodes(query_ids = "MONDO:0020066") |>
+#'     expand(predicates = "biolink:subclass_of", 
+#'            direction = "in", 
+#'            transitive = TRUE) |>
+#'     expand(categories = c("biolink:PhenotypicFeature", "biolink:Gene"))
 #'
 #' # Cytoscape must be installed and running
 #' cytoscape(g)
 #'
-#' @import RCy3
 #' @import tidygraph
 #' @import dplyr
 cytoscape.tbl_kgx <- function(g, ...) {
-	message("Sending data to Cytoscape and formatting; please wait.")
-	tryCatch({
-		RCy3::cytoscapePing(...)
-	}, error = function(e) {
-		message(paste0("Unable to connect to Cytoscape. Is it installed and running?", "\nRCy3 Error:\n", e$message))
-	})
+    if (!requireNamespace("RCy3", quietly = TRUE)) {
+        stop(
+            "The 'RCy3' package is required to use cytoscape() ",
+            "but is not installed. Please install it with:\n",
+            "  BiocManager::install('RCy3')",
+            call. = FALSE
+        )
+    }
 
-	nodes_df <- nodes(g)
-	if("description" %in% colnames(nodes_df)) {
-		nodes_df$tooltip <- paste0("DESCRIPTION: ", nodes_df$description)
-	} else {
-		nodes_df$tooltip <- paste0("ID: ", nodes_df$id)
-	}
+    message("Sending data to Cytoscape and formatting; please wait.")
+    tryCatch(
+        {
+            RCy3::cytoscapePing(...)
+        },
+        error = function(e) {
+            message(
+                "Unable to connect to Cytoscape. Is it installed and running?", 
+                "\nRCy3 Issue:\n", 
+                e$message
+            )
+        }
+    )
 
-	if("namespace" %in% colnames(nodes_df)) {
-		nodes_df$tooltip <- paste0(nodes_df$tooltip, "NAMESPACE: ", nodes_df$namespace)
-	}
+    nodes_df <- nodes(g)
+    if ("description" %in% colnames(nodes_df)) {
+        nodes_df$tooltip <- paste0("DESCRIPTION: ", nodes_df$description)
+    } else {
+        nodes_df$tooltip <- paste0("ID: ", nodes_df$id)
+    }
 
-	nodes_df$tooltip <- stringr::str_wrap(nodes_df$tooltip, 50)
+    if ("namespace" %in% colnames(nodes_df)) {
+        nodes_df$tooltip <- paste0(nodes_df$tooltip,
+                                    "NAMESPACE: ",
+                                    nodes_df$namespace)
+    }
 
-	edges_df <- edges(g)
-	if("primary_knowledge_source" %in% colnames(edges_df)) {
-		edges_df$tooltip <- paste0("PREDICATE: ", edges_df$predicate, " PRIMARY KNOWLEDGE SOURCE: ", edges_df$primary_knowledge_source)
-	} else {
-		edges_df$tooltip <- paste0("PREDICATE: ", edges_df$predicate)
-	}
+    nodes_df$tooltip <- stringr::str_wrap(nodes_df$tooltip, 50)
 
-	edges_df$tooltip <- stringr::str_wrap(edges_df$tooltip, 50)
+    edges_df <- edges(g)
+    if ("primary_knowledge_source" %in% colnames(edges_df)) {
+        edges_df$tooltip <- paste0("PREDICATE: ",
+                                    edges_df$predicate,
+                                    " PRIMARY KNOWLEDGE SOURCE: ",
+                                    edges_df$primary_knowledge_source)
+    } else {
+        edges_df$tooltip <- paste0("PREDICATE: ", edges_df$predicate)
+    }
 
-	RCy3::createNetworkFromDataFrames(nodes_df,
-																		edges_df,
-																		title = "KG Nodes",
-																		collection = "monarchr Graphs",
-																		source.id.list = 'subject',
-																		target.id.list = 'object',
-																		...)
-	RCy3::layoutNetwork('kamada-kawai', ...)
+    edges_df$tooltip <- stringr::str_wrap(edges_df$tooltip, 50)
 
-	pal <- color_cats(nodes(g)$pcategory, levels_only = TRUE)
-	pal_edges <- color_cats(edges(g)$predicate, levels_only = TRUE)
-	RCy3::setNodeColorMapping('pcategory', table.column.values = names(pal), colors = pal, mapping.type = 'd', ...)
-	RCy3::setEdgeColorMapping('predicate', table.column.values = names(pal_edges), colors = pal_edges, mapping.type = 'd', ...)
+    RCy3::createNetworkFromDataFrames(nodes_df,
+        edges_df,
+        title = "KG Nodes",
+        collection = "monarchr Graphs",
+        source.id.list = "subject",
+        target.id.list = "object",
+        ...
+    )
+    RCy3::layoutNetwork("kamada-kawai", ...)
 
-	RCy3::setNodeTooltipMapping(table.column = 'tooltip', ...)
-	RCy3::setEdgeTooltipMapping(table.column = 'tooltip', ...)
-	RCy3::matchArrowColorToEdge(TRUE, ...)
-	RCy3::setEdgeTargetArrowShapeDefault('ARROW', ...)
-	return(invisible())
+    pal <- color_cats(nodes(g)$pcategory, levels_only = TRUE)
+    pal_edges <- color_cats(edges(g)$predicate, levels_only = TRUE)
+    RCy3::setNodeColorMapping("pcategory",
+                                table.column.values = names(pal),
+                                colors = pal,
+                                mapping.type = "d",
+                                ...)
+    RCy3::setEdgeColorMapping("predicate",
+                                table.column.values = names(pal_edges),
+                                colors = pal_edges,
+                                mapping.type = "d",
+                                ...)
+
+    RCy3::setNodeTooltipMapping(table.column = "tooltip", ...)
+    RCy3::setEdgeTooltipMapping(table.column = "tooltip", ...)
+    RCy3::matchArrowColorToEdge(TRUE, ...)
+    RCy3::setEdgeTargetArrowShapeDefault("ARROW", ...)
+    return(invisible())
 }

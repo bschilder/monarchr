@@ -5,36 +5,47 @@
 \alias{eds_marfan_kg}
 \title{Example Ehlers-Danlos and Marfan Syndrome Knowledge Graph Engine}
 \format{
-An object of class \code{file_engine} for use with \code{fetch_nodes()}, \code{expand()}, etc.
+An object of class \code{file_engine} for use with \code{fetch_nodes()},
+\code{expand()}, etc.
 }
 \usage{
 data(eds_marfan_kg)
 }
 \description{
 A small \code{file_engine()} Knowledge Graph (KG) containing Monarch Initiative
-data for Ehlers-Danlos Syndrome and Marfan Syndrome, including their subtypes,
-all entities connected to those diseases or subtypes, and all ancestors (supertypes)
+data for Ehlers-Danlos Syndrome and Marfan Syndrome, including their
+subtypes,
+all entities connected to those diseases or subtypes, and all ancestors
+(supertypes)
 of all those diseases and entities. Generated 8/15/2024 via:
 }
 \details{
 \if{html}{\out{<div class="sourceCode">}}\preformatted{monarch_engine() |>
-	fetch_nodes(query_ids = c("MONDO:0020066", "MONDO:0007947")) |>
-	expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
-	expand() |>
-	expand(predicates = "biolink:subclass_of", direction = "out", transitive = TRUE)
+   fetch_nodes(query_ids = c("MONDO:0020066", "MONDO:0007947")) |>
+   expand(predicates = "biolink:subclass_of",
+          direction = "in",
+          transitive = TRUE) |>
+   expand() |>
+   expand(predicates = "biolink:subclass_of",
+          direction = "out",
+          transitive = TRUE)
 }\if{html}{\out{</div>}}
 
 This example engine may also be loaded from file via
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{filename <- system.file("extdata", "eds_marfan_kg.tar.gz", package = "monarchr")
+\if{html}{\out{<div class="sourceCode">}}\preformatted{filename <- system.file("extdata",
+                        "eds_marfan_kg.tar.gz",
+                        package = "monarchr")
 eds_marfan_kg <- file_engine(filename)
 }\if{html}{\out{</div>}}
 }
 \examples{
 data(eds_marfan_kg)
 phenos <- eds_marfan_kg |>
-          fetch_nodes(query_ids = "MONDO:0007525") |>
-          expand(predicates = "biolink:has_phenotype",
-                 categories = "biolink:PhenotypicFeature")
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    )
 }
 \keyword{datasets}

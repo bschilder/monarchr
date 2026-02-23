@@ -21,11 +21,17 @@ expand_n(
 \item{return_each}{If TRUE, return a list of graphs for each iteration.
 If FALSE, return the final graph with all expanded edges.}
 
-\item{direction}{The direction of associations to fetch. Can be "in", "out", or "both". Default is "both".}
+\item{direction}{The direction of associations to fetch. Can be "in", "out",
+or "both". Default is "both".}
 
-\item{predicates}{A vector of relationship predicates (nodes in g are subjects in the KG), indicating which edges to consider in the neighborhood. If NULL (default), all edges are considered.}
+\item{predicates}{A vector of relationship predicates (nodes in g are
+subjects in the KG), indicating which edges to consider in
+the neighborhood. If NULL (default), all edges are
+considered.}
 
-\item{categories}{A vector of node categories, indicating which nodes in the larger KG may be fetched. If NULL (default), all nodes in the larger KG are will be fetched.}
+\item{categories}{A vector of node categories, indicating which nodes in the
+larger KG may be fetched. If NULL (default), all nodes in
+the larger KG are will be fetched.}
 
 \item{transitive}{NULL (not used in this function).}
 
@@ -47,10 +53,12 @@ of iterations (\code{n}).
 ## Using example KGX file packaged with monarchr
 data(eds_marfan_kg)
 g <- eds_marfan_kg |>
-     fetch_nodes(query_ids = "MONDO:0007525") |>
-     expand(predicates = "biolink:has_phenotype",
-            categories = "biolink:PhenotypicFeature")
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    )
 
 g_expanded <- g |>
-              expand_n(predicates = "biolink:subclass_of", n=3)
+    expand_n(predicates = "biolink:subclass_of", n = 3)
 }

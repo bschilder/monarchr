@@ -22,7 +22,7 @@ Explode a graph into a list of single-node graphs
 data(eds_marfan_kg)
 
 g <- eds_marfan_kg |>
-  fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
+    fetch_nodes(query_ids = c("MONDO:0007525", "MONDO:0007526"))
 
 print(explode(g))
 }

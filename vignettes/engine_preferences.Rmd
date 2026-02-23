@@ -3,9 +3,9 @@ title: "Engine Preferences"
 author: "Shawn T O'Neil"
 date: "Vignette updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i>"
 output:
-  rmarkdown::html_document
+  rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Visualizing Knowledge Graphs}
+  %\VignetteIndexEntry{Engine Preferences}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,7 +13,12 @@ vignette: >
 
 ```{r, include=FALSE, message=FALSE}
 options(width = 300)
-knitr::opts_chunk$set(eval = TRUE, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
+
+# Run live/networked chunks only when building pkgdown (or when explicitly forced).
+live_eval <- identical(tolower(Sys.getenv("IN_PKGDOWN", "false")), "true") ||
+    identical(tolower(Sys.getenv("MONARCHR_VIGNETTE_EVAL", "false")), "true")
+
+knitr::opts_chunk$set(eval = live_eval, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
 ```
 
 # Engine Preferences
@@ -44,9 +49,10 @@ library(dplyr)
 
 data(eds_marfan_kg)
 
-g <- eds_marfan_kg |> fetch_nodes(query_ids = "HP:0001788") |> 
-  expand(categories = "biolink:Disease") |>
-  expand(categories = "biolink:Gene")
+g <- eds_marfan_kg |>
+    fetch_nodes(query_ids = "HP:0001788") |>
+    expand(categories = "biolink:Disease") |>
+    expand(categories = "biolink:Gene")
 
 nodes(g) |> select(id, name, pcategory, category)
 ```
@@ -59,13 +65,17 @@ We can adjust this when initializing the engine. To do so in this example we nee
 ```{r}
 filename <- filename <- system.file("extdata", "eds_marfan_kg.tar.gz", package = "monarchr")
 
-eds_marfan_kg <- file_engine(filename, 
-                             preferences = list(category_priority = c("biolink:GenomicEntity", 
-								             																				 "biolink:DiseaseOrPhenotypicFeature")))
+eds_marfan_kg <- file_engine(filename,
+    preferences = list(category_priority = c(
+        "biolink:GenomicEntity",
+        "biolink:DiseaseOrPhenotypicFeature"
+    ))
+)
 
-g <- eds_marfan_kg |> fetch_nodes(query_ids = "HP:0001788") |> 
-  expand(categories = "biolink:Disease") |>
-  expand(categories = "biolink:Gene")
+g <- eds_marfan_kg |>
+    fetch_nodes(query_ids = "HP:0001788") |>
+    expand(categories = "biolink:Disease") |>
+    expand(categories = "biolink:Gene")
 
 nodes(g) |> select(id, name, pcategory, category)
 ```
@@ -88,15 +98,29 @@ constructor:
 ```{r}
 monarch <- monarch_engine(cache = FALSE)
 
-g1 <- monarch |> fetch_nodes(query_ids = "HP:0001788") |>
-  expand()
+g1 <- monarch |>
+    fetch_nodes(query_ids = "HP:0001788") |>
+    expand()
 
-g2 <- monarch |> fetch_nodes(query_ids = "HP:0001788") |>
-  expand()
+g2 <- monarch |>
+    fetch_nodes(query_ids = "HP:0001788") |>
+    expand()
 ```
 
 In the above example, because caching is disabled, the fetch and expansion are re-run in computing `g2`.
 
+
+
+
+<br />
+<br />
+<br />
+
+### Session Info
+
+```{r, eval=TRUE}
+sessioninfo::session_info()
+```
 
 
 

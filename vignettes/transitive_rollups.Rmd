@@ -3,7 +3,7 @@ title: "Rollups and Transitivity"
 author: "Shawn T O'Neil"
 date: "Vignette updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i>"
 output:
-  rmarkdown::html_document
+  rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Rollups and Transitivity}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,7 +13,12 @@ vignette: >
 
 ```{r, include=FALSE, message=FALSE}
 options(width = 300)
-knitr::opts_chunk$set(eval = TRUE, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
+
+# Run live/networked chunks only when building pkgdown (or when explicitly forced).
+live_eval <- identical(tolower(Sys.getenv("IN_PKGDOWN", "false")), "true") ||
+    identical(tolower(Sys.getenv("MONARCHR_VIGNETTE_EVAL", "false")), "true")
+
+knitr::opts_chunk$set(eval = live_eval, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
 ```
 
 First, let's load some required libraries, and instantiate a session-cached `monarch_engine()` for querying.
@@ -34,13 +39,15 @@ of classes and sub-classes. Let's visualize a couple of levels of this hierarchy
 
 ```{r}
 phenos <- e |>
-  fetch_nodes(name == "leg phenotype") |>
-  expand_n(predicates = "biolink:subclass_of", 
-           categories = "biolink:PhenotypicFeature", 
-           direction = "out", 
-           n = 4) |>
-  activate(nodes) |>
-  filter(name != "leg phenotype")
+    fetch_nodes(name == "leg phenotype") |>
+    expand_n(
+        predicates = "biolink:subclass_of",
+        categories = "biolink:PhenotypicFeature",
+        direction = "out",
+        n = 4
+    ) |>
+    activate(nodes) |>
+    filter(name != "leg phenotype")
 
 plot(phenos)
 ```
@@ -56,11 +63,12 @@ set.seed(42)
 
 num_nodes <- nrow(nodes(phenos))
 phenos_counted <- phenos |>
-  activate(nodes) |>
-  mutate(count = rpois(num_nodes, lambda = 5))
+    activate(nodes) |>
+    mutate(count = rpois(num_nodes, lambda = 5))
 
-plot(phenos_counted, 
-     node_label = paste(name, " || count: ", count))
+plot(phenos_counted,
+    node_label = paste(name, " || count: ", count)
+)
 ```
 
 A "rollup" might thus ask, how many patients are associated with each phenotype,
@@ -75,13 +83,16 @@ and whether each node should include its own value in the aggregation.
 
 ```{r}
 phenos_counted_rolled <- phenos_counted |>
-  activate(nodes) |>
-  mutate(total = roll_up(count, fun = sum, include_self = TRUE))
+    activate(nodes) |>
+    mutate(total = roll_up(count, fun = sum, include_self = TRUE))
 
 plot(phenos_counted_rolled,
-     node_label = paste0(name,
-                         " || count: ", count,
-                         " || total: ", total))
+    node_label = paste0(
+        name,
+        " || count: ", count,
+        " || total: ", total
+    )
+)
 ```
 
 The corresponding **`roll_down()`** aggregates in the opposite direction (not shown).
@@ -101,9 +112,9 @@ of Niemann-Pick disease, and all known causal genes.
 
 ```{r}
 npc_genes <- e |>
-  fetch_nodes(name == "Niemann-Pick disease") |>
-  descendants() |>
-  expand(predicates = "biolink:causes")
+    fetch_nodes(name == "Niemann-Pick disease") |>
+    descendants() |>
+    expand(predicates = "biolink:causes")
 
 plot(npc_genes)
 ```
@@ -113,11 +124,12 @@ function 'pulls' information across edges:
 
 ```{r}
 npc_genes_causal <- npc_genes |>
-  activate(nodes) |>
-  mutate(caused_by = transfer(name, over = "biolink:causes", direction = "out"))
+    activate(nodes) |>
+    mutate(caused_by = transfer(name, over = "biolink:causes", direction = "out"))
 
-plot(npc_genes_causal, 
-     node_label = paste0(name, " || caused by: ", caused_by))
+plot(npc_genes_causal,
+    node_label = paste0(name, " || caused by: ", caused_by)
+)
 npc_genes_causal
 ```
 
@@ -128,7 +140,7 @@ column in the node table.
 
 ```{r}
 nodes(npc_genes_causal) |>
-  select(name, caused_by)
+    select(name, caused_by)
 ```
 
 In cases where a transfer would result in multiple values being collected at the destination node,
@@ -139,14 +151,16 @@ that cause it or any of its subtypes.
 
 ```{r}
 npc_genes_causal_rolled <- npc_genes_causal |>
-  activate(nodes) |>
-  mutate(any_caused_by = roll_up(caused_by,
-                                 fun = unique,
-                                 include_self = TRUE,
-                                 predicates = "biolink:subclass_of"))
+    activate(nodes) |>
+    mutate(any_caused_by = roll_up(caused_by,
+        fun = unique,
+        include_self = TRUE,
+        predicates = "biolink:subclass_of"
+    ))
 
-plot(npc_genes_causal_rolled, 
-     node_label = paste0(name, " || any caused by: ", any_caused_by))
+plot(npc_genes_causal_rolled,
+    node_label = paste0(name, " || any caused by: ", any_caused_by)
+)
 
 npc_genes_causal_rolled
 ```
@@ -162,9 +176,12 @@ Let's return to the patient-count example, using the rolled-up data:
 
 ```{r}
 plot(phenos_counted_rolled,
-     node_label = paste0(name,
-                         " || count: ", count,
-                         " || total: ", total))
+    node_label = paste0(
+        name,
+        " || count: ", count,
+        " || total: ", total
+    )
+)
 ```
 It may be the case that to protect patient privacy (again, pretending these
 phenotypes are disease diagnoses associated with patients) we want to remove
@@ -172,14 +189,16 @@ nodes that have a `count` less than 6. If we do so however, we lose connectivity
 
 ```{r}
 censored <- phenos_counted_rolled |>
-  activate(nodes) |>
-  filter(!count < 6)
+    activate(nodes) |>
+    filter(!count < 6)
 
 plot(censored,
-     node_label = paste0(name,
-                         " || count: ", count,
-                         " || total: ", total))
-
+    node_label = paste0(
+        name,
+        " || count: ", count,
+        " || total: ", total
+    )
+)
 ```
 To fix this, we can first compute the `transitive_closure()` of the graph, with respect
 to an edge predicate we want to treat as transitive (defaulting to `biolink:subclass_of`). We color edges
@@ -189,28 +208,34 @@ edges can be $O(n^2)$ in the number of nodes.
 
 ```{r}
 phenos_closed <- phenos_counted_rolled |>
-  transitive_closure(predicate = "biolink:subclass_of")
+    transitive_closure(predicate = "biolink:subclass_of")
 
 plot(phenos_closed,
-     node_label = paste0(name,
-                         " || count: ", count,
-                         " || total: ", total),
-     edge_color = primary_knowledge_source,
-     edge_linetype = predicate)
+    node_label = paste0(
+        name,
+        " || count: ", count,
+        " || total: ", total
+    ),
+    edge_color = primary_knowledge_source,
+    edge_linetype = predicate
+)
 ```
 Now we can try our removal:
 
 ```{r}
 closed_censored <- phenos_closed |>
-  activate(nodes) |>
-  filter(!count < 6)
+    activate(nodes) |>
+    filter(!count < 6)
 
 plot(closed_censored,
-     node_label = paste0(name,
-                         " || count: ", count,
-                         " || total: ", total),
-     edge_color = primary_knowledge_source,
-     edge_linetype = predicate)
+    node_label = paste0(
+        name,
+        " || count: ", count,
+        " || total: ", total
+    ),
+    edge_color = primary_knowledge_source,
+    edge_linetype = predicate
+)
 ```
 
 The graph retains its connectivity, but has redundant edges. The `transitive_reduction()`
@@ -219,16 +244,32 @@ function removes these, again according to a specified transitive predicate
 
 ```{r}
 phenos_final <- closed_censored |>
-  transitive_reduction(predicate = "biolink:subclass_of")
+    transitive_reduction(predicate = "biolink:subclass_of")
 
 plot(phenos_final,
-     node_label = paste0(name,
-                         " || count: ", count,
-                         " || total: ", total),
-     edge_color = primary_knowledge_source,
-     edge_linetype = predicate)
+    node_label = paste0(
+        name,
+        " || count: ", count,
+        " || total: ", total
+    ),
+    edge_color = primary_knowledge_source,
+    edge_linetype = predicate
+)
 ```
 
+
+
+
+
+<br />
+<br />
+<br />
+
+### Session Info
+
+```{r, eval=TRUE}
+sessioninfo::session_info()
+```
 
 
 

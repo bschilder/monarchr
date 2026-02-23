@@ -11,7 +11,8 @@ transfer(colname = NULL, over, direction = "out")
 
 \item{over}{The edge predicate to transfer information over}
 
-\item{direction}{Whether to transfer information along the predicate direction ("out") or against ("in")}
+\item{direction}{Whether to transfer information along the predicate
+direction ("out") or against ("in")}
 }
 \value{
 Vector or list, with one entry per node.
@@ -25,23 +26,35 @@ column; intended to be used with mutate() on nodes.
 \details{
 The return value will be either a list, or if the result would be a list
 with all length-1 or length-0 elements, a vector with 0-length elements
-replaced by NA. Practically, this results in a list when necessary and a vector
+replaced by NA. Practically, this results in a list when necessary and a
+vector
 otherwise.
 }
 \examples{
+library(dplyr)
+library(tidygraph)
 data(eds_marfan_kg)
 
-engine |> eds_marfan_kg |>
-	expand(categories = "biolink:Disease") |>
-	activate(nodes) |>
-	mutate(caused_by_genes =
-	         transfer(name, over = "biolink:causes", direction = "out")) |>
-	mutate(causes_diseases =
-	         transfer(name, over = "biolink:causes", direction = "in")) |>
-	plot.tbl_kgx(node_label = paste(name,
-																	" caused by: ", caused_by_genes,
-																	" causes: ", causes_diseases),
-							 label_size = 3)
+eds_marfan_kg |>
+    fetch_nodes("biolink:Gene" \%in_list\% category, limit = 5) |>
+    expand(categories = "biolink:Disease") |>
+    activate(nodes) |>
+    mutate(caused_by_genes = transfer(name,
+        over = "biolink:causes",
+        direction = "out"
+    )) |>
+    mutate(causes_diseases = transfer(name,
+        over = "biolink:causes",
+        direction = "in"
+    )) |>
+    plot(
+        node_label = paste(
+            name,
+            " caused by: ", caused_by_genes,
+            " causes: ", causes_diseases
+        ),
+        label_size = 3
+    )
 
 }
 \seealso{

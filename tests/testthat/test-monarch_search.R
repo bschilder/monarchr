@@ -2,8 +2,7 @@ library(testthat)
 library(assertthat)
 
 test_that("monarch_search works", {
-    # skip for now
-    #testthat::skip("temporary skip")
+    # skip for now testthat::skip("temporary skip")
 
     g <- monarch_search("fanconi anemia", limit = 5)
     # result should be a tbl_kgx with 5 nodes and no edges
@@ -28,6 +27,4 @@ test_that("monarch_search works", {
     edges_df <- data.frame(tidygraph::activate(g, edges))
     expect_equal(nrow(nodes_df), 0)
     expect_equal(nrow(edges_df), 0)
-
-
-    })
+})

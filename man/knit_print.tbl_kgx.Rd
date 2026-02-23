@@ -13,6 +13,9 @@
 
 \item{show}{The maximum number of nodes and edges to display.}
 }
+\value{
+\code{knitr::as_is} output for display.
+}
 \description{
 Specialized print function for KGX graphs in knitted documents
 }

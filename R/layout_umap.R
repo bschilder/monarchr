@@ -15,25 +15,27 @@
 #' set.seed(2024)
 #' data(eds_marfan_kg)
 #' g <- eds_marfan_kg |>
-#'      fetch_nodes(pcategory=="biolink:Disease", limit=40) |>
-#'      expand(predicates = "biolink:has_phenotype",
-#'             categories = "biolink:PhenotypicFeature")|>
-#'      tidygraph::sample_n(200) |>
-#'      expand(categories = "biolink:Gene")
+#'     fetch_nodes(pcategory == "biolink:Disease", limit = 40) |>
+#'     expand(
+#'         predicates = "biolink:has_phenotype",
+#'         categories = "biolink:PhenotypicFeature"
+#'     ) |>
+#'     tidygraph::sample_n(200) |>
+#'     expand(categories = "biolink:Gene")
 #' X <- layout_umap(g)
 #' g <- graph_centrality(g)
-#' plot(g, layout=X, node_size=centrality)
+#' plot(g, layout = X, node_size = centrality)
 layout_umap <- function(graph,
-												use_3d = FALSE,
-												prefix="UMAP",
-												...){
-	if(use_3d){
-		fun <- utils::getFromNamespace("layout_umap_3d_impl", "igraph")
-	} else {
-		fun <- utils::getFromNamespace("layout_umap_impl", "igraph")
-	}
-	X <- fun(graph, res=matrix())
-	rownames(X) <- nodes(graph)$id
-	colnames(X) <- paste0(prefix, 1:ncol(X))
-	return(X)
+    use_3d = FALSE,
+    prefix = "UMAP",
+    ...) {
+    if (use_3d) {
+        fun <- utils::getFromNamespace("layout_umap_3d_impl", "igraph")
+    } else {
+        fun <- utils::getFromNamespace("layout_umap_impl", "igraph")
+    }
+    X <- fun(graph, res = matrix())
+    rownames(X) <- nodes(graph)$id
+    colnames(X) <- paste0(prefix, seq_len(ncol(X)))
+    return(X)
 }

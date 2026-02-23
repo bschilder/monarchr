@@ -9,6 +9,9 @@ order_cols(g)
 \arguments{
 \item{g}{A \code{tbl_kgx} graph.}
 }
+\value{
+The input graph with ordered node/edge columns.
+}
 \description{
 Set edge/row data column order according to most recent engine preferences
 }

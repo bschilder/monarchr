@@ -16,3 +16,8 @@ devtools::build()
 devtools::install()
 # hmm
 
+Sys.setenv(PATH = paste("/opt/homebrew/bin", Sys.getenv("PATH"), sep = ":"))
+# Optional fallback to RStudio-bundled pandoc:
+Sys.setenv(RSTUDIO_PANDOC = "/Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/aarch64")
+rmarkdown::find_pandoc()
+devtools::check()
