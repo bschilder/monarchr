@@ -1,3 +1,7 @@
+# monarchr 2.99.0
+
+This is a minor version bump for the purpose of submitting the package to BioConductor.
+
 # monarchr 2.1.4
 
 ## Bug Fixes
