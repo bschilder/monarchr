@@ -17,6 +17,7 @@
 #' @inheritDotParams ggraph::ggraph
 #' @import ggraph
 #' @import ggplot2
+#' @import grDevices
 #' @importFrom stringr str_wrap
 #' @examples
 #' filename <- system.file("extdata", "eds_marfan_kg.tar.gz", package = "monarchr")
@@ -68,41 +69,41 @@ plot.tbl_kgx <- function(x,
 												 			na.value = "grey",
 												 			guide = "none"),
 												 		geom_edge_fan=list(
-												 			aes(color = {{edge_color}},
+												 			ggplot2::aes(color = {{edge_color}},
 												 					# linewidth={{edge_color}},
 												 					linetype = {{edge_linetype}}),
-												 			arrow = arrow(length = unit(2, 'mm'),
+												 			arrow = ggplot2::arrow(length = ggplot2::unit(2, 'mm'),
 												 										type = "open"),
-												 			end_cap = circle(2.5, 'mm'),
+												 			end_cap = ggraph::circle(2.5, 'mm'),
 												 			edge_alpha = edge_alpha,
 												 			show.legend = FALSE
 												 		),
 												 		geom_edge_loop=list(
-												 			aes(color = {{edge_color}}),
-												 			arrow = arrow(length = unit(2, 'mm'),
+												 			ggplot2::aes(color = {{edge_color}}),
+												 			arrow = ggplot2::arrow(length = unit(2, 'mm'),
 												 										type = "open"),
-												 			end_cap = circle(2.5, 'mm'),
+												 			end_cap = ggraph::circle(2.5, 'mm'),
 												 			edge_alpha = edge_alpha
 												 		),
 												 		geom_edge_bundle_force2=list(
-												 			aes(color = {{edge_color}},
+												 			ggplot2::aes(color = {{edge_color}},
 												 					 linetype = {{edge_linetype}}),
 												 			edge_alpha = edge_alpha
 												 		),
 												 		geom_edge_density=NULL,#list(ggplot2::aes(fill=predicate)),
 												 		geom_node_point=list(
-												 			aes(color = {{node_color}},
+												 			ggplot2::aes(color = {{node_color}},
 												 					shape = {{node_shape}},
 												 					size = {{node_size}}),
 												 			alpha = node_alpha
 												 		),
 												 		geom_node_label=list(
-												 			aes(label = str_wrap(name, 20)),
+												 			ggplot2::aes(label = stringr::str_wrap(name, 20)),
 												 			box.padding = 0.4,
 												 			min.segment.length=0,
 												 			size = 2,
 												 			repel = TRUE,
-												 			segment.colour = alpha("black",edge_alpha),
+												 			segment.colour = ggplot2::alpha("black",edge_alpha),
 												 			segment.linetype = "dotted",
 												 			fill = "#FFFFFF88"
 												 		)
@@ -114,11 +115,23 @@ plot.tbl_kgx <- function(x,
 	} else{
 		layer_args$geom_edge_bundle_force2 <- NULL
 	}
+
 	if(edges(x)|>pull({{edge_color}})|>is.numeric()){
 		layer_args$scale_edge_color_manual <- NULL
 		layer_args$scale_edge_fill_manual <- NULL
 	} else {
 		layer_args$scale_edge_color_gradientn <- NULL
+		# Create a new palette when the edge labels are not continuous and not the default
+		edge_groups <- unique(edges(x)|>pull({{edge_color}}))
+		if (!all(edge_groups %in% names(palettes$edges$discrete))){
+			all_colors = grDevices::colors()[grep('gr(a|e)y', grDevices::colors(),
+																						invert = TRUE)][-1]
+			layer_args$scale_edge_color_manual$values <- stats::setNames(
+				all_colors[seq(length(edge_groups))],
+				edge_groups
+			)
+		}
+
 	}
 	ggraph(x,
 				 layout = layout,

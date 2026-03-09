@@ -9,6 +9,7 @@
 #' If FALSE, return the final graph with all expanded edges.
 #' @param n Number of expansion iterations to run.
 #' @inheritParams expand
+#' @param transitive NULL (not used in this function).
 #'
 #' @return A `tbl_kgx()` graph
 #' @export
@@ -28,7 +29,7 @@ expand_n <- function(graph,
 										 direction = "both",
 										 predicates = NULL,
 										 categories = NULL,
-										 transitive = FALSE,
+										 transitive = NULL,
 										 drop_unused_query_nodes = FALSE,
 										 n=1,
 										 ...) {
@@ -44,6 +45,10 @@ expand_n <- function(graph,
 			return(arg)
 		}
 	}
+	if(!is.null(transitive)) {
+		warning("Arguments to expand_n() are passed on to expand(), except for transitive which is set to NULL. Ignoring provided setting for transitive in expand_n().")
+	}
+
 	## Expand graph
 	message(paste(
 		"Initial graph size:",
@@ -57,7 +62,7 @@ expand_n <- function(graph,
 										direction = check_len(direction,n,i),
 										predicates = check_len(predicates,n,i),
 										categories = check_len(categories,n,i),
-										transitive = check_len(transitive,n,i),
+										transitive = FALSE,
 										drop_unused_query_nodes = check_len(drop_unused_query_nodes,n,i),
 										...)
 		if(return_each) graph_list[[paste0("iteration",i)]] <- graph

@@ -28,51 +28,53 @@
      na.value =
     "grey"), scale_shape_manual = list(values = palettes$nodes$shape, na.value = 19),
     scale_edge_fill_manual = list(values = palettes$nodes$discrete, na.value = "grey",
-    guide = "none"), geom_edge_fan = list(aes(color = {
-     {
-         edge_color
-    
-    }
- }, linetype = {
-     {
-         edge_linetype
-     }
- }), arrow = arrow(length =
-    unit(2, "mm"), type = "open"), end_cap = circle(2.5, "mm"), edge_alpha = edge_alpha,
-    show.legend = FALSE), geom_edge_loop = list(aes(color = {
-     {
-         edge_color
-
-        }
- }), arrow = arrow(length = unit(2, "mm"), type = "open"), end_cap =
-    circle(2.5, "mm"), edge_alpha = edge_alpha), geom_edge_bundle_force2 = list(aes(color
-    = {
-     {
-         edge_color
-     }
- }, linetype = {
-     {
-         edge_linetype
-
-        }
- }), edge_alpha = edge_alpha), geom_edge_density = NULL, geom_node_point =
-    list(aes(color = {
-     {
-         node_color
-     }
- }, shape = {
+    guide = "none"), geom_edge_fan = list(ggplot2::aes(color = {
      {
         
-    node_shape
+    edge_color
+     }
+ }, linetype = {
+     {
+         edge_linetype
+     }
+ }), arrow =
+    ggplot2::arrow(length = ggplot2::unit(2, "mm"), type = "open"), end_cap =
+    ggraph::circle(2.5, "mm"), edge_alpha = edge_alpha, show.legend = FALSE),
+    geom_edge_loop = list(ggplot2::aes(color = {
+     {
+         edge_color
+     }
+ }),
+    arrow = ggplot2::arrow(length = unit(2, "mm"), type = "open"), end_cap =
+    ggraph::circle(2.5, "mm"), edge_alpha = edge_alpha), geom_edge_bundle_force2 =
+    list(ggplot2::aes(color = {
+     {
+         edge_color
+     }
+ }, linetype = {
+    
+    {
+         edge_linetype
+     }
+ }), edge_alpha = edge_alpha), geom_edge_density =
+    NULL, geom_node_point = list(ggplot2::aes(color = {
+     {
+         node_color
+    
+    }
+ }, shape = {
+     {
+         node_shape
      }
  }, size = {
      {
-         node_size
+        
+    node_size
      }
- }), alpha =
-    node_alpha), geom_node_label = list(aes(label = str_wrap(name, 20)), box.padding =
-    0.4, min.segment.length = 0, size = 2, repel = TRUE, segment.colour = alpha("black",
-    edge_alpha), segment.linetype = "dotted", fill = "#FFFFFF88"))
+ }), alpha = node_alpha), geom_node_label = list(ggplot2::aes(label
+    = stringr::str_wrap(name, 20)), box.padding = 0.4, min.segment.length = 0, size = 2,
+    repel = TRUE, segment.colour = ggplot2::alpha("black", edge_alpha), segment.linetype
+    = "dotted", fill = "#FFFFFF88"))
 )
 }
 \arguments{

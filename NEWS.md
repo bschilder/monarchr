@@ -1,21 +1,45 @@
-# monarchr 1.5.1
+# monarchr 1.6.2
+
+## New features
+
+* Add `biolink:Drug` to *kge_prefs.yaml*
+* Update README installation instructions so that Bioc deps (namely `RCy3`)
+	will be installed automatically.
+
+## Bug fixes
+
+* 
+
+# monarchr 1.6.1
+
+## Bug fixes
+
+* Supported using non-default base URLs for `cytoscape()` plotting
+* Fixed a bug resulting in duplicate entries when joining graphs from different data contexts
+
+# monarchr 1.6.0
 
 ## New features
 
 * New utility function:
 	- `graph_semsim`
 	- `graph_centrality`
-	- `sparsity`
+	- `graph_sparsity`
 	
 * Updated plotting functions
 	-	Overhauled `plot.tbl_kgx`
-	- New function for getting consistent Monarch palettes: `monarch_palette`.
+	- New function for getting consistent Monarch palettes: `monarch_palettes`.
 	- New function to apply monarch theme to existing `ggraph` plots: `theme_monarch`
 
 * `kg_edge_weights`: New function to compute quantitative edge weights from 
 discrete and continuous edge metadata.
 
 * `expand_n`: New function to expand a graph to a specified number of nodes.
+
+## Bug fixes
+
+* Improved the URL try order for the Monarch Neo4j API.
+
 
 # monarchr 1.5.0
 
