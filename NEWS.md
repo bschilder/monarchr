@@ -4,6 +4,7 @@
 
 * Synced fork with upstream monarch-initiative/monarchr v2.99.0.
 * Removed `rworkflows` dependency.
+* Added GitHub issue templates for bug reports and feature requests (fixes #38).
 
 # monarchr 2.99.0
 
