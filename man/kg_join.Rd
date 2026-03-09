@@ -17,33 +17,44 @@ kg_join(graph1, graph2, ...)
 A \code{tbl_kgx()} graph
 }
 \description{
-Given two KGX graphs, returns a new KGX graph that is the union of the two input graphs,
-with any edges between nodes repeated for aother nodes with the same subject and object \code{id}.
+Given two KGX graphs, returns a new KGX graph that is the union of the two
+input graphs,
+with any edges between nodes repeated for aother nodes with the same subject
+and object \code{id}.
 The engine of the first graph is used for the new graph.
 }
 \details{
-This function first computes new node and edge data, by taking the full natural join of
-node and edge data from the two input graphs, and then keeping unique rows. Note that nodes with
-the same \code{id} that differ in any shared column are effectively kept as separate, taken
-to represent the same entity in different contexts. (However, a node with an additional property will be
-merged with a node without that property, as defined by the natural join.) In these
-cases, any edge that connects to one of these nodes is also valid for the other node, and so the
+This function first computes new node and edge data, by taking the full
+natural join of
+node and edge data from the two input graphs, and then keeping unique rows.
+Note that nodes with
+the same \code{id} that differ in any shared column are effectively kept as
+separate, taken
+to represent the same entity in different contexts. (However, a node with an
+additional property will be
+merged with a node without that property, as defined by the natural join.)
+In these
+cases, any edge that connects to one of these nodes is also valid for the
+other node, and so the
 method repeats edges across nodes with the same \code{id}.
 }
 \examples{
 ## Using example KGX file packaged with monarchr
-filename <- system.file("extdata", "eds_marfan_kg.tar.gz", package = "monarchr")
-engine <- file_engine(filename)
+data(eds_marfan_kg)
 
-eds_and_phenos <- engine |>
-                  fetch_nodes(query_ids = "MONDO:0007525") |>
-                  expand(predicates = "biolink:has_phenotype",
-                         categories = "biolink:PhenotypicFeature")
+eds_and_phenos <- eds_marfan_kg |>
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    )
 
-marfan_and_phenos <- engine |>
-                     fetch_nodes(query_ids = "MONDO:0007947") |>
-                     expand(predicates = "biolink:has_phenotype",
-                            categories = "biolink:PhenotypicFeature")
+marfan_and_phenos <- eds_marfan_kg |>
+    fetch_nodes(query_ids = "MONDO:0007947") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    )
 
 combined <- kg_join(eds_and_phenos, marfan_and_phenos)
 print(combined)

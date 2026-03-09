@@ -5,6 +5,7 @@ visualisation\.Rmd
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^README\.Rmd$
+^Makefile$
 ^meta$
 ^docs$
 ^pkgdown$
@@ -13,6 +14,10 @@ visualisation\.Rmd
 ^\.github$
 ^\.vscode$
 ^\.env$
+^monarchr\.BiocCheck$
+^monarchr\.Rcheck$
+^monarchr_.*\.tar\.gz$
+^.*\.DS_Store$
 
 ## For GitHub Actions Windows runner
 node_modules$

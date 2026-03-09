@@ -1,11 +1,8 @@
 monarchr
 ================
 [![License: MIT + file
-LICENSE](https://img.shields.io/badge/license-MIT%20+%20file%20LICENSE-blue.svg)](https://cran.r-project.org/web/licenses/MIT%20+%20file%20LICENSE)
-[![](https://img.shields.io/badge/doi-10.5281/zenodo.14553217-blue.svg)](https://doi.org/10.5281/zenodo.14553217)
-[![](https://img.shields.io/badge/devel%20version-1.6.2-black.svg)](https://github.com/monarch-initiative/monarchr)
-[![](https://img.shields.io/github/languages/code-size/monarch-initiative/monarchr.svg)](https://github.com/monarch-initiative/monarchr)
-[![](https://img.shields.io/github/last-commit/monarch-initiative/monarchr.svg)](https://github.com/monarch-initiative/monarchr/commits/main)
+LICENSE](https://img.shields.io/badge/license-MIT%20+%20file%20LICENSE-blue.svg)](LICENSE)
+[![](https://img.shields.io/badge/devel%20version-2.99.0-black.svg)](https://github.com/monarch-initiative/monarchr)
 <br> [![R build
 status](https://github.com/monarch-initiative/monarchr/workflows/rworkflows/badge.svg)](https://github.com/monarch-initiative/monarchr/actions)
 [![](https://codecov.io/gh/monarch-initiative/monarchr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/monarch-initiative/monarchr)
@@ -19,14 +16,14 @@ README updated: <i>Mar-09-2026</i>
 
 ## `monarchr`: Monarch Knowledge Graph Queries
 
-### R package for easy access, manipulation, and analysis of Monarch KG data Resources.
+### R package for easy access, manipulation, and analysis of knowledge graphs.
 
 `monarchr` provides a tidy interface to data hosted at
-<https://monarchinitiative.org>.
+<https://monarchinitiative.org>, and other knowledge graphs in KGX format (e.g. those at [KGHub](https://kghub.org/)).
 
-- [Website](https://%60r%20owner%60.github.io/%60r%20pkg%60)
+- [Website](https://monarch-initiative.github.io/monarchr/)
 - [Get
-  started](https://%60r%20owner%60.github.io/%60r%20pkg%60/articles/%60r%20pkg%60)
+  started](https://monarch-initiative.github.io/monarchr/articles/monarchr.html)
 
 <!-- If you use `monarchr`, please cite:  -->
 
@@ -39,6 +36,6 @@ Installation:
 ``` r
 if(!require("BiocManager")) install.packages("BiocManager")
 
-BiocManager::install("monarch-initiative/monarchr")
+BiocManager::install("monarch-initiative/monarchr", update=FALSE)
 library(monarchr)
 ```

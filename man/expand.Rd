@@ -11,24 +11,30 @@ expand(
   predicates = NULL,
   categories = NULL,
   transitive = FALSE,
-  drop_unused_query_nodes = FALSE,
   ...
 )
 }
 \arguments{
 \item{graph}{A query \code{tbl_kgx()} graph ot query with.}
 
-\item{engine}{(Optional) An engine to use for fetching query graph edges. If not provided, the graph's most recent engine is used.}
+\item{engine}{(Optional) An engine to use for fetching query graph edges. If
+not provided, the graph's most recent engine is used.}
 
-\item{direction}{The direction of associations to fetch. Can be "in", "out", or "both". Default is "both".}
+\item{direction}{The direction of associations to fetch. Can be "in", "out",
+or "both". Default is "both".}
 
-\item{predicates}{A vector of relationship predicates (nodes in g are subjects in the KG), indicating which edges to consider in the neighborhood. If NULL (default), all edges are considered.}
+\item{predicates}{A vector of relationship predicates (nodes in g are
+subjects in the KG), indicating which edges to consider in
+the neighborhood. If NULL (default), all edges are
+considered.}
 
-\item{categories}{A vector of node categories, indicating which nodes in the larger KG may be fetched. If NULL (default), all nodes in the larger KG are will be fetched.}
+\item{categories}{A vector of node categories, indicating which nodes in the
+larger KG may be fetched. If NULL (default), all nodes in
+the larger KG are will be fetched.}
 
-\item{transitive}{If TRUE, include transitive closure of the neighborhood. Default is FALSE. Useful in combination with predicates like \code{biolink:subclass_of}.}
-
-\item{drop_unused_query_nodes}{If TRUE, remove query nodes from the result, unless they are at the neighborhood boundary, i.e., required for connecting to the result nodes. Default is FALSE.}
+\item{transitive}{If TRUE, include transitive closure of the neighborhood.
+Default is FALSE. Useful in combination with predicates
+like \code{biolink:subclass_of}.}
 
 \item{...}{Other parameters passed to methods.}
 }
@@ -37,42 +43,33 @@ A \code{tbl_kgx()} graph
 }
 \description{
 Given an optional KG engine (e.g. a \code{file_engine()},
-\code{neo4j_engine()}, or \code{monarch_engine()}) and a query \code{tbl_kgx()} graph, fetches additional nodes and edges
-from the KG, expanding the query graph according to specific criteria. If the first parameter is an engine, that
-engine is used; if the first parameter is a query graph, the most recent engine associated with the graph is used.
+\code{neo4j_engine()}, or \code{monarch_engine()}) and a query \code{tbl_kgx()} graph,
+fetches additional nodes and edges
+from the KG, expanding the query graph according to specific criteria. If
+the first parameter is an engine, that
+engine is used; if the first parameter is a query graph, the most recent
+engine associated with the graph is used.
 }
 \examples{
 \dontshow{if (monarch_engine_check()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 ## Using Monarch (hosted)
 phenos <- monarch_engine() |>
-          fetch_nodes(query_ids = "MONDO:0007525") |>
-          expand(predicates = "biolink:has_phenotype",
-                 categories = "biolink:PhenotypicFeature")
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    )
 
 print(phenos)
-
-
 \dontshow{\}) # examplesIf}
 ## Using example KGX file packaged with monarchr
-filename <- system.file("extdata", "eds_marfan_kg.tar.gz", package = "monarchr")
-phenos <- file_engine(filename) |>
-          fetch_nodes(query_ids = "MONDO:0007525") |>
-          expand(predicates = "biolink:has_phenotype",
-                 categories = "biolink:PhenotypicFeature")
+data(eds_marfan_kg)
+phenos <- eds_marfan_kg |>
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    )
 
 print(phenos)
-
-
-
-\dontshow{if (file_engine_check("https://kghub.io/kg-obo/mondo/2024-03-04/mondo_kgx_tsv.tar.gz")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-## Using MONDO KGX file (remote) as an example
-phenos <- file_engine("https://kghub.io/kg-obo/mondo/2024-03-04/mondo_kgx_tsv.tar.gz") |>
-          fetch_nodes(query_ids = "MONDO:0007525") |>
-          expand(predicates = "biolink:has_phenotype",
-                 categories = "biolink:PhenotypicFeature")
-
-print(phenos)
-
-file.remove("mondo_kgx_tsv.tar.gz") # cleanup - remove the downloaded file
-\dontshow{\}) # examplesIf}
 }

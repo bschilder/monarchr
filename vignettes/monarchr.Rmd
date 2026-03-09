@@ -3,7 +3,7 @@ title: "MonarchR Basics"
 author: "Shawn T O'Neil"
 date: "Vignette updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i>"
 output:
-  rmarkdown::html_document
+  rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{monarchr}
   %\VignetteEngine{knitr::rmarkdown}
@@ -17,7 +17,12 @@ library(tidygraph)
 library(monarchr)
 
 options(width = 300)
-knitr::opts_chunk$set(eval = TRUE, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
+
+# Run live/networked chunks only when building pkgdown (or when explicitly forced).
+live_eval <- identical(tolower(Sys.getenv("IN_PKGDOWN", "false")), "true") ||
+    identical(tolower(Sys.getenv("MONARCHR_VIGNETTE_EVAL", "false")), "true")
+
+knitr::opts_chunk$set(eval = live_eval, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
 ```
 
 
@@ -25,9 +30,9 @@ knitr::opts_chunk$set(eval = TRUE, echo = TRUE, fig.width = 10, message = FALSE,
 
 Knowledge graphs (KGs) represent entities (such as genes, diseases, or phenotypes) and
 the relationships between them; for example that the `CFTR` gene `causes` the disease
-`Cystic fibrosis`. In the [Monarch Initiative](https://monarchiniative.org) KG, this
+`Cystic fibrosis`. In the [Monarch Initiative](https://monarchinitiative.org) KG, this
 information is stored in a *directed, labeled property graph*, with properties
-attached to the entities (nodes) and relationships (edges). The [KGX format](https://github.com/biolink/kgx/blob/master/specification/kgx-format.md) used by 
+attached to the entities (nodes) and relationships (edges). The [KGX format](https://github.com/biolink/kgx) used by 
 Monarch provides a simple specification for KGs:
 
 * Nodes must have an `id` property
@@ -37,13 +42,13 @@ Monarch provides a simple specification for KGs:
 
 In the following figure, these required properties are shown in bold:
 
-<center>![](assets/cftr_cf_edge.png){width=90%}</center>
+<center>![Small KG visualization showing node and edge properties, with id, category, subject, and object bolded, and other properties such as name present.](assets/cftr_cf_edge.png){width=90%}</center>
 
 The `monarchr` package provides access to the cloud-hosted Monarch Initiative KG,
 and [others in KGX format](https://kghub.org) via graph-database and file-based "engines", 
 with a simple but flexible set of query functions. The example below finds all
 of the sub-types of [Neimann-Pick Disease](https://monarchinitiative.org/MONDO:0001982), and all of the
-genes associated with those. (You an use the [Monarch Initiative](https://monarchiniative.org) website to
+genes associated with those. (You an use the [Monarch Initiative](https://monarchinitiative.org) website to
 identify IDs for genes, diseases, phenotypes and more, or `search_nodes()` described below.)
 
 
@@ -51,9 +56,9 @@ identify IDs for genes, diseases, phenotypes and more, or `search_nodes()` descr
 # MONDO:0001982 Niemann-Pick Disease (13 subtypes)
 
 g <- monarch_engine() |>
-  fetch_nodes(query_ids = c("MONDO:0001982")) |>
-	expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
-	expand(categories = "biolink:Gene")
+    fetch_nodes(query_ids = c("MONDO:0001982")) |>
+    expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
+    expand(categories = "biolink:Gene")
 
 plot(g)
 g
@@ -64,25 +69,25 @@ Backed by `tidygraph` and `igraph`, `monarchr` is part of a larger ecosystem of 
 
 - Graph joins, filters, and other manipulation: [`tidygraph`](https://tidygraph.data-imaginist.com/)
 - Visualization: 
-  - ggplot-based: [`ggraph`](https://ggraph.data-imaginist.com/), 
-  - Interactive: [`visNetwork`](https://datastorm-open.github.io/visNetwork/), [`threejs`](https://bwlewis.github.io/rthreejs/)
+    - ggplot-based: [`ggraph`](https://ggraph.data-imaginist.com/), 
+    - Interactive: [`visNetwork`](https://datastorm-open.github.io/visNetwork/), [`threejs`](https://bwlewis.github.io/rthreejs/)
 - Exploratory analyses: [`EGAnet`](https://r-ega.net/)
 - Graph algorithms: 
-  - Various: [`igraph`](https://r.igraph.org/reference/index.html), [`migraph`](https://cran.r-project.org/web/packages/migraph/index.html), [`netrankr`](https://github.com/schochastics/netrankr/)
-  - Matching: [`iGraphMatch`](https://cran.r-project.org/web/packages/iGraphMatch/vignettes/iGraphMatch.html)
-  - Graph neural networks: [`spinner`](https://rpubs.com/giancarlo_vercellino/spinner)
-  - Clustering: [`clustAnalytics`](https://cran.r-project.org/web/packages/clustAnalytics/index.html)
-  - Community detection: [`leidenAlg`](https://github.com/kharchenkolab/leidenAlg)
-  - Link prediction: [`linkprediction`](https://cran.r-project.org/web/packages/linkprediction/index.html)
+    - Various: [`igraph`](https://r.igraph.org/reference/index.html), [`migraph`](https://CRAN.R-project.org/package=migraph), [`netrankr`](https://github.com/schochastics/netrankr/)
+    - Matching: [`iGraphMatch`](https://CRAN.R-project.org/package=iGraphMatch)
+    - Graph neural networks: [`spinner`](https://rpubs.com/giancarlo_vercellino/spinner)
+    - Clustering: [`clustAnalytics`](https://CRAN.R-project.org/package=clustAnalytics)
+    - Community detection: [`leidenAlg`](https://github.com/kharchenkolab/leidenAlg)
+    - Link prediction: [`linkprediction`](https://CRAN.R-project.org/package=linkprediction)
 - Other:
-  - Particle/force-based simulation: [`particles`](https://github.com/thomasp85/particles)
-  - ... others in the reverse imports for [`igraph`](https://cran.r-project.org/web/packages/igraph/index.html)
+    - Particle/force-based simulation: [`particles`](https://github.com/thomasp85/particles)
+    - ... others in the reverse imports for [`igraph`](https://CRAN.R-project.org/package=igraph)
 
 # Engines
 
-Two kinds of engines are supported, providing largely the same functionality: one supporting access to [Neo4j graph databases](https://neo4j.com/), and another supporting file-based access to TSV-formatted `.tar.gz` KGs hosted at [kghub.io](https://kghub.io). Regardless of source, KGs must conform to the [KGX specification](https://github.com/biolink/kgx/blob/master/specification/kgx-format.md).
+Two kinds of engines are supported, providing largely the same functionality: one supporting access to [Neo4j graph databases](https://neo4j.com/), and another supporting file-based access to TSV-formatted `.tar.gz` KGs hosted at [kghub.io](https://kghub.io). Regardless of source, KGs must conform to the [KGX specification](https://github.com/biolink/kgx).
 
-The most accessible engine provided by `monarchr` is the `monarch_engine()`, designed specifically to access the cloud-hosted [Monarch Initiative](https://monarchiniatiative.org) KG.
+The most accessible engine provided by `monarchr` is the `monarch_engine()`, designed specifically to access the cloud-hosted [Monarch Initiative](https://monarchinitiative.org) KG.
 
 ```{r}
 monarch <- monarch_engine()
@@ -94,14 +99,15 @@ Using another Neo4j database via `neo4j_engine()` is as simple as specifying a N
 neodb <- neo4j_engine("http://localhost:7687", username = "user", password = "pass")
 ```
 
-Finally, the `file_engine()` provides KG access to KGX-formatted, `.tar.gz` files containing tab-separated `*_nodes.tsv` and `*_edges.tsv` files. The package comes bundled with a small example KG providing information about Ehlers-Danlos and Marfan syndrome for demonstration purposes. You can also provide a local file path, or a URL to a remote file, which will be downloaded to the current working directory.
+Finally, the `file_engine()` provides KG access to KGX-formatted, `.tar.gz` files containing tab-separated `*_nodes.tsv` and `*_edges.tsv` files. The package comes bundled with a small example KG providing information about Ehlers-Danlos and Marfan syndrome for demonstration purposes. You can also provide a local file path, or a URL to a remote file, which will be downloaded to the current working directory. (This example graph can also be loaded with `data(eds_marfan_kg)`.)
 
 ```{r}
 filename <- system.file("extdata", "eds_marfan_kg.tar.gz", package = "monarchr")
 # filename <- "https://kghub.io/kg-obo/mondo/2024-03-04/mondo_kgx_tsv.tar.gz"
 
-eds_marfan <- file_engine(filename)
+eds_marfan_kg <- file_engine(filename)
 ```
+
 
 # Fetching Nodes
 
@@ -109,7 +115,7 @@ Engines support a `fetch_nodes()` function for pulling nodes by specified criter
 
 ```{r}
 g <- monarch |>
-	fetch_nodes(query_ids = c("MONDO:0009061", "HGNC:1884"))
+    fetch_nodes(query_ids = c("MONDO:0009061", "HGNC:1884"))
 
 g
 ```
@@ -117,7 +123,8 @@ Nodes can also be fetched in bulk. For example, we can fetch all of the nodes wh
 
 ```{r}
 h_sapiens_nodes <- monarch |>
-	fetch_nodes(in_taxon_label == "Homo sapiens", limit = 20)
+    fetch_nodes(in_taxon_label == "Homo sapiens", limit = 20)
+
 h_sapiens_nodes
 ```
 
@@ -125,13 +132,13 @@ While the syntax does not support all R expressions (for compatibility with data
 standard comparisons `==`, `!=`, `<=`, `>=`, `<`, and `>` are, as are logical operators `&`, `|`, and `!`,
 and grouping with `()`s. Since many node properties are multi-valued, we provide a special `%in_list%`
 operator to allow exact match against entries. Here we fetch all the *Homo sapiens* Genes, using `%in_list%` to account for the multi-valued nature of node `category`.^[The `%in_list%` and other operators work the same
-for `file_engine()`s, which store multi-valued properties in list columns where `%in%` does not provide the desired semantics. Note that `%in_list%` can only take a length-one character vector as the left-hand side, and the right hand side must be a single
-node property name in the KG.]
+for `file_engine()`s, which store multi-valued properties in list columns. Multi-value properties are typically represented as list columns in R, but `%in%` does not provide the desired semantics--try using both `%in%` and `%in_list%` to filter a `data.frame` on values of a list column to see the difference. Note that `%in_list%` can only take a length-one character vector as the left-hand side, and the right hand side must be a single node property name in the KG.]
 
 ```{r}
 human_genes <- monarch |>
-	fetch_nodes(in_taxon_label == "Homo sapiens" & "biolink:Gene" %in_list% category,
-							limit = 20)
+    fetch_nodes(in_taxon_label == "Homo sapiens" & "biolink:Gene" %in_list% category,
+        limit = 20
+    )
 
 human_genes
 ```
@@ -141,8 +148,10 @@ ones like `category`).
 
 ```{r}
 fibrosis_disease_matches <- monarch |>
-	fetch_nodes(description %~% ".*[fF]ibrosis.*" & "biolink:Disease" %in_list% category,
-							limit = 20)
+    fetch_nodes(description %~% ".*[fF]ibrosis.*" & "biolink:Disease" %in_list% category,
+        limit = 20
+    )
+
 fibrosis_disease_matches
 ```
 
@@ -154,9 +163,9 @@ From a set of nodes (and possibly edges that connect them), we can "expand" by f
 # MONDO:0018982, MONDO:0011871: Neimann-Pick type B and C
 
 g <- monarch |>
-	fetch_nodes(query_ids = c("MONDO:0018982", "MONDO:0011871")) |>
-	expand(predicates = c("biolink:causes", "biolink:gene_associated_with_condition")) |>
-	expand(categories = c("biolink:PhenotypicFeature"), limit = 10)
+    fetch_nodes(query_ids = c("MONDO:0018982", "MONDO:0011871")) |>
+    expand(predicates = c("biolink:causes", "biolink:gene_associated_with_condition")) |>
+    expand(categories = c("biolink:PhenotypicFeature"), limit = 10)
 
 plot(g)
 ```
@@ -175,13 +184,16 @@ the `n` parameter.
 
 ```{r}
 ## Using example KGX file packaged with monarchr
-filename <- system.file("extdata", "eds_marfan_kg.tar.gz", package = "monarchr")
-g <- file_engine(filename) |>
-          fetch_nodes(query_ids = "MONDO:0007525") |>
-          expand(predicates = "biolink:has_phenotype",
-                 categories = "biolink:PhenotypicFeature")
-g_expanded <- g |>
-              expand_n(predicates = "biolink:subclass_of", n=3)
+data(eds_marfan_kg)
+
+g <- eds_marfan_kg |>
+    fetch_nodes(query_ids = "MONDO:0007525") |>
+    expand(
+        predicates = "biolink:has_phenotype",
+        categories = "biolink:PhenotypicFeature"
+    )
+
+g_expanded <- g |> expand_n(predicates = "biolink:subclass_of", n = 3)
 ```
 
 
@@ -191,22 +203,23 @@ We can limit the expansion based on several factors, which are combined in an "a
 - `predicates`: a character vector of edge predicates to fetch (all if unspecified)
 - `categories`: a character vector of node category labels to fetch in the connected neighborhood (all if unspecified)
 
-The `drop_unused_query_nodes` parameter (which defaults to `FALSE`) keeps only the nodes that are part of the recently-expanded neighborhood. For example, given a query graph with many diseases, if we try to fetch neighboring phenotypes, setting this to `TRUE` removes those disease nodes without any phenotypes.
-
 Lastly, the `transitive` parameter (which defaults to `FALSE`) can be used to fetch hierarchical, transitive relationships like `biolink:subclass_of`. When using `transitive = TRUE`, direction must be `"in"` or `"out"`, and `predicates` must be a single entry. The first example above illustrated this; here we explore the super-types and sub-types of Niemann-Pick, by first fetching all of its subtypes, and then considering the collective ancestry of those nodes in the KG. Not all ancestors are diseases (e.g. `biolink:Entity`), so we restrict the result set of the second expansion.
 
 ```{r}
 # MONDO:0001982 Niemann-Pick Disease (13 subtypes)
 
 hierarchy <- monarch |>
-  fetch_nodes(query_ids = c("MONDO:0001982")) |>
-	expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
-	expand(predicates = "biolink:subclass_of", direction = "out", transitive = TRUE, categories = "biolink:Disease")
+    fetch_nodes(query_ids = c("MONDO:0001982")) |>
+    expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
+    expand(predicates = "biolink:subclass_of", direction = "out", transitive = TRUE, categories = "biolink:Disease")
 
 plot(hierarchy)
 ```
 
-# Monarch Features
+# Monarch-Specific Features
+
+While most features of `monarchr` are applicable to any KGX-formatted KG, some are specific to functionality provided by the
+Monarch Initiative.
 
 ## Searching
 
@@ -226,12 +239,12 @@ result is returned as a graph, containing only computed `"computed:best_matches"
 
 ```{r}
 eds_phenos <- monarch |>
-	fetch_nodes(query_ids = "MONDO:0007522") |>
-	expand(predicates = "biolink:has_phenotype", limit = 10)
+    fetch_nodes(query_ids = "MONDO:0007522") |>
+    expand(predicates = "biolink:has_phenotype", limit = 10)
 
 marfan_phenos <- monarch |>
-	fetch_nodes(query_ids = "MONDO:0007947") |>
-	expand(predicates = "biolink:has_phenotype", limit = 10)
+    fetch_nodes(query_ids = "MONDO:0007947") |>
+    expand(predicates = "biolink:has_phenotype", limit = 10)
 
 sim <- monarch_semsim(eds_phenos, marfan_phenos)
 
@@ -248,9 +261,38 @@ We can use `tidygraph`'s `graph_join()` to see this result in the context
 of the original query and target graphs.
 
 ```{r}
-eds_phenos |>
-	graph_join(marfan_phenos) |>
-	graph_join(sim) |>
-	plot()
+both_phenos <- eds_phenos |>
+    graph_join(marfan_phenos) |>
+    graph_join(sim)
+
+plot(both_phenos)
+both_phenos
+```
+The `monarch_semsim` result contain additional properties for 
+`monarch_semsim_metric`, `monarch_semsim_score`, and `monarch_semsim_ancestor_id`, which we can use for 
+plotting as well (loading `ggraph` to avoid [this error](https://github.com/thomasp85/ggraph/issues/386)):
+
+```{r}
+library(ggraph)
+plot(both_phenos, edge_color = monarch_semsim_score)
 ```
 
+# Other Features
+
+Other useful features are covered in dedicated Vignettes:
+
+- Rollups and Transitivity - For computing transitive closures, transitive reductions, and rolling information up or down in directed acyclic graphs.
+- Visualizing Knowledge Graphs - Basic plotting, compatible libraries, and plotting with `Cytoscape`.
+- Exploring Knowledge Graphs - `summary()` for KG engines and sample graphs covering node categories.
+- Engine Preferences - Determining the selection of node `pcategory` from available `category` values and other configurable engine properties.
+
+
+<br />
+<br />
+<br />
+
+### Session Info
+
+```{r}
+sessioninfo::session_info()
+```

@@ -7,15 +7,20 @@
 file_engine_check(filename, warn = TRUE)
 }
 \arguments{
-\item{filename}{A character string indicating the path to the file-based engine.}
+\item{filename}{A character string indicating the path to the file-based
+engine.}
 
-\item{warn}{A logical indicating whether to print a warning message if with failure information if the database is not available or not properly formatted. Default is TRUE.}
+\item{warn}{A logical indicating whether to print a warning message if with
+failure information if the database is not available or not
+properly formatted. Default is TRUE.}
 }
 \value{
-TRUE if the database is available and properly formatted, FALSE otherwise.
+TRUE if the database is available and properly formatted, FALSE
+otherwise.
 }
 \description{
-Attempts to connect to the specified file-based engine. Returns FALSE if the file is not available or not properly formatted.
+Attempts to connect to the specified file-based engine. Returns FALSE if the
+file is not available or not properly formatted.
 }
 \examples{
 \dontshow{if (file_engine_check("https://kghub.io/kg-obo/sepio/2023-06-13/sepio_kgx_tsv.tar.gz")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

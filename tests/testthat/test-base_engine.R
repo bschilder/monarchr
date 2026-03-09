@@ -13,5 +13,4 @@ test_that("base_engine works", {
     expect_equal(e$name, "default_engine")
     # result should have a category_priority field of length 2
     expect_equal(length(e$preferences$category_priority), 2)
-
 })

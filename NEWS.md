@@ -1,14 +1,79 @@
-# monarchr 1.6.2
+# monarchr 2.99.0
+
+This is a minor version bump for the purpose of submitting the package to BioConductor.
+
+# monarchr 2.1.4
+
+## Bug Fixes
+
+* Improved examples and documentation for R CMD CHECK
+* Moved limited-use dependencies to Suggests
+* Various fixes for notes and warnings for `BiocCheck()`
+* `summary()` now operates canonically via dedicated summary class and methods.
+
+# monarchr 2.1.3
+
+## Bug Fixes
+
+* Fix bug in Cypher paging code resulting in duplicate nodes and edges in some cases.
+
+# monarchr 2.1.2
+
+## Bug Fixes
+
+* Better fix for `edge_color`
+* Improved documentation for `transitive_closure()`, `transitive_reduction()`, `transfer()`, `roll_up()`, `roll_down()`
+
+# monarchr 2.1.1
+
+## Bug Fixes
+
+* Fixed a bug in `file_engine` `expand()` not including the query graph on transitive expansions
+* Temporarily set `edge_color` default to `NULL` until `ggplot` 4.0.1 is released with [this](https://github.com/tidyverse/ggplot2/issues/6669) bugfix
+* Update badges
+
+# monarchr 2.1
 
 ## New features
 
-* Add `biolink:Drug` to *kge_prefs.yaml*
-* Update README installation instructions so that Bioc deps (namely `RCy3`)
-	will be installed automatically.
+* Put example KG data in `data(eds_marfan_kg)`
+* Added KGX format checks in engine instantiation
+* Include available properties in engine `summary()`
+* Added vignette for engine preferences
 
 ## Bug fixes
 
-* 
+* Remove `stitch_vectors` and `merge_lists` from public API
+* Fix install instructions
+* Fix timeout check for `neo4j_engine()` URL fallback
+
+# monarchr 2.0
+
+## Breaking changes
+
+* This breaking release drops support for `drop_unused_query_nodes` in `expand()`, which was both brittle and violated the rule that expansion should return a supergraph of the query
+
+## Bug fixes
+
+* Fixes a bug in `expand()` for `neo4j_engine()` causing an infinite loop.
+
+# monarchr 1.7
+
+## New features
+
+* New transitive and related tools: `roll_up()`, `roll_down()`, `transfer()`, `transitive_closure()`, and `transitive_reduction()`
+
+## Minor Changes
+
+* Added a reversed `y` scale to default `plot()` so trees and other hierarchies point upward (as Knuth intended)
+
+# monarchr 1.6.2
+
+## Minor Changes
+
+* `plot()` now uses a more basic but KG-flexible `ggraph`, and by default shows node namespace and edge knowledge source if available
+* Tooltips in Cytoscape plots show node namespace and edge primary knowledge source if available
+* Updates to `monarch_semsim()` for including `primary_knowledge_source` and some computed edge column renaming
 
 # monarchr 1.6.1
 

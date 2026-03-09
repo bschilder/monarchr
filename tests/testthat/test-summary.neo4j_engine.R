@@ -1,6 +1,8 @@
 library(testthat)
 library(assertthat)
 
+skip_if_lite()
+
 test_that("summary() for neo4j_engine", {
     res <- summary(monarch_engine(), quiet = TRUE)
 

@@ -9,17 +9,24 @@ neo4j_engine_check(url, username = NA, password = NA, warn = TRUE)
 \arguments{
 \item{url}{A character string indicating the URL of the neo4j database.}
 
-\item{username}{A character string indicating the username for the neo4j database (if needed).}
+\item{username}{A character string indicating the username for the neo4j
+database (if needed).}
 
-\item{password}{A character string indicating the password for the neo4j database (if needed).}
+\item{password}{A character string indicating the password for the neo4j
+database (if needed).}
 
-\item{warn}{A logical indicating whether to print a warning message if with failure information if the database is not available or not properly formatted. Default is TRUE.}
+\item{warn}{A logical indicating whether to print a warning message if with
+failure information if the database is not available or not
+properly formatted. Default is TRUE.}
 }
 \value{
-TRUE if the database is available and properly formatted, FALSE otherwise.
+TRUE if the database is available and properly formatted, FALSE
+otherwise.
 }
 \description{
-Attempts to connect to the specified Neo4J database and run a query to see if it is properly formatted. Returns FALSE if the database is not available or not properly formatted.
+Attempts to connect to the specified Neo4J database and run a query to see
+if it is properly formatted. Returns FALSE if the database is not available
+or not properly formatted.
 }
 \examples{
 print(neo4j_engine_check("https://neo4j.monarchinitiative.org"))

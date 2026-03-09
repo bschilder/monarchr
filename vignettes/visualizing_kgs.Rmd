@@ -3,9 +3,9 @@ title: "Visualizing Knowledge Graphs"
 author: "Shawn T O'Neil"
 date: "Vignette updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i>"
 output:
-  rmarkdown::html_document
+  rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{monarchr}
+  %\VignetteIndexEntry{Visualizing Knowledge Graphs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,7 +13,12 @@ vignette: >
 
 ```{r, include=FALSE, message=FALSE}
 options(width = 300)
-knitr::opts_chunk$set(eval = TRUE, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
+
+# Run live/networked chunks only when building pkgdown (or when explicitly forced).
+live_eval <- identical(tolower(Sys.getenv("IN_PKGDOWN", "false")), "true") ||
+    identical(tolower(Sys.getenv("MONARCHR_VIGNETTE_EVAL", "false")), "true")
+
+knitr::opts_chunk$set(eval = live_eval, echo = TRUE, fig.width = 10, message = FALSE, warning = FALSE)
 ```
 
 `monarchr` supports a large number of plotting frameworks compatible with `tidygraph` and `igraph`, including [`ggraph`](https://ggraph.data-imaginist.com/), [`visNetwork`](https://datastorm-open.github.io/visNetwork/),
@@ -23,8 +28,7 @@ knowledge graphs via `ggraph`, and a `cytoscape()` function to export a graph to
 As usual, we begin by loading the `monarchr` package, along with `tidygraph` and `dplyr` which tend to be useful.
 
 ```{r}
-#library(monarchr)
-devtools::load_all()
+library(monarchr)
 library(tidygraph)
 library(dplyr)
 ```
@@ -34,16 +38,24 @@ library(dplyr)
 
 The basic `plot()` function is a wrapper around `ggraph`. By default, 
 node color tracks `pcategory` and edge color `predicate`, though these
-can be changed with the `node_color` and `edge_color` properties.
+can be changed with the `node_color` and `edge_color` properties. 
+
+While `node_shape` and `edge_linetype` can also be changed, 
+they default to `namespace` (commonly indicating the node's data source) and 
+`primary_knowledge_source` (commonly indicating the edge's data source). 
+Here we see that these nodes are part of [`MONDO`](https://mondo.monarchinitiative.org/) 
+and [`HGNC`](https://www.genenames.org/), and the relationships between them
+are sourced from MONDO as well as [OMIM](https://omim.org/) and 
+[Orphanet](https://www.orpha.net/).
+
 
 ```{r}
-filename <- system.file("extdata", "eds_marfan_kg.tar.gz", package = "monarchr")
-engine <- file_engine(filename)
+data(eds_marfan_kg)
 
-g <- engine |>
-	fetch_nodes(query_ids = c("MONDO:0017310")) |>
-  expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
-	expand(categories = "biolink:Gene")
+g <- eds_marfan_kg |>
+    fetch_nodes(query_ids = c("MONDO:0017310")) |>
+    expand(predicates = "biolink:subclass_of", direction = "in", transitive = TRUE) |>
+    expand(categories = "biolink:Gene")
 
 plot(g)
 ```
@@ -56,24 +68,26 @@ and `node_color` parameters simply pass their unquoted arguments to `geom_node_p
 and `geom_edge_fan` `ggraph` layers.
 
 ```{r}
-mar_phenos <- engine |> 
-	fetch_nodes(query_ids = c("MONDO:0017309")) |>
-	expand(categories = "biolink:PhenotypicFeature") 
+mar_phenos <- eds_marfan_kg |>
+    fetch_nodes(query_ids = c("MONDO:0017309")) |>
+    expand(categories = "biolink:PhenotypicFeature")
 
-bcs_phenos <- engine |> 
-	fetch_nodes(query_ids = c("MONDO:0009242")) |>
-	expand(categories = "biolink:PhenotypicFeature")
+bcs_phenos <- eds_marfan_kg |>
+    fetch_nodes(query_ids = c("MONDO:0009242")) |>
+    expand(categories = "biolink:PhenotypicFeature")
 
-both <- kg_join(mar_phenos, bcs_phenos) 
+both <- kg_join(mar_phenos, bcs_phenos)
 
 shared <- both |>
-	activate(nodes) |>
-	mutate(degree = igraph::degree(both)) |>
-	filter(degree > 1) |>
-	activate(edges) |>
-	mutate(frequency_qualifier = factor(frequency_qualifier, 
-																 			levels = c("HP:0040281", "HP:0040282", "HP:0040283"),
-																 			labels = c("very_frequent", "frequent", "occasional")))
+    activate(nodes) |>
+    mutate(degree = igraph::degree(both)) |>
+    filter(degree > 1) |>
+    activate(edges) |>
+    mutate(frequency_qualifier = factor(frequency_qualifier,
+        levels = c("HP:0040281", "HP:0040282", "HP:0040283"),
+        labels = c("very_frequent", "frequent", "occasional")
+    ))
+
 plot(shared, edge_color = frequency_qualifier)
 ```
 
@@ -94,5 +108,20 @@ Node color is mapped to `pcategory` and edge color to `predicate`; hoverover
 node text is `description` if available, edge hoverover `predicate`. All of these
 and many more properties can be customized in Cytoscape.
 
-<center>![](visualizing_kgs_assets/cytoscape.png){width=90%}</center>
+<center>![A screenshot of Cytoscape with a graph visualized.](visualizing_kgs_assets/cytoscape.png){width=90%}</center>
+
+
+
+
+
+<br />
+<br />
+<br />
+
+### Session Info
+
+```{r, eval=TRUE}
+sessioninfo::session_info()
+```
+
 

@@ -2,7 +2,8 @@
 % Please edit documentation in R/monarch_engine.R
 \name{monarch_engine}
 \alias{monarch_engine}
-\title{Create a knowledge graph engine object backed by the public Monarch Neo4j instance}
+\title{Create a knowledge graph engine object backed by the public Monarch Neo4j
+instance}
 \usage{
 monarch_engine(
   url = c("https://neo4j.monarchinitiative.org", "http://neo4j.monarchinitiative.org",
@@ -15,9 +16,13 @@ monarch_engine(
 )
 }
 \arguments{
-\item{url}{(Optional) May be specified to override the default Monarch Neo4j URL. If given a vector, each will be tried in sequence; if a URL times out (see timeout) or fails, the next is tried.}
+\item{url}{(Optional) May be specified to override the default Monarch Neo4j
+URL. If given a vector, each will be tried in sequence; if a URL
+times out (see timeout) or fails, the next is tried.}
 
-\item{api_url}{(Optional) May be specified to override the default Monarch API URL (specifying the location of the \verb{/search} endpoint used by \code{search_nodes()}).}
+\item{api_url}{(Optional) May be specified to override the default Monarch
+API URL (specifying the location of the \verb{/search} endpoint
+used by \code{search_nodes()}).}
 
 \item{preferences}{A named list of preferences for the engine.}
 
@@ -29,13 +34,18 @@ monarch_engine(
 An object of class \code{monarch_engine}
 }
 \description{
-Creates a knowledge graph engine backed by the publicly hosted Monarch Neo4j database, used to fetch nodes and edges from the database as local
+Creates a knowledge graph engine backed by the publicly hosted Monarch Neo4j
+database, used to fetch nodes and edges from the database as local
 graph objects.
 }
 \details{
-Engines store preference information specifying how data are fetched and manipulated; for example,
-while node \code{category} is multi-valued (nodes may have multiple categories, for example "biolink:Gene" and "biolink:NamedThing"),
-typically a single category is used to represent the node in a graph, and is returned as the nodes' \code{pcategory}. A preference list of categories to use for \code{pcategory} is
+Engines store preference information specifying how data are fetched and
+manipulated; for example,
+while node \code{category} is multi-valued (nodes may have multiple categories,
+for example "biolink:Gene" and "biolink:NamedThing"),
+typically a single category is used to represent the node in a graph, and is
+returned as the nodes' \code{pcategory}. A preference list of categories to use
+for \code{pcategory} is
 stored in the engine's preferences. A default set of preferences is stored in the package for use with this and other KGX (BioLink-compatible) graphs (see https://github.com/biolink/kgx/blob/master/specification/kgx-format.md),
 but these can be overridden by the user.
 

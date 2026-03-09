@@ -11,3 +11,9 @@ visualisation.Rmd
 /doc/
 /docs/
 /Meta/
+/vignettes/**/*.html
+monarchr.BiocCheck/
+monarchr.Rcheck/
+monarchr_*.tar.gz
+
+*.Rproj
