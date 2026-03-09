@@ -1,3 +1,10 @@
+# monarchr 2.99.1
+
+## Changes
+
+* Synced fork with upstream monarch-initiative/monarchr v2.99.0.
+* Removed `rworkflows` dependency.
+
 # monarchr 2.99.0
 
 This is a minor version bump for the purpose of submitting the package to BioConductor.
